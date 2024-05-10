@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      前端面试总结之 React Hooks 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">前端面试总结之 React Hooks</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-03-19 10:30:21
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/React/" title="React">
+                    #React
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="类组件的不足"><a href="#类组件的不足" class="headerlink" title="类组件的不足"></a>类组件的不足</h2><ul>
+<li><p><strong>状态逻辑难复用：</strong> 在组件之间复用状态逻辑很难，可能要用到 <strong>render props</strong> （<strong>渲染属性</strong>）或者 <strong>HOC</strong>（<strong>高阶组件</strong>），但无论是渲染属性，还是高阶组件，都会在原先的组件外包裹一层父容器（一般都是 div 元素），<strong>导致层级冗余</strong>。例如一个 4 层嵌套的<code>HOC</code>组件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">withStyle</span>(style)(<span class="title function_">connect</span>(<span class="comment">/*...*/</span>)(<span class="title function_">withRouter</span>(<span class="title class_">App</span>)))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>趋向复杂难以维护：</p>
+<ul>
+<li>在生命周期函数中混杂不相干的逻辑（如：在 <code>componentDidMount</code> 中注册事件以及其他的逻辑，在 <code>componentWillUnmount</code> 中卸载事件，这样分散不集中的写法，很容易写出 bug ）</li>
+<li>类组件中到处都是对状态的访问和处理，导致组件难以拆分成更小的组件；</li>
+</ul>
+</li>
+<li><p><code>this</code> 指向问题：父组件给子组件传递函数时，必须绑定 this，虽然可以通过箭头函数解决，但是复杂度仍在：即 react 中的组件四种绑定 this 方法（前提：子组件内部做了性能优化，如(<strong>React.PureComponent</strong>)）：</p>
+<blockquote>
+<p>与普通组件的区别在于它实现了一个浅比较的 shouldComponentUpdate 生命周期方法。当 props 或 state 发生变化时，React 会调用 shouldComponentUpdate 方法来决定是否需要重新渲染组件。</p>
+</blockquote>
+<ol>
+<li><p><strong>在构造函数中绑定 this</strong>：那么每次父组件刷新的时候，如果传递给子组件其他的 props 值不变，那么子组件就不会刷新；</p>
+</li>
+<li><p>第二种是<strong>在 render() 函数里面绑定 this</strong>：因为 <strong>bind 函数会返回一个新的函数</strong>，所以每次父组件刷新时，都会重新生成一个函数，即使父组件传递给子组件其他的 props 值不变，子组件每次都会刷新；</p>
+</li>
+<li><p>第三种是<strong>使用箭头函数</strong>：父组件刷新的时候，即使两个箭头函数的函数体是一样的，都会生成一个新的箭头函数，所以子组件每次都会刷新；</p>
+</li>
+<li><p>第四种是<strong>使用类的静态属性：原理和第一种方法差不多，比第一种更简洁</strong></p>
+</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>&lt;any, any&gt; &#123;</span><br><span class="line">    handleClick2;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">        <span class="variable language_">super</span>(props);</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">state</span> = &#123;</span><br><span class="line">            <span class="attr">num</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">title</span>: <span class="string">&#x27; react study&#x27;</span></span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">handleClick2</span> = <span class="variable language_">this</span>.<span class="property">handleClick1</span>.<span class="title function_">bind</span>(<span class="variable language_">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">handleClick1</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;</span><br><span class="line">            <span class="attr">num</span>: <span class="variable language_">this</span>.<span class="property">state</span>.<span class="property">num</span> + <span class="number">1</span>,</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    handleClick3 = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;</span><br><span class="line">            <span class="attr">num</span>: <span class="variable language_">this</span>.<span class="property">state</span>.<span class="property">num</span> + <span class="number">1</span>,</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Ann, &#123;this.state.num&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handleClick2&#125;</span>&gt;</span>btn1<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handleClick1.bind(this)&#125;</span>&gt;</span>btn2<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> this.handleClick1()&#125;&gt;btn3<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handleClick3&#125;</span>&gt;</span>btn4<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hooks-优势"><a href="#Hooks-优势" class="headerlink" title="Hooks 优势"></a>Hooks 优势</h2><ul>
+<li>能优化类组件的三大问题；</li>
+<li>能在无需修改组件结构的情况下复用状态逻辑（自定义 Hooks ）；</li>
+<li>能将组件中相互关联的部分拆分成更小的函数（比如设置订阅或请求数据）；</li>
+<li><strong>副作用的关注点分离</strong>：<strong>副作用指那些没有发生在数据向视图转换过程中的逻辑，如 <code>ajax</code> 请求、访问原生<code>dom</code> 元素、本地持久化缓存、绑定&#x2F;解绑事件、添加订阅、设置定时器、记录日志等</strong>。以往这些副作用都是写在类组件生命周期函数中的。而 <code>useEffect</code> 在全部渲染完毕后才会执行，<code>useLayoutEffect</code> 会在浏览器 <code>layout</code> 之后，<code>painting</code> 之前执行。</li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>只能在函数内部的最外层调用 Hook，不要在循环、条件判断或者子函数中调用</strong></li>
+<li>只能在 React 的<strong>函数组件</strong>中调用 Hook，不要在其他 JavaScript 函数中调用</li>
+</ul>
+</blockquote>
+<h2 id="useState"><a href="#useState" class="headerlink" title="useState"></a>useState</h2><p><strong>React 假设当你多次调用 useState 的时候，你能保证每次渲染时它们的<em>调用顺序</em>是不变的。</strong></p>
+<p>通过在函数组件里调用它来给组件添加一些内部 state，React会 <strong>在重复渲染时保留这个 state</strong></p>
+<p>useState 唯一的参数就是初始 state</p>
+<p><strong>useState 会返回一个数组</strong>：<strong>一个 state，一个更新 state 的函数</strong></p>
+<ul>
+<li>在初始化渲染期间，返回的状态 (state) 与传入的第一个参数 (initialState) 值相同</li>
+<li>你可以在事件处理函数中或其他一些地方调用这个函数。它类似 class 组件的 this.setState，但是它<strong>不会把新的 state 和旧的 state 进行合并，而是直接替换</strong></li>
+</ul>
+<h3 id="每次渲染都是独立的闭包"><a href="#每次渲染都是独立的闭包" class="headerlink" title="每次渲染都是独立的闭包"></a>每次渲染都是独立的闭包</h3><ul>
+<li>每一次渲染都有它自己的 Props 和 State</li>
+<li>每一次渲染都有它自己的事件处理函数</li>
+<li>当点击更新状态的时候，函数组件都会重新被调用，那么每次渲染都是独立的，取到的值不会受后面操作的影响</li>
+</ul>
+<h3 id="函数式更新"><a href="#函数式更新" class="headerlink" title="函数式更新"></a>函数式更新</h3><ul>
+<li><strong>如果新的 state 需要通过使用先前的 state 计算得出，那么可以将回调函数当做参数传递给 setState。该回调函数将接收先前的 state，而不是使用函数触发时的 state，之后返回一个更新后的值。</strong></li>
+</ul>
+<h3 id="惰性初始化-state"><a href="#惰性初始化-state" class="headerlink" title="惰性初始化 state"></a>惰性初始化 state</h3><ul>
+<li><strong>initialState 参数只会在组件的初始化渲染中起作用，后续渲染时会被忽略</strong></li>
+<li><strong>如果初始 state 需要通过复杂计算获得，则可以传入一个函数，在函数中计算并返回初始的 state，此函数只在初始渲染时被调用</strong></li>
+</ul>
+<h3 id="Object-is-（浅比较）"><a href="#Object-is-（浅比较）" class="headerlink" title="Object.is （浅比较）"></a>Object.is （浅比较）</h3><ul>
+<li>Hook 内部使用 Object.is 来比较新&#x2F;旧 state 是否相等</li>
+<li><strong>与 class 组件中的 setState 方法不同，如果你修改状态的时候，传的状态值没有变化，则不重新渲染</strong></li>
+<li><strong>与 class 组件中的 setState 方法不同，useState 不会自动合并更新对象。你可以用函数式的 setState 结合展开运算符来达到合并更新对象的效果</strong></li>
+</ul>
+<h3 id="减少渲染次数"><a href="#减少渲染次数" class="headerlink" title="减少渲染次数"></a>减少渲染次数</h3><ul>
+<li><strong>默认情况，只要父组件状态变了（不管子组件依不依赖该状态），子组件也会重新渲染</strong></li>
+<li>一般的优化：<ol>
+<li><strong>类组件</strong>：可以使用 <code>pureComponent</code> ；</li>
+<li><strong>函数组件</strong>：使用 <code>React.memo</code> ，将函数组件传递给 <code>memo</code> 之后，就会返回一个新的组件，新组件的功能：<strong>如果接受到的属性不变，则不重新渲染函数</strong>；</li>
+</ol>
+</li>
+<li><strong>但是怎么保证属性不会变尼？这里使用 useState ，每次更新都是独立的</strong>，<code>const [number,setNumber] = useState(0)</code> <strong>也就是说每次都会生成一个新的值（哪怕这个值没有变化），即使使用了 <code>React.memo</code> ，也还是会重新渲染</strong></li>
+</ul>
+<h3 id="源码参考"><a href="#源码参考" class="headerlink" title="源码参考"></a>源码参考</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">useState</span>(<span class="params">initialState</span>) &#123;</span><br><span class="line">    currentHookNameInDev = <span class="string">&#x27;useState&#x27;</span>;</span><br><span class="line">    <span class="title function_">mountHookTypesDev</span>();</span><br><span class="line">    <span class="keyword">var</span> prevDispatcher = <span class="title class_">ReactCurrentDispatcher</span>$1.<span class="property">current</span>;</span><br><span class="line">    <span class="title class_">ReactCurrentDispatcher</span>$1.<span class="property">current</span> = <span class="title class_">InvalidNestedHooksDispatcherOnMountInDEV</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">mountState</span>(initialState);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="title class_">ReactCurrentDispatcher</span>$1.<span class="property">current</span> = prevDispatcher;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">mountState</span>(<span class="params">initialState</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> hook = <span class="title function_">mountWorkInProgressHook</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> initialState === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">        initialState = <span class="title function_">initialState</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    hook.<span class="property">memoizedState</span> = hook.<span class="property">baseState</span> = initialState;</span><br><span class="line">    <span class="keyword">var</span> queue = &#123;</span><br><span class="line">        <span class="attr">pending</span>: <span class="literal">null</span>,</span><br><span class="line">        <span class="attr">interleaved</span>: <span class="literal">null</span>,</span><br><span class="line">        <span class="attr">lanes</span>: <span class="title class_">NoLanes</span>,</span><br><span class="line">        <span class="attr">dispatch</span>: <span class="literal">null</span>,</span><br><span class="line">        <span class="attr">lastRenderedReducer</span>: basicStateReducer,</span><br><span class="line">        <span class="attr">lastRenderedState</span>: initialState</span><br><span class="line">    &#125;;</span><br><span class="line">    hook.<span class="property">queue</span> = queue;</span><br><span class="line">    <span class="keyword">var</span> dispatch = queue.<span class="property">dispatch</span> = dispatchSetState.<span class="title function_">bind</span>(<span class="literal">null</span>, currentlyRenderingFiber$1, queue);</span><br><span class="line">    <span class="keyword">return</span> [hook.<span class="property">memoizedState</span>, dispatch];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">mountWorkInProgressHook</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> hook = &#123;</span><br><span class="line">        <span class="attr">memoizedState</span>: <span class="literal">null</span>,</span><br><span class="line">        <span class="attr">baseState</span>: <span class="literal">null</span>,</span><br><span class="line">        <span class="attr">baseQueue</span>: <span class="literal">null</span>,</span><br><span class="line">        <span class="attr">queue</span>: <span class="literal">null</span>,</span><br><span class="line">        <span class="attr">next</span>: <span class="literal">null</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (workInProgressHook === <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="comment">// This is the first hook in the list</span></span><br><span class="line">        currentlyRenderingFiber$1.<span class="property">memoizedState</span> = workInProgressHook = hook;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Append to the end of the list</span></span><br><span class="line">        workInProgressHook = workInProgressHook.<span class="property">next</span> = hook;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> workInProgressHook;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">dispatchSetState</span>(<span class="params">fiber, queue, action</span>) &#123;</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">arguments</span>[<span class="number">3</span>] === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">      <span class="title function_">error</span>(<span class="string">&quot;State updates from the useState() and useReducer() Hooks don&#x27;t support the &quot;</span> + <span class="string">&#x27;second callback argument. To execute a side effect after &#x27;</span> + <span class="string">&#x27;rendering, declare it in the component body with useEffect().&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> lane = <span class="title function_">requestUpdateLane</span>(fiber);</span><br><span class="line">  <span class="keyword">var</span> update = &#123;</span><br><span class="line">    <span class="attr">lane</span>: lane,</span><br><span class="line">    <span class="attr">action</span>: action,</span><br><span class="line">    <span class="attr">hasEagerState</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">eagerState</span>: <span class="literal">null</span>,</span><br><span class="line">    <span class="attr">next</span>: <span class="literal">null</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">isRenderPhaseUpdate</span>(fiber)) &#123;</span><br><span class="line">    <span class="title function_">enqueueRenderPhaseUpdate</span>(queue, update);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> alternate = fiber.<span class="property">alternate</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (fiber.<span class="property">lanes</span> === <span class="title class_">NoLanes</span> &amp;&amp; (alternate === <span class="literal">null</span> || alternate.<span class="property">lanes</span> === <span class="title class_">NoLanes</span>)) &#123;</span><br><span class="line">      <span class="comment">// The queue is currently empty, which means we can eagerly compute the</span></span><br><span class="line">      <span class="comment">// next state before entering the render phase. If the new state is the</span></span><br><span class="line">      <span class="comment">// same as the current state, we may be able to bail out entirely.</span></span><br><span class="line">      <span class="keyword">var</span> lastRenderedReducer = queue.<span class="property">lastRenderedReducer</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (lastRenderedReducer !== <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> prevDispatcher;</span><br><span class="line"></span><br><span class="line">        &#123;</span><br><span class="line">          prevDispatcher = <span class="title class_">ReactCurrentDispatcher</span>$1.<span class="property">current</span>;</span><br><span class="line">          <span class="title class_">ReactCurrentDispatcher</span>$1.<span class="property">current</span> = <span class="title class_">InvalidNestedHooksDispatcherOnUpdateInDEV</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="keyword">var</span> currentState = queue.<span class="property">lastRenderedState</span>;</span><br><span class="line">          <span class="keyword">var</span> eagerState = <span class="title function_">lastRenderedReducer</span>(currentState, action); <span class="comment">// Stash the eagerly computed state, and the reducer used to compute</span></span><br><span class="line">          <span class="comment">// it, on the update object. If the reducer hasn&#x27;t changed by the</span></span><br><span class="line">          <span class="comment">// time we enter the render phase, then the eager state can be used</span></span><br><span class="line">          <span class="comment">// without calling the reducer again.</span></span><br><span class="line"></span><br><span class="line">          update.<span class="property">hasEagerState</span> = <span class="literal">true</span>;</span><br><span class="line">          update.<span class="property">eagerState</span> = eagerState;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">if</span> (<span class="title function_">objectIs</span>(eagerState, currentState)) &#123;</span><br><span class="line">            <span class="comment">// Fast path. We can bail out without scheduling React to re-render.</span></span><br><span class="line">            <span class="comment">// It&#x27;s still possible that we&#x27;ll need to rebase this update later,</span></span><br><span class="line">            <span class="comment">// if the component re-renders for a different reason and by that</span></span><br><span class="line">            <span class="comment">// time the reducer has changed.</span></span><br><span class="line">            <span class="comment">// <span class="doctag">TODO:</span> Do we still need to entangle transitions in this case?</span></span><br><span class="line">            <span class="title function_">enqueueConcurrentHookUpdateAndEagerlyBailout</span>(fiber, queue, update, lane);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (error) &#123;<span class="comment">// Suppress the error. It will throw again in the render phase.</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="title class_">ReactCurrentDispatcher</span>$1.<span class="property">current</span> = prevDispatcher;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> root = <span class="title function_">enqueueConcurrentHookUpdate</span>(fiber, queue, update, lane);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (root !== <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> eventTime = <span class="title function_">requestEventTime</span>();</span><br><span class="line">      <span class="title function_">scheduleUpdateOnFiber</span>(root, fiber, lane, eventTime);</span><br><span class="line">      <span class="title function_">entangleTransitionUpdate</span>(root, queue, lane);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">markUpdateInDevTools</span>(fiber, lane);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="手写链表实现"><a href="#手写链表实现" class="headerlink" title="手写链表实现"></a>手写链表实现</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ReactDOM</span> <span class="keyword">from</span> <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> firstWorkInProgressHook = &#123; <span class="attr">memoizedState</span>: <span class="literal">null</span>, <span class="attr">next</span>: <span class="literal">null</span> &#125;;</span><br><span class="line"><span class="keyword">let</span> workInProgressHook;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">useState</span>(<span class="params">initState</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> currentHook = workInProgressHook.<span class="property">next</span> ? workInProgressHook.<span class="property">next</span> : &#123; <span class="attr">memoizedState</span>: initState, <span class="attr">next</span>: <span class="literal">null</span> &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">setState</span>(<span class="params">newState</span>) &#123;</span><br><span class="line">    currentHook.<span class="property">memoizedState</span> = newState;</span><br><span class="line">    <span class="title function_">render</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 这就是为什么 useState 书写顺序很重要的原因</span></span><br><span class="line">  <span class="comment">// 假如某个 useState 没有执行，会导致指针移动出错，数据存取出错</span></span><br><span class="line">  <span class="keyword">if</span> (workInProgressHook.<span class="property">next</span>) &#123;</span><br><span class="line">    <span class="comment">// 这里只有组件刷新的时候，才会进入</span></span><br><span class="line">    <span class="comment">// 根据书写顺序来取对应的值</span></span><br><span class="line">    <span class="comment">// console.log(workInProgressHook);</span></span><br><span class="line">    workInProgressHook = workInProgressHook.<span class="property">next</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 只有在组件初始化加载时，才会进入</span></span><br><span class="line">    <span class="comment">// 根据书写顺序，存储对应的数据</span></span><br><span class="line">    <span class="comment">// 将 firstWorkInProgressHook 变成一个链表结构</span></span><br><span class="line">    workInProgressHook.<span class="property">next</span> = currentHook;</span><br><span class="line">    <span class="comment">// 将 workInProgressHook 指向 &#123;memoizedState: initState, next: null&#125;</span></span><br><span class="line">    workInProgressHook = currentHook;</span><br><span class="line">    <span class="comment">// console.log(firstWorkInProgressHook);</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> [currentHook.<span class="property">memoizedState</span>, setState];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Counter</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 每次组件重新渲染的时候，这里的 useState 都会重新执行</span></span><br><span class="line">  <span class="keyword">const</span> [name, setName] = <span class="title function_">useState</span>(<span class="string">&#x27;计数器&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> [number, setNumber] = <span class="title function_">useState</span>(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;name&#125;:&#123;number&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> setName(&#x27;新计数器&#x27; + Date.now())&#125;&gt;新计数器<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> setNumber(number + 1)&#125;&gt;+<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 每次重新渲染的时候，都将 workInProgressHook 指向 firstWorkInProgressHook</span></span><br><span class="line">  workInProgressHook = firstWorkInProgressHook;</span><br><span class="line">  <span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Counter</span> /&gt;</span></span>, <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;state&#x27;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/03/04/go-cobra-viper/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-03-19 10:30:21
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/React/" title="React">
+                        #React
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/05/16/fronted-interview/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E7%BB%84%E4%BB%B6%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="toc-text">类组件的不足</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hooks-%E4%BC%98%E5%8A%BF"><span class="toc-text">Hooks 优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#useState"><span class="toc-text">useState</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AF%8F%E6%AC%A1%E6%B8%B2%E6%9F%93%E9%83%BD%E6%98%AF%E7%8B%AC%E7%AB%8B%E7%9A%84%E9%97%AD%E5%8C%85"><span class="toc-text">每次渲染都是独立的闭包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E6%9B%B4%E6%96%B0"><span class="toc-text">函数式更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%B0%E6%80%A7%E5%88%9D%E5%A7%8B%E5%8C%96-state"><span class="toc-text">惰性初始化 state</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-is-%EF%BC%88%E6%B5%85%E6%AF%94%E8%BE%83%EF%BC%89"><span class="toc-text">Object.is （浅比较）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%8F%E5%B0%91%E6%B8%B2%E6%9F%93%E6%AC%A1%E6%95%B0"><span class="toc-text">减少渲染次数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%8F%82%E8%80%83"><span class="toc-text">源码参考</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%86%99%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0"><span class="toc-text">手写链表实现</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93%E4%B9%8B%20React%20Hooks + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2023%2F03%2F19%2Ffront-end-6%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2023/03/19/front-end-6/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

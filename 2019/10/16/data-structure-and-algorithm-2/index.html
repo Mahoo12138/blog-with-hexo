@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      数据结构与算法学习之动态数组 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">数据结构与算法学习之动态数组</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2019-10-16 21:27:24
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" title="数据结构与算法">
+                    #数据结构与算法
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="什么是数据结构"><a href="#什么是数据结构" class="headerlink" title="什么是数据结构"></a>什么是数据结构</h2><p>数据结构是计算机存储、组织数据的方式，主要有以下几种：</p>
+<img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418160037.png" style="zoom:80%;" />
+
+<p>线性结构：主要有数组链表，栈，队列和哈希表</p>
+<img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418160059.png" alt="" style="zoom:80%;" />
+
+<p>树形结构：主要有二叉树，红黑树，B树，堆，Trie，哈夫曼树，并查集等</p>
+<img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418160102.png" alt="" style="zoom: 80%;" />
+
+<p>图形结构：邻接矩阵，邻接表</p>
+<p>在实际开发应用中，需要根据使用场景来选择最合适的数据结构。</p>
+<h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418160106.png"></p>
+<p>对于线性表，我们需要清楚一些概念：</p>
+<ul>
+<li>a<del>1</del> 是<strong>首节点</strong>（首元素）， a<del>n</del> 是<strong>尾结点</strong>（尾元素）</li>
+<li>a<del>1</del> 是 a<del>2</del> 的<strong>前驱</strong>， a<del>2</del> 是 a<del>1</del> 的<strong>后继</strong></li>
+</ul>
+<p>常见的线性表有：数组、链表、栈、队列、哈希表（散列表）</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>数组是一种顺序存储的线性表，所有元素的<strong>内存地址是连续的</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[] array = <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;<span class="number">11</span>,<span class="number">22</span>,<span class="number">33</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418160110.png" style="zoom:67%;" />
+
+<ul>
+<li>在很多编程语言中，数组都有个致命的缺点——<strong>无法动态修改容量</strong>；</li>
+<li>实际开发中，我们更希望数组的容量是可以动态改变的；</li>
+</ul>
+<h2 id="动态数组设计"><a href="#动态数组设计" class="headerlink" title="动态数组设计"></a>动态数组设计</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">size</span><span class="params">()</span>; 					<span class="comment">// 元素的数量</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span>; 				<span class="comment">// 是否为空</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(E element)</span>; 	<span class="comment">// 是否包含某个元素</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">add</span><span class="params">(E element)</span>; 			<span class="comment">// 添加元素到最后面</span></span><br><span class="line">E <span class="title function_">get</span><span class="params">(<span class="type">int</span> index)</span>; 				<span class="comment">// 返回index位置对应的元素</span></span><br><span class="line">E <span class="title function_">set</span><span class="params">(<span class="type">int</span> index, E element)</span>; 	<span class="comment">// 设置index位置的元素</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> index, E element)</span>; <span class="comment">// 往index位置添加元素</span></span><br><span class="line">E <span class="title function_">remove</span><span class="params">(<span class="type">int</span> index)</span>; 			<span class="comment">// 删除index位置对应的元素</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(E element)</span>; 		<span class="comment">// 查看元素的位置</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span>; 					<span class="comment">// 清除所有元素</span></span><br></pre></td></tr></table></figure>
+
+<p>熟悉这类编程语言的都了解，上述接口代码中的 <code>E</code>是为了支持泛型，当然代码的编写是循序渐进的，我们先让动态数组支持整型。</p>
+<p>在设计的动态数组时，有两个成员变量，一是数组的容量 <code>size</code>，而是存储数据的数组 <code>elements</code>：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418160116.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ArrayList</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">int</span> size;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">int</span>[] elements;</span><br><span class="line">	<span class="comment">// 默认容量为 10</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">DEFAULT_CAPACITY</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">ArrayList</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">        <span class="comment">// 如果小于默认容量，都为默认容量</span></span><br><span class="line">		<span class="keyword">if</span> (capacity &lt;= DEFAULT_CAPACITY) &#123;</span><br><span class="line">			elements = <span class="keyword">new</span> <span class="title class_">int</span>[DEFAULT_CAPACITY];</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			elements = <span class="keyword">new</span> <span class="title class_">int</span>[capacity];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">ArrayList</span><span class="params">()</span> &#123;</span><br><span class="line">		elements = <span class="keyword">new</span> <span class="title class_">int</span>[DEFAULT_CAPACITY];</span><br><span class="line">        <span class="comment">// 或者写成这样，调用上面重载的构造函数</span></span><br><span class="line">		<span class="comment">// this(DEFAULT_CAPACITY);</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其次，可以先把几个简单的接口实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(<span class="type">int</span> element)</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (elements[i] == element) <span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(<span class="type">int</span> element)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> indexOf(element) != -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">get</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt;= size) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ArrayIndexOutOfBoundsException</span>(index: <span class="string">&quot; + index + &quot;</span>,and size: <span class="string">&quot; + size);</span></span><br><span class="line"><span class="string">    &#125; else &#123;</span></span><br><span class="line"><span class="string">        return elements[index];</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">public int set(int index, int element) &#123;</span></span><br><span class="line"><span class="string">	if (index &lt; 0 || index &gt; size) &#123;</span></span><br><span class="line"><span class="string">		throw new ArrayIndexOutOfBoundsException(&quot;</span>index: <span class="string">&quot; + index + &quot;</span>,and size: <span class="string">&quot; + size);</span></span><br><span class="line"><span class="string">	&#125; else &#123;</span></span><br><span class="line"><span class="string">        int old = elements[index];</span></span><br><span class="line"><span class="string">        elements[index] = element;</span></span><br><span class="line"><span class="string">        return old;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">public void clear() &#123;</span></span><br><span class="line"><span class="string">    // 清除数组时，只需将容量设置为 0 ，那么外层的操作都会被拦截</span></span><br><span class="line"><span class="string">	size = 0;</span></span><br><span class="line"><span class="string">&#125;                                                                       </span></span><br></pre></td></tr></table></figure>
+
+<p>代码中的 -1 常见的作法也是像默认容量一样的处理：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">ELEMENT_NOT_FOUND</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="末尾添加元素"><a href="#末尾添加元素" class="headerlink" title="末尾添加元素"></a>末尾添加元素</h2><p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418160120.png"></p>
+<p>当添加元素的时候，通过上图，我们很容易从发现每添加一个元素，都是在 <code>size </code>的位置，于是代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> element)</span> &#123;</span><br><span class="line">    <span class="comment">// 若容量不够，需要扩容</span></span><br><span class="line">    elements[size] = element;</span><br><span class="line">    size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样的代码，我们也就面临了一个问题，若添加的元素超过初始化的容量时，这就需要扩容了。</p>
+<h2 id="打印数组"><a href="#打印数组" class="headerlink" title="打印数组"></a>打印数组</h2><p>我们在为动态数组添加元素后，需要验证我们写的代码是否正确，可以重写 <code>ArrayList </code> 的 <code>toString() </code> 方法，建议使用<code>StringBuilder</code>进行字符串拼接，以此达到自定义打印内容：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">StringBuilder</span> <span class="variable">sBuilder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">    sBuilder.append(<span class="string">&quot;size=&quot;</span> + size + <span class="string">&quot;, [&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i != <span class="number">0</span>) &#123;</span><br><span class="line">            sBuilder.append(<span class="string">&quot;, &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        sBuilder.append(elements[i]);	</span><br><span class="line">    &#125;</span><br><span class="line">    sBuilder.append(<span class="string">&#x27;]&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> sBuilder.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h2><p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418160125.png"></p>
+<p>在删除元素的时候，由于是动态数组，删除其中某一个元素，那必然后面的会紧随其后跟过来，因为数组是连续的，所以我们需要对后面的元素进行挪动：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">remove</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    rangeCheck(index);</span><br><span class="line">    <span class="type">int</span> <span class="variable">old</span> <span class="operator">=</span> elements[index];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> index + <span class="number">1</span>; i &lt; size; i++) &#123;</span><br><span class="line">        elements[i - <span class="number">1</span>] = elements[i];</span><br><span class="line">    &#125;</span><br><span class="line">    size--;</span><br><span class="line">    <span class="keyword">return</span> old;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>rangeCheck(index);</code>其实就是对 <strong>index</strong> 合法性检查的一个封装：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">rangeCheck</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt;= size) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;index: &quot;</span> + index + <span class="string">&quot;,and size: &quot;</span> + size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="指定序列添加元素"><a href="#指定序列添加元素" class="headerlink" title="指定序列添加元素"></a>指定序列添加元素</h2><p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418160133.png"></p>
+<p>在某一个索引添加元素和删除某一个索引的元素类似，都需要挪动元素，但需要注意的是，挪动的顺序，要从后面开始挪动，不然会造成<strong>元素被覆盖</strong>的问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> index, <span class="type">int</span> element)</span> &#123;</span><br><span class="line">    rangeCheckForAdd(index);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> size; i &gt; index; i--) &#123;</span><br><span class="line">        elements[i] = elements[i - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    elements[index] = element;</span><br><span class="line">    size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另一个注意点是 <code>rangeCheckForAdd(index);</code> ,它与另一个范围检查函数不同之处在于，是否包含数组的最后一个位置，也就是 <strong>index &#x3D;&#x3D; size</strong> 的情形：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">rangeCheckForAdd</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    <span class="comment">// 这里 index == size 时则是在数组末尾添加</span></span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt; size) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;index: &quot;</span> + index + <span class="string">&quot;,and size: &quot;</span> + size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="接口测试"><a href="#接口测试" class="headerlink" title="接口测试"></a>接口测试</h2><p>除了通过操作数组后打印数组来观察是否错误，当然也可以用代码检测代码是否错误：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ArrayList</span> <span class="variable">arrayList</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>(<span class="number">8</span>);</span><br><span class="line">arrayList.add(<span class="number">1</span>);</span><br><span class="line">arrayList.add(<span class="number">2</span>);</span><br><span class="line">arrayList.set(<span class="number">0</span>, <span class="number">2</span>);</span><br><span class="line"><span class="keyword">if</span> (arrayList.get(<span class="number">0</span>) != <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;测试未通过&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>也可以封装一个小工具进行判断：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Asserts</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">(<span class="type">boolean</span> value)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!value) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;测试未通过&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Assert.test(arrayList.get(<span class="number">0</span>)==<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何扩容"><a href="#如何扩容" class="headerlink" title="如何扩容"></a>如何扩容</h2><p>在扩容之前，我们需要想清楚两个问题：</p>
+<ul>
+<li>什么情况下需要扩容？</li>
+<li>哪些接口需要扩容？</li>
+</ul>
+<p>显而易见，当需要添加元素的时候，如果元素的数量将超过数组的大小时，需要扩容，目前来看只有</p>
+<p><code>add(int index, int element)</code> 和 <code>add(int element)</code> 两个方法需要。</p>
+<p>并且还可以对 <code>add(int element)</code>进行重构，重构之后只需要在<code>add(int index, int element)</code>内扩容即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> element)</span> &#123;</span><br><span class="line">    add(size, element);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>扩容时，我们可以编写一个函数，先检查是否需要扩容，也就是将 <code>size </code>和 成员变量 <code>elements </code>的长度对比，需要扩容则申请一个长度更大的数组，并将原数据迁移到新的数组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">ensureCapacity</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">    <span class="comment">// 若需要满足的容量小于等于数组的值，无需扩容</span></span><br><span class="line">    <span class="keyword">if</span> (capacity &lt;= elements.length)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">	<span class="comment">// 注意运算符优先级问题，左移一位为除以二，扩容 1.5 倍</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">newCapacity</span> <span class="operator">=</span> capacity + (capacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="type">int</span>[] newElements = <span class="keyword">new</span> <span class="title class_">int</span>[newCapacity];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        newElements[i] = elements[i];</span><br><span class="line">    &#125;</span><br><span class="line">    elements = newElements;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么就在<code>add(int index, int element)</code>函数内添加，并传入预期需要的容量即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> index, <span class="type">int</span> element)</span> &#123;</span><br><span class="line">    rangeCheckForAdd(index);</span><br><span class="line">    <span class="comment">// 添加一个元素，传入需要的容量 size + 1 </span></span><br><span class="line">    ensureCapacity(size + <span class="number">1</span>);</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="泛型支持"><a href="#泛型支持" class="headerlink" title="泛型支持"></a>泛型支持</h2><p>动态数组到这里就差不多了，一些细节性的优化先不深究，接下来，我们需要完善对动态数组的支持。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ArrayList</span>&lt;E&gt; &#123;</span><br><span class="line"> 	<span class="comment">// ...   </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>并在需要是泛型的地方修改即可，但修改后有个地方会报错，意思说是，不能通过泛型来创建对象数组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ArrayList 初始化时，申请对象数组</span></span><br><span class="line">elements = <span class="keyword">new</span> <span class="title class_">E</span>[capacity];</span><br><span class="line"><span class="comment">// Cannot create a generic array of E</span></span><br></pre></td></tr></table></figure>
+
+<p>解决方式是，改写为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">ArrayList</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (capacity &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        elements = (E[]) <span class="keyword">new</span> <span class="title class_">Object</span>[DEFAULT_CAPACITY];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        elements = (E[]) <span class="keyword">new</span> <span class="title class_">Object</span>[capacity];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为在 Java 语言中，所有的对象的最终父类都是 <code>Object </code>，我们只需要创建一个 <code>Object </code>类型的数组，然后进行签证类型转换即可。</p>
+<h3 id="对象数组-内存管理细节"><a href="#对象数组-内存管理细节" class="headerlink" title="对象数组 &amp; 内存管理细节"></a>对象数组 &amp; 内存管理细节</h3><p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn//hexo-images/study/algorithm/20210418174135.png"></p>
+<p>在 Java 语言中对象数组实际存储的是<strong>对象的引用</strong>，也就是对象的地址。</p>
+<p>所以当我们调用 <code>clear()</code> 方法来清空对象数组，这样仅仅只是将 <strong>size</strong> 赋值为 0 ，对象数组内的对象还在内存中，这样就比较浪费内存了，因为存储的对象的大小我们是无法预知的，所以我们应该在<code>clear()</code>中消除对对象的引用，以便垃圾回收：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        elements[i] = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    size = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以编写一些代码来测试对象的回收：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 测试对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(String name, <span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>();</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Person [name=&quot;</span> + name + <span class="string">&quot;, age=&quot;</span> + age + <span class="string">&quot;]&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="built_in">super</span>.finalize();</span><br><span class="line">        System.out.println(<span class="string">&quot;Person finalize&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试用例</span></span><br><span class="line">ArrayList&lt;Person&gt; arrayList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">arrayList.add(<span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;Mahoo&quot;</span>, <span class="number">21</span>));</span><br><span class="line">arrayList.add(<span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;Mahoo&quot;</span>, <span class="number">22</span>));</span><br><span class="line">arrayList.add(<span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;Mahoo&quot;</span>, <span class="number">23</span>));</span><br><span class="line">arrayList.add(<span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;Mahoo&quot;</span>, <span class="number">24</span>));</span><br><span class="line"></span><br><span class="line">System.out.println(arrayList.toString());</span><br><span class="line">arrayList.clear();</span><br><span class="line"><span class="comment">// 提醒 JVM 垃圾回收</span></span><br><span class="line">System.gc();</span><br></pre></td></tr></table></figure>
+
+<p>再一个就是在<code>remove()</code>方法中，也需要在元素挪动后，将最后一个元素的引用消除：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E <span class="title function_">remove</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    rangeCheck(index);</span><br><span class="line">    <span class="type">E</span> <span class="variable">old</span> <span class="operator">=</span> elements[index];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> index + <span class="number">1</span>; i &lt; size; i++) &#123;</span><br><span class="line">        elements[i - <span class="number">1</span>] = elements[i];</span><br><span class="line">    &#125;</span><br><span class="line">    elements[--size] = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> old;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="equals-null-的处理"><a href="#equals-null-的处理" class="headerlink" title="equals &amp; null 的处理"></a>equals &amp; null 的处理</h3><p>对于动态数组中的<code>indexOf(E element)</code>方法，是返回某个对象在数组内的序列，当支持泛型后，数组元素用 <strong>&#x3D;&#x3D;</strong> 比较两个对象时比较的是两个对象的地址值。</p>
+<p>在实际开发中，比较的并不是地址值，一般是对象内的成员变量，这样的比较需要<strong>重写</strong>对象的<code>equals()</code>方法，例如，定义对象的 <strong>age</strong> 相等时，判定对象是相等的： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">    <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> (Person) obj;</span><br><span class="line">    <span class="keyword">return</span> person.age == age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另一个是内部设计的问题，动态数组是否可以存储 <strong>null</strong> 数据？</p>
+<p>首先，我们目前编写的动态数组是支持 <strong>null</strong> 数据的，所以<code>indexOf(E element)</code>还需要进一步优化：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(E element)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (element == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (elements[i] == <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (element.equals(elements[i]))</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ELEMENT_NOT_FOUND;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="动态缩容"><a href="#动态缩容" class="headerlink" title="动态缩容"></a>动态缩容</h2><p>如果内存使用比较紧张，动态数组有比较多的剩余空间，可以考虑进行缩容操作；比如剩余空间占总容量的一半时，就进行缩容。如果扩容倍数、缩容时机设计不得当，有可能会导致<strong>复杂度震荡</strong>。</p>
+<p>我们就简单写下缩容的代码，缩容只在删除元素时调用，我们设为私有方法，获取当前的数组的长度的一半作为缩容后的容量，仅当当前动态数组的大小小于新容量且大于默认容量时才缩容：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">trimCapacity</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">newCapacity</span> <span class="operator">=</span> elements.length &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (size &lt;= newCapacity &amp;&amp; size &gt; DEFAULT_CAPACITY) &#123;</span><br><span class="line">        <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        E[] newElements = (E[]) <span class="keyword">new</span> <span class="title class_">Object</span>[newCapacity];</span><br><span class="line">        System.out.println(elements.length + <span class="string">&quot;,缩容为： &quot;</span> + newElements.length);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            newElements[i] = elements[i];</span><br><span class="line">        &#125;</span><br><span class="line">        elements = newElements;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说到刚才的<strong>复杂度震荡</strong>，其实就是当缩容和扩容刚好互为倒数时，比如缩容为 1&#x2F;2 以及扩容为 2 倍时， 此时容量若为 4，增加元素扩容后容量增加到 8 后，此时再把刚添加的元素删除，又会缩容，如果每次都是加了又删，每次缩容扩容的时间复杂度都是O(n)，这样的话，对于动态数组的操作本来都是很低的时间复杂度，这样频繁的操作造成时间复杂度突然到一个很高的水平，这样的情形可以简单描述为复杂度震荡。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2019/10/16/data-structure-and-algorithm-3/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2019-10-16 21:27:24
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" title="数据结构与算法">
+                        #数据结构与算法
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2019/10/21/tutorial-2/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">什么是数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E8%A1%A8"><span class="toc-text">线性表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-text">数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84%E8%AE%BE%E8%AE%A1"><span class="toc-text">动态数组设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AB%E5%B0%BE%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0"><span class="toc-text">末尾添加元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8D%B0%E6%95%B0%E7%BB%84"><span class="toc-text">打印数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0"><span class="toc-text">删除元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E5%BA%8F%E5%88%97%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0"><span class="toc-text">指定序列添加元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95"><span class="toc-text">接口测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%89%A9%E5%AE%B9"><span class="toc-text">如何扩容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E6%94%AF%E6%8C%81"><span class="toc-text">泛型支持</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%BB%86%E8%8A%82"><span class="toc-text">对象数组 &amp; 内存管理细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#equals-null-%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-text">equals &amp; null 的处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E7%BC%A9%E5%AE%B9"><span class="toc-text">动态缩容</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2019%2F10%2F16%2Fdata-structure-and-algorithm-2%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2019/10/16/data-structure-and-algorithm-2/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

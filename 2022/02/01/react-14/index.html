@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      前端学习之React项目实战Ⅱ 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">前端学习之React项目实战Ⅱ</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-02-01 18:02:04
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                    #前端
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/React/" title="React">
+                    #React
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="异步加载处理"><a href="#异步加载处理" class="headerlink" title="异步加载处理"></a>异步加载处理</h2><p>为了能够精准的控制和获取异步加载的状态，可以自定义一个处理的Hook，如下：</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">State</span>&lt;D&gt; &#123;</span><br><span class="line">  <span class="attr">error</span>: <span class="title class_">Error</span> | <span class="literal">null</span>;</span><br><span class="line">  <span class="attr">data</span>: D | <span class="literal">null</span>;</span><br><span class="line">  <span class="attr">stat</span>: <span class="string">&quot;idle&quot;</span> | <span class="string">&quot;loading&quot;</span> | <span class="string">&quot;error&quot;</span> | <span class="string">&quot;success&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">defaultInitialState</span>: <span class="title class_">State</span>&lt;<span class="literal">null</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">stat</span>: <span class="string">&quot;idle&quot;</span>,</span><br><span class="line">  <span class="attr">data</span>: <span class="literal">null</span>,</span><br><span class="line">  <span class="attr">error</span>: <span class="literal">null</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> defaultConfig = &#123;</span><br><span class="line">  <span class="attr">throwOnError</span>: <span class="literal">false</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> useAsync = &lt;D&gt;<span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  initialState?: State&lt;D&gt;,</span></span></span><br><span class="line"><span class="params"><span class="function">  initialConfig?: <span class="keyword">typeof</span> defaultConfig</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> config = &#123; ...defaultConfig, ...initialConfig &#125;;</span><br><span class="line">  <span class="keyword">const</span> [state, setState] = useState&lt;<span class="title class_">State</span>&lt;D&gt;&gt;(&#123;</span><br><span class="line">    ...defaultInitialState,</span><br><span class="line">    ...initialState,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">setData</span> = (<span class="params">data: D</span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">setState</span>(&#123;</span><br><span class="line">      data,</span><br><span class="line">      <span class="attr">stat</span>: <span class="string">&quot;success&quot;</span>,</span><br><span class="line">      <span class="attr">error</span>: <span class="literal">null</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">setError</span> = (<span class="params">error: <span class="built_in">Error</span></span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">setState</span>(&#123;</span><br><span class="line">      error,</span><br><span class="line">      <span class="attr">data</span>: <span class="literal">null</span>,</span><br><span class="line">      <span class="attr">stat</span>: <span class="string">&quot;error&quot;</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">run</span> = (<span class="params">promise: <span class="built_in">Promise</span>&lt;D&gt;</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (!promise || !promise.<span class="property">then</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;需要传入 Promise 类型参数&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">setState</span>(&#123; ...state, <span class="attr">stat</span>: <span class="string">&quot;loading&quot;</span> &#125;);</span><br><span class="line">    <span class="keyword">return</span> promise</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">setData</span>(data);</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">      &#125;)</span><br><span class="line">      .<span class="title function_">catch</span>(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">setError</span>(error);</span><br><span class="line">        <span class="comment">// catch 会捕获异常，不会续传</span></span><br><span class="line">        <span class="comment">// return error;</span></span><br><span class="line">        <span class="keyword">if</span> (config.<span class="property">throwOnError</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> error;</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">isIdel</span>: state.<span class="property">stat</span> === <span class="string">&quot;idle&quot;</span>,</span><br><span class="line">    <span class="attr">isLoading</span>: state.<span class="property">stat</span> === <span class="string">&quot;loading&quot;</span>,</span><br><span class="line">    <span class="attr">isError</span>: state.<span class="property">stat</span> === <span class="string">&quot;error&quot;</span>,</span><br><span class="line">    <span class="attr">isSuccess</span>: state.<span class="property">stat</span> === <span class="string">&quot;success&quot;</span>,</span><br><span class="line">    run,</span><br><span class="line">    setData,</span><br><span class="line">    setError,</span><br><span class="line">    ...state,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>useAsync</code>可以传入初始状态和配置两个参数，配置中的<code>throwOnError</code>为<code>true</code>用于处理同步逻辑，用<code>Promise.reject(error)</code>抛出错误，异步时，将错误直接放到<code>State</code>状态中；</p>
+<h3 id="登录注册页面"><a href="#登录注册页面" class="headerlink" title="登录注册页面"></a>登录注册页面</h3><p>登录注册时的 loading 和错误处理即可借助于自定义的 <code>useAsync</code>，为了可以将捕获的错误显示在页面上，需要在上层组件上对登录注册页面传递一个<code>onError</code>：</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [error, setError] = useState&lt;<span class="title class_">Error</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (</span><br><span class="line">    &#123;<span class="comment">/* ... */</span>&#125;</span><br><span class="line">    &#123;error ? (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Typography.Text</span> <span class="attr">type</span>=<span class="string">&quot;danger&quot;</span>&gt;</span>&#123;error.message&#125;<span class="tag">&lt;/<span class="name">Typography.Text</span>&gt;</span></span></span><br><span class="line">		 ) : <span class="literal">null</span>&#125;</span><br><span class="line">	&#123;isLogin ? (</span><br><span class="line">    	<span class="language-xml"><span class="tag">&lt;<span class="name">RegisterPage</span> <span class="attr">onError</span>=<span class="string">&#123;setError&#125;</span> /&gt;</span></span></span><br><span class="line">		   ) : (</span><br><span class="line">    	<span class="language-xml"><span class="tag">&lt;<span class="name">LoginPage</span> <span class="attr">onError</span>=<span class="string">&#123;setError&#125;</span> /&gt;</span></span></span><br><span class="line">	)&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>页面中，将登录注册的逻辑传入<code>run</code>中处理，并在<code>Button</code>中设定 loading 加载的 <code>flag</code>：</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; run, isLoading &#125; = <span class="title function_">useAsync</span>(<span class="literal">undefined</span>, &#123; <span class="attr">throwOnError</span>: <span class="literal">true</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">handleSubmit</span> = <span class="keyword">async</span> (<span class="params">values: &#123;</span></span><br><span class="line"><span class="params">                            username: <span class="built_in">string</span>;</span></span><br><span class="line"><span class="params">                            password: <span class="built_in">string</span>;</span></span><br><span class="line"><span class="params">                            &#125;</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">await</span> <span class="title function_">run</span>(<span class="title function_">login</span>(values));</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="title function_">onError</span>(e <span class="keyword">as</span> <span class="title class_">Error</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (</span><br><span class="line">    &#123;<span class="comment">/* ... */</span>&#125;</span><br><span class="line">    &lt;<span class="title class_">LongButton</span> loading=&#123;isLoading&#125; <span class="keyword">type</span>=<span class="string">&quot;primary&quot;</span> htmlType=<span class="string">&quot;submit&quot;</span>&gt;</span><br><span class="line">        登录</span><br><span class="line">    &lt;/<span class="title class_">LongButton</span>&gt;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="工程列表获取"><a href="#工程列表获取" class="headerlink" title="工程列表获取"></a>工程列表获取</h3><p>同样的，工程列表的也可以用 <code>useAsync</code> 进行封装，而且可以更一步封装，将所有的逻辑都封装到一个自定义Hook文件中，通过<code>useAsync</code>提供的返回值作为返回值：</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">useProjects</span> = (<span class="params">param?: Partial&lt;Project&gt;</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> request = <span class="title function_">useHttp</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> &#123; run, ...result &#125; = useAsync&lt;<span class="title class_">Project</span>[]&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">run</span>(<span class="title function_">request</span>(<span class="string">&quot;projects&quot;</span>, &#123; <span class="attr">param</span>: <span class="title function_">cleanObject</span>(param || &#123;&#125;) &#125;));</span><br><span class="line">    <span class="comment">// eslint-disable-next-line react-hooks/exhaustive-deps</span></span><br><span class="line">  &#125;, [param]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="用户数据获取"><a href="#用户数据获取" class="headerlink" title="用户数据获取"></a>用户数据获取</h3><p>在页面刷新时，会短暂跳出登录注册时的页面，我们需要用加载的动画来替代；其次若发生了错误，需要全屏显示出来，可添加一些自定义组件：</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">FullPage</span> = styled.<span class="property">div</span><span class="string">`</span></span><br><span class="line"><span class="string">  display: flex;</span></span><br><span class="line"><span class="string">  height: 100vh;</span></span><br><span class="line"><span class="string">  align-items: center;</span></span><br><span class="line"><span class="string">  justify-content: center;</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">FullPageLoading</span> = (<span class="params"></span>) =&gt; (</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">FullPage</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">Spin</span> <span class="attr">size</span>=<span class="string">&quot;large&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">Spin</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">FullPage</span>&gt;</span></span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">FullPageErrorFallback</span> = (<span class="params">&#123; error &#125;: &#123; error: <span class="built_in">Error</span> | <span class="literal">null</span> &#125;</span>) =&gt; (</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">FullPage</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">DevTools</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">Card</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Typography.Text</span> <span class="attr">type</span>=<span class="string">&quot;danger&quot;</span>&gt;</span>&#123;error?.message&#125;<span class="tag">&lt;/<span class="name">Typography.Text</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Card</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">FullPage</span>&gt;</span></span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>为了避免全屏的错误提示影响后端工具的操作（控制台工具不会渲染），需要添加上<code>&lt;DevTools /&gt;</code>，之后同样的，将异步处理交由<code>useAsync</code>代办：</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;</span><br><span class="line">    run,</span><br><span class="line">    error,</span><br><span class="line">    isIdel,</span><br><span class="line">    isError,</span><br><span class="line">    isLoading,</span><br><span class="line">    <span class="attr">data</span>: user,</span><br><span class="line">    <span class="attr">setData</span>: setUser,</span><br><span class="line">&#125; = useAsync&lt;<span class="title class_">User</span> | <span class="literal">null</span>&gt;();</span><br><span class="line"></span><br><span class="line"><span class="title function_">run</span>(<span class="title function_">bootstrapUser</span>());</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isIdel || isLoading) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">FullPageLoading</span> /&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (isError) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">FullPageErrorFallback</span> <span class="attr">error</span>=<span class="string">&#123;error&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="捕获边界错误"><a href="#捕获边界错误" class="headerlink" title="捕获边界错误"></a>捕获边界错误</h2><blockquote>
+<p>在渲染阶段或者在其他非网络请求的异步阶段，错误如何处理呢？</p>
+<ul>
+<li>渲染阶段出现未捕获的异常，整个 React 组件树都会被卸载，显示空白页面；</li>
+<li>异步抛出异常（如事件处理），页面不会受影响；</li>
+</ul>
+</blockquote>
+<p><strong>错误边界</strong>，是一种 React 组件，可捕获并打印发生在其子组件树任何位置的 JavaScript 错误；接下来的学习中，我会简单地实现一个这样的组件；</p>
+<p>React 规定了，若一个 class 组件中，定义了<code>static getDerivedStateFromError()</code>或者<code>componenDidCatch()</code>这两个生命周期方法中任意一个，则该组件就是一个错误边界。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FallbackRender</span> = <span class="function">(<span class="params">props: &#123;error: <span class="built_in">Error</span> | <span class="literal">null</span>&#125;</span>) =&gt;</span> <span class="title class_">React</span>.<span class="property">ReactNode</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">ErrorBoundary</span>  <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>&lt;<span class="title class_">React</span>.<span class="property">PropsWithChildren</span>&lt;&#123;<span class="attr">fallbackRender</span>: <span class="title class_">FallbackRender</span>&#125;&gt;&gt; &#123;</span><br><span class="line"></span><br><span class="line">  state = &#123;<span class="attr">error</span>: <span class="literal">null</span>&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 当子组件抛出异常时，这里会接收到并且调用该静态方法，返回的值会赋给 state</span></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">getDerivedStateFromError</span>(<span class="params">error: <span class="built_in">Error</span></span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> &#123;error&#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">render</span>(): <span class="title class_">React</span>.<span class="property">ReactNode</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123;error&#125; = <span class="variable language_">this</span>.<span class="property">state</span>;</span><br><span class="line">      <span class="keyword">const</span> &#123;fallbackRender, children&#125; = <span class="variable language_">this</span>.<span class="property">props</span>;</span><br><span class="line">      <span class="keyword">if</span>(error)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">fallbackRender</span>(&#123;error&#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> children;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完成之后，在 App 组件中，作为子组件把整个 app 内容包裹起来，当遇到渲染错误时，都会以全局错误页面的形式展示错误信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function App() &#123;</span><br><span class="line">  const &#123; user &#125; = useAuth();</span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">      &lt;ErrorBoundary fallbackRender=&#123;FullPageErrorFallback&#125;&gt;</span><br><span class="line">      &#123;user ? &lt;AuthenticateApp /&gt; : &lt;UnAuthenticateApp /&gt;&#125;</span><br><span class="line">      &lt;/ErrorBoundary&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述造的轮子，已有更好的开源实现：<a target="_blank" rel="noopener" href="https://github.com/bvaughn/react-error-boundary">bvaughn&#x2F;react-error-boundary: Simple reusable React error boundary component </a>，API 是类似的，它的实现更加完善；</p>
+<h2 id="动态修改标题"><a href="#动态修改标题" class="headerlink" title="动态修改标题"></a>动态修改标题</h2><h3 id="使用-react-helmet"><a href="#使用-react-helmet" class="headerlink" title="使用 react-helmet"></a>使用 react-helmet</h3><p>安装第三方包：<a target="_blank" rel="noopener" href="https://github.com/nfl/react-helmet">nfl&#x2F;react-helmet: A document head manager for React</a></p>
+<p>在页面组件内插入，即可修改页面的 head：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;Helmet&gt;</span><br><span class="line">    &lt;meta charSet=&quot;utf-8&quot; /&gt;</span><br><span class="line">    &lt;title&gt;My Title&lt;/title&gt;</span><br><span class="line">    &lt;link rel=&quot;canonical&quot; href=&quot;http://mysite.com/example&quot; /&gt;</span><br><span class="line">&lt;/Helmet&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="useRef-封装-useDocumentTitle"><a href="#useRef-封装-useDocumentTitle" class="headerlink" title="useRef 封装 useDocumentTitle"></a>useRef 封装 useDocumentTitle</h3><p>使用<code>useEffect</code>只要在参数 title 改变时，一并把页面标题改变即可；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export const useDocumentTitle = (title: string) =&gt; &#123;</span><br><span class="line">  useEffect(()=&gt;&#123;</span><br><span class="line">    document.title = title</span><br><span class="line">  &#125;, [title])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是这样的设计，每次 title 赋值以后，必须在每个页面都指定 title，进入新页面时才会随之改变，若没有指定的页面，则还是原来的 title；</p>
+<p>我们能不能在页面返回时，还原成原来的 title 呢？当然，我们可以在页面标题更改前，将 title 存储，并在页面挂载时恢复即可；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">export const useDocumentTitle = (</span><br><span class="line">    title: string,</span><br><span class="line">    keepOnUnmount: boolean = true</span><br><span class="line">) =&gt; &#123;</span><br><span class="line">    const oldTitle = document.title;</span><br><span class="line"></span><br><span class="line">    useEffect(() =&gt; &#123;</span><br><span class="line">        document.title = title;</span><br><span class="line">    &#125;, [title]);</span><br><span class="line"> </span><br><span class="line">    useEffect(() =&gt; &#123;</span><br><span class="line">        return () =&gt; &#123;</span><br><span class="line">            if (!keepOnUnmount) &#123;</span><br><span class="line">                document.title = oldTitle;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>页面初次渲染时，<code>useDocumentTitle</code>调用拿到当前 title 并保存到 oldTitle，之后每一次渲染都会改变 oldTitle，那么为什么页面渲染时，还能复原最初的 title 呢？这是因为由于<strong>闭包</strong>的缘故，<code>useEffect</code>内部返回的回调函数拿到的 oldTitle 其实是页面初次渲染时的 title，这也得益于<code>useEffect</code>没有设置依赖项，否则每次的回调函数都会因为依赖项更改而重新生成。</p>
+<p>不过，这样的代码会显示警告，React 会提示将<code>useEffect</code>内部用到的变量作为依赖项，而且，代码含义并不直观，这里就需要 React 自带的 <code>useRef</code>Hook来解决问题了；</p>
+<blockquote>
+<p><code>useRef</code>返回一个可变的 ref 对象，其<code>.current</code>属性被初始化为传入的参数，返回的 ref 对象在组件的生命周期内保持不变；</p>
+</blockquote>
+<h2 id="列表详情路由"><a href="#列表详情路由" class="headerlink" title="列表详情路由"></a>列表详情路由</h2><p>安装： <code>npm install react-router-dom@6</code>，</p>
+<h3 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h3><p><strong><code>Router</code>在<code>react-router</code>内部主要用于提供全局的路由导航对象（一般由<code>history</code>库提供）以及当前的路由导航状态，在项目中使用时一般是必须并且唯一的。</strong></p>
+<p>不过我们一般不会直接使用该组件，更多会使用已经封装好路由导航对象的<code>BrowserRouter</code>（<code>react-router-dom</code>包引入）、<code>HashRouter</code>（<code>react-router-dom</code>包引入）和<code>MemoryRouter</code>（<code>react-router</code>包引入）。</p>
+<h3 id="Routes"><a href="#Routes" class="headerlink" title="Routes"></a>Routes</h3><p>对应的是之前的<code>Switch</code>组件，它实现了相对路由和链接、自动路由排名、嵌套路由和布局等功能。使用<code>Routes</code>将<code>Route</code>包裹起来作为<code>children</code>传入；</p>
+<h3 id="Route"><a href="#Route" class="headerlink" title="Route"></a>Route</h3><p>它负责渲染 React 组件的 UI，props 包含 path 和 element 属性，指定 URL 和 对应的页面组件；</p>
+<h3 id="Link"><a href="#Link" class="headerlink" title="Link"></a>Link</h3><p>类似于 <code>Route</code>，用于页面内进行导航的组件，to 属性指定跳转的 URL；</p>
+<h3 id="Navigate"><a href="#Navigate" class="headerlink" title="Navigate"></a>Navigate</h3><p>用于代替原<code>Redirect</code>组件，该组件一渲染就会发生跳转，可用做默认路由，通常放在最后，之前的路由都没有匹配则渲染<code>Navigate</code>中的 URL；props 包含属性 replace 指定跳转模式 PUSH | REPLACE；</p>
+<h3 id="项目路由设置"><a href="#项目路由设置" class="headerlink" title="项目路由设置"></a>项目路由设置</h3><p>综上所述，我们在 App 中定义以下路由： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;Router&gt;</span><br><span class="line">    &lt;Routes&gt;</span><br><span class="line">        &lt;Route path=&#123;&quot;/projects&quot;&#125; element=&#123;&lt;ProjectListPage /&gt;&#125; /&gt;</span><br><span class="line">        &lt;Route path=&#123;&quot;/projects/:projectId/*&quot;&#125; element=&#123;&lt;ProjectPage /&gt;&#125; /&gt;</span><br><span class="line">        &#123;/* 默认路由 */&#125;</span><br><span class="line">        &lt;Route path=&#x27;*&#x27; element=&#123;&lt;Navigate to=&#123;&quot;/projects&quot;&#125;/&gt;&#125;/&gt;</span><br><span class="line">    &lt;/Routes&gt;</span><br><span class="line">&lt;/Router&gt;</span><br></pre></td></tr></table></figure>
+
+<p>并将数据项中的名称设置为导航路由：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    title: &quot;项目&quot;,</span><br><span class="line">    // dataIndex: &quot;name&quot;,</span><br><span class="line">    render(value, project) &#123;</span><br><span class="line">        return &lt;Link to=&#123;String(project.id)&#125;&gt;&#123;project.name&#125;&lt;/Link&gt;;</span><br><span class="line">    &#125;,</span><br><span class="line">    sorter: (a, b) =&gt; a.name.localeCompare(b.name),</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>新建的<code>ProjectPage</code>页面中，依照业务还需要两个子路由<strong>看板</strong>和<strong>任务组</strong>，我们先粗略的写好：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const ProjectPage = () =&gt; &#123;</span><br><span class="line">  return &lt;div&gt;</span><br><span class="line">    &lt;h1&gt;Project&lt;/h1&gt;</span><br><span class="line">    &lt;Link to=&#123;&quot;kanban&quot;&#125;&gt;看板&lt;/Link&gt;</span><br><span class="line">    &lt;Link to=&#123;&quot;epic&quot;&#125;&gt;任务组&lt;/Link&gt;</span><br><span class="line">    &lt;Routes&gt;</span><br><span class="line">      &lt;Route path=&#x27;kanban&#x27; element=&#123;&lt;KanbanPage/&gt;&#125;/&gt;</span><br><span class="line">      &lt;Route path=&#x27;epic&#x27; element=&#123;&lt;EpicPage/&gt;&#125;/&gt;</span><br><span class="line">    &lt;/Routes&gt;</span><br><span class="line">  &lt;/div&gt;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="重置根路由"><a href="#重置根路由" class="headerlink" title="重置根路由"></a>重置根路由</h4><p>通常情况下，当我们点击页面的 Logo 时，页面会刷新并回到根路由根路由，我们来实现这个功能：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export const resetRoute =() =&gt; window.location.href = window.location.origin;</span><br><span class="line"></span><br><span class="line">&lt;Button type=&#x27;link&#x27; onClick=&#123;resetRoute&#125; style=&#123;&#123;&quot;padding&quot;:0&#125;&#125;&gt;</span><br><span class="line">    &lt;Logo width=&#123;&quot;18rem&quot;&#125; color=&#123;&quot;rgb(38,132,255)&quot;&#125; /&gt;</span><br><span class="line">&lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在 <em>utils.ts</em>中，封装一个重置的函数，之后把 Logo 用按钮包裹，并设置点击事件函数即可；</p>
+<h2 id="URL-状态管理"><a href="#URL-状态管理" class="headerlink" title="URL 状态管理"></a>URL 状态管理</h2><p>我们想实现在页面中进行数据筛选时，根据判断条件 URL也随之改变，继而达到一个URL状态管理的效果，而每次打开此URL数据的筛选情况能够复现；首先，我们自定义一个<code>useUrlQueryParam</code>的Hook，该Hook会提取URL查询的值并返回：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 返回页面URL中指定键的值</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> <span class="variable">keys</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> useUrlQueryParam = &lt;K <span class="keyword">extends</span> <span class="built_in">string</span>&gt;<span class="function">(<span class="params">keys: K[]</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [searchParams, setSearchParams] = <span class="title function_">useSearchParams</span>();</span><br><span class="line">  <span class="keyword">return</span> [</span><br><span class="line">    keys.<span class="title function_">reduce</span>(<span class="function">(<span class="params">prev, key</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123;...prev, [key]: searchParams.<span class="title function_">get</span>(key) || <span class="string">&#x27;&#x27;</span>&#125;</span><br><span class="line">    &#125;, &#123;&#125; <span class="keyword">as</span> &#123;[key <span class="keyword">in</span> K]: <span class="built_in">string</span>&#125;),</span><br><span class="line">    setSearchParams</span><br><span class="line">  ] <span class="keyword">as</span> <span class="keyword">const</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后在 project-list 中，从<code>useUrlQueryParam</code>中取 param ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const [param] = useUrlQueryParam([&#x27;name&#x27;,&#x27;personId&#x27;])</span><br></pre></td></tr></table></figure>
+
+<p>这样下来，我们的页面会陷入<strong>无限的循环渲染</strong>，寻找其发生原因对于没有经验的我们来说十分困难，这里可以利用一个第三方库：<a target="_blank" rel="noopener" href="https://github.com/welldone-software/why-did-you-render">welldone-software&#x2F;why-did-you-render</a>帮助我们检测是什么在造成循环渲染；</p>
+<h3 id="循环渲染检测"><a href="#循环渲染检测" class="headerlink" title="循环渲染检测"></a>循环渲染检测</h3><p>安装后，在根目录新建 <em>wdyr.ts</em>，之后在入口文件 <em>index.tsx</em>中，在 React 导入前导入（最前方）：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (process.<span class="property">env</span>.<span class="property">NODE_ENV</span> === <span class="string">&#x27;development&#x27;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> whyDidYouRender = <span class="built_in">require</span>(<span class="string">&#x27;@welldone-software/why-did-you-render&#x27;</span>);</span><br><span class="line">  <span class="title function_">whyDidYouRender</span>(<span class="title class_">React</span>, &#123;</span><br><span class="line">      <span class="comment">// 是否监测所有组件</span></span><br><span class="line">    <span class="attr">trackAllPureComponents</span>: fasle,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// first import</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./wdyr&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>由于我们刚才循环渲染的组件是 ProjectList 没必要设置检测全部组件，所以在 ProjectList 上添加一个静态属性<code>whyDidYouRender</code>，即可开启对其监测：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">ProjectListPage</span> = (<span class="params"></span>) =&gt; &#123;<span class="comment">/* ... */</span>&#125;;</span><br><span class="line"><span class="title class_">ProjectListPage</span>.<span class="property">whyDidYouRender</span> = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<p>检测后会发现控制台提示如下，相信大家心里都有了答案：</p>
+<blockquote>
+<p>different objects that are equal by value: <strong>prev “</strong>: {name: ‘xxxx’, personId: ‘123’}</p>
+</blockquote>
+<p>原因应该是<code>useUrlQueryParam</code>返回的值，每次都不一样（地址），导致页面刷新，所以有必要使用另一个 React Hook 即<code>useMemo</code>包裹，判断依赖改变时才执行函数：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">useMemo</span>(</span><br><span class="line">    <span class="function">() =&gt;</span> keys.<span class="title function_">reduce</span>(<span class="function">(<span class="params">prev, key</span>) =&gt;</span> &#123;</span><br><span class="line">    		<span class="keyword">return</span> &#123; ...prev, [key]: searchParams.<span class="title function_">get</span>(key) || <span class="string">&#x27;&#x27;</span>&#125;</span><br><span class="line">		&#125;,&#123;&#125; <span class="keyword">as</span> &#123; [key <span class="keyword">in</span> K]: <span class="built_in">string</span> &#125;), </span><br><span class="line">    [searchParams]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>从上面的代码，我们可以了解到，基本类型可以放到依赖里，组件状态可以放到依赖里；</p>
+</blockquote>
+<p>获取到 URL 查询的参数，这还只是一半，还需要对参数进行设置，我们修改<code>useUrlQueryParam</code>的返回值：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="comment">/* useMemo */</span>,</span><br><span class="line">    <span class="function">(<span class="params">params: Partial&lt;&#123;[key <span class="keyword">in</span> K]:<span class="built_in">unknown</span>&#125;&gt;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> o = <span class="title function_">cleanObject</span>(&#123;...<span class="title class_">Object</span>.<span class="title function_">fromEntries</span>(searchParams), ...params&#125;)</span><br><span class="line">        <span class="comment">// 当 personId 为 0，无意义，可直接删除</span></span><br><span class="line">        <span class="keyword">if</span>(o.<span class="property">personId</span> ===<span class="number">0</span>) <span class="keyword">delete</span> o.<span class="property">personId</span></span><br><span class="line">        <span class="title function_">setSearchParams</span>(o <span class="keyword">as</span> <span class="title class_">URLSearchParamsInit</span>)</span><br><span class="line">    &#125;</span><br><span class="line">] <span class="keyword">as</span> <span class="keyword">const</span></span><br></pre></td></tr></table></figure>
+
+<p>以上步骤完成后，我们也可以对 param 的操作做进一步封装，在当前目录新建 <em>utils.ts</em>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">useProjectQueryParam</span>  = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> [param, setParam] = <span class="title function_">useUrlQueryParam</span>([<span class="string">&quot;name&quot;</span>,<span class="string">&quot;personId&quot;</span>])</span><br><span class="line">  <span class="keyword">return</span>[</span><br><span class="line">    &#123;...param, <span class="attr">personId</span>: <span class="title class_">Number</span>(param.<span class="property">personId</span>) || <span class="literal">undefined</span>&#125;,   <span class="comment">// 0 =&gt; undefined</span></span><br><span class="line">    setParam</span><br><span class="line">  ] <span class="keyword">as</span> <span class="keyword">const</span> </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 原处更改调用</span></span><br><span class="line"><span class="keyword">const</span> [param, setParam] = <span class="title function_">useProjectQueryParam</span>()</span><br><span class="line"><span class="keyword">const</span> &#123; isLoading, error, data &#125; = <span class="title function_">useProjects</span>(<span class="title function_">useDebounce</span>(param, <span class="number">300</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="ID-类型问题"><a href="#ID-类型问题" class="headerlink" title="ID 类型问题"></a>ID 类型问题</h2><p>我们注意到，服务端返回的值例如 id 通常为 number 类型，而经过在 select 和 option 这个 html 组合一顿操作会变成 string 类型，这样会造成类型不匹配，导致页面出现错误的渲染，我们可以每次都在组件回调中，将类型做转换，但这样十分不优雅，封装一个是 select 更好的选择：</p>
+<ol>
+<li><p>首先是组件的 Props 这里的 select 使用 antd 的组件，所以需要透传其原有的 props：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">type SelectProps = React.ComponentProps&lt;typeof Select&gt;;</span><br><span class="line"></span><br><span class="line">interface IdSelectProps</span><br><span class="line">  extends Omit&lt;SelectProps, &quot;value&quot; | &quot;options&quot; | &quot;onChange&quot;&gt; &#123;</span><br><span class="line">  value: Raw | undefined | null;</span><br><span class="line">  onChange: (value?: number) =&gt; void;</span><br><span class="line">  defaultOptionName?: string;</span><br><span class="line">  options?: &#123; name: string; id: number &#125;[];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我们在<code>onChange</code>回调中作为了类型的转换，转换为数字：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">const toNumber = (value: unknown) =&gt; (isNaN(Number(value)) ? 0 : Number(value));</span><br><span class="line"></span><br><span class="line">export const IdSelect = (props: IdSelectProps) =&gt; &#123;</span><br><span class="line">  const &#123; value, onChange, defaultOptionName, options, ...restProps &#125; = props;</span><br><span class="line">  return (</span><br><span class="line">    &lt;Select</span><br><span class="line">      value=&#123;toNumber(value)&#125;</span><br><span class="line">      onChange=&#123;(v) =&gt; onChange(toNumber(v))&#125;</span><br><span class="line">      &#123;...restProps&#125;</span><br><span class="line">    &gt;</span><br><span class="line">      &#123;defaultOptionName ? (</span><br><span class="line">        &lt;Select.Option value=&#123;0&#125;&gt;defaultOptionName&lt;/Select.Option&gt;</span><br><span class="line">      ) : null&#125;</span><br><span class="line">      &#123;options?.map((option) =&gt; (</span><br><span class="line">        &lt;Select.Option key=&#123;option.id&#125; value=&#123;option.id&#125;&gt;</span><br><span class="line">          &#123;option.name&#125;</span><br><span class="line">        &lt;/Select.Option&gt;</span><br><span class="line">      ))&#125;</span><br><span class="line">    &lt;/Select&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="封装-UserSelect"><a href="#封装-UserSelect" class="headerlink" title="封装 UserSelect"></a>封装 UserSelect</h3><p>之后，我们利用以及写好的 IdSelect 来实现我们的用户选择：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export const UserSelect = (props: React.ComponentProps&lt;typeof IdSelect&gt;) =&gt; &#123;</span><br><span class="line">  const &#123;data: users&#125; = useUsers()</span><br><span class="line">  return &lt;IdSelect options=&#123;users || []&#125; &#123;...props &#125;&gt;&lt;/IdSelect&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完成这里还有一个小问题，当刷新页面还未获取到数据（options 为空）时，select 处会显示数字，这也很简单，在IdSelect 的 value 处做一个判断即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Select value=&#123;options?.length ? toNumber(value) : 0&#125;&gt;&lt;/Select&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="编辑项目列表"><a href="#编辑项目列表" class="headerlink" title="编辑项目列表"></a>编辑项目列表</h2><h3 id="添加收藏一栏"><a href="#添加收藏一栏" class="headerlink" title="添加收藏一栏"></a>添加收藏一栏</h3><p>根据业务需求，在项目列表应有一个收藏加星的按钮，我们打算使用 antd 内的 Rate 组件作为显示的按钮，需要适当做一些调整：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 封装新的组件时，第一步几乎是声明 props 类型</span><br><span class="line">interface PinProps extends React.ComponentProps&lt;typeof Rate&gt; &#123;</span><br><span class="line">  checked: boolean;</span><br><span class="line">  onCheckedChange?: (checked: boolean) =&gt; void</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export const Pin = (props: PinProps) =&gt; &#123;</span><br><span class="line">  const &#123;checked, onCheckedChange, ...restProps &#125; = props</span><br><span class="line">  return &lt;Rate</span><br><span class="line">    count=&#123;1&#125;</span><br><span class="line">    value=&#123;checked ? 1 : 0&#125;</span><br><span class="line">    onChange=&#123;num =&gt; onCheckedChange?.(!!num)&#125;</span><br><span class="line">    &#123;...restProps&#125;</span><br><span class="line">  &gt;&lt;/Rate&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例如：显示的星星数量只为一，且需要定义新的属性用于将 0 &#x2F; 1 转换到布尔值，相应的改变的回调函数也要做调整，之后即是在数据列表添加了，再次之前我们需要想好如何设计编辑 project 的 hook，因为是在<code>onCheckedChange</code>回调中进行的，是无法直接使用的，所以依旧原来的套路，在组件初始时调用 Hook，返回编辑相关内容，以下是编辑的 Hook 代码，添加删除可以类似修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">export const useEditProject = () =&gt; &#123;</span><br><span class="line">  const &#123; run, ...asyncResult &#125; = useAsync()</span><br><span class="line">  const client = useHttp()</span><br><span class="line"></span><br><span class="line">  const mutate = (params: Partial&lt;Project&gt;) =&gt; &#123;</span><br><span class="line">    return client(`projects/$&#123;params.id&#125;`, &#123;</span><br><span class="line">      method: &#x27;PATCH&#x27;,</span><br><span class="line">      data: params</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  return &#123;mutate, ...asyncResult&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有了上面的设计，之后的操作就好办了，直接新增一个数据项，调用<code>useEditProject</code>返回的函数即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">const List = (&#123; users, ...props &#125;: ListProps) =&gt; &#123;</span><br><span class="line">  const &#123; mutate &#125; = useEditProject();</span><br><span class="line">  const pinProject = (id: number) =&gt; (pin: boolean) =&gt; mutate(&#123;id,pin&#125;)</span><br><span class="line">  </span><br><span class="line">  return (</span><br><span class="line">    &lt;Table</span><br><span class="line">      rowKey=&#123;&quot;id&quot;&#125;</span><br><span class="line">      columns=&#123;[&#123;</span><br><span class="line">          title: &lt;Pin checked=&#123;true&#125; disabled=&#123;true&#125; /&gt;,</span><br><span class="line">          render(value, project) &#123;</span><br><span class="line">            return (</span><br><span class="line">              &lt;Pin</span><br><span class="line">                checked=&#123;project.pin&#125;</span><br><span class="line">                // onCheckedChange=&#123;(pin) =&gt; mutate(&#123; id: project.id, pin &#125;)&#125;</span><br><span class="line">                // 柯里化</span><br><span class="line">                onCheckedChange=&#123;pinProject(project.id)&#125;</span><br><span class="line">              /&gt;</span><br><span class="line">            );</span><br><span class="line">          &#125;,</span><br><span class="line">      &#125;]&#125;</span><br><span class="line">    &gt;&lt;/Table&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="编辑后刷新列表"><a href="#编辑后刷新列表" class="headerlink" title="编辑后刷新列表"></a>编辑后刷新列表</h3><p>如何做到，收藏操作后刷新页面？一种思路是，将获取数据的<code>useProjects</code>内部返回一个函数，提供给外界调用，实现刷新，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const &#123; isLoading, error, data, retry &#125; = useProjects(useDebounce(param, 300));</span><br></pre></td></tr></table></figure>
+
+<p>要想实现刷新数据，则需要再次执行<code>useProjects</code>内的<code>useEffect</code>内的函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() =&gt; &#123;</span><br><span class="line">    run(request(&quot;projects&quot;, &#123; data: cleanObject(param || &#123;&#125;) &#125;));</span><br><span class="line">    // eslint-disable-next-line react-hooks/exhaustive-deps</span><br><span class="line">&#125;, [param]);</span><br></pre></td></tr></table></figure>
+
+<p>而在<code>useProjects</code>内部异步操作由<code>useAsync</code>实现，可否能在<code>useAsync</code>内下点功夫：数据的请求通过<code>run</code>执行，能否在<code>run</code>内部做些工作呢？简单的思路是，在<code>Promise</code>传入时保存下来：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const [retry, setRetry] = useState(() =&gt; () =&gt; &#123;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">const run = (...) =&gt; &#123;</span><br><span class="line">    //...</span><br><span class="line">    setRetry(()=&gt;&#123;return ()=&gt;run(promise)&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是这样的编码看起来没有问题，实则犯了一个大忌，因为此时传入的<code>Promise</code>内部并没有原始网络请求的代码，它只是一个保存着未来到达的数据的容器，简而言之，下一次再次运行此处保存的<code>Promise</code>时，只会拿到上次的数据，而没有做新的数据请求，这样页面是不会触发刷新的；</p>
+<p>既然这样，那把网络请求也放进去不就得了，那我们试试看，要在<code>useProjects</code>内动手脚：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const useProjects = (...) =&gt; &#123;</span><br><span class="line">    const fetchPorjects = () =&gt;</span><br><span class="line">    request(&quot;projects&quot;, &#123; data: cleanObject(param || &#123;&#125;) &#125;);</span><br><span class="line">    </span><br><span class="line">    useEffect(() =&gt; &#123;</span><br><span class="line">    run(fetchPorjects(), &#123; retry: fetchPorjects &#125;);</span><br><span class="line">    // eslint-disable-next-line react-hooks/exhaustive-deps</span><br><span class="line">  &#125;, [param]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在传入原有<code>Promise</code>的基础上，再向run函数传入了一个配置对象（<code>runConfig</code>），里面放置了网络请求的函数，之后在<code>setRetry</code>时返回一个运行该配置对象内函数的<code>run</code>函数即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">setRetry(() =&gt; &#123;</span><br><span class="line">    return () =&gt; &#123;</span><br><span class="line">        if (runConfig?.retry) &#123;</span><br><span class="line">            run(runConfig.retry(), runConfig);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>返回的函数内部，<code>run</code>运行时也把原来的配置对象传入了，保存以便再次刷新；</p>
+<h3 id="优化异步请求"><a href="#优化异步请求" class="headerlink" title="优化异步请求"></a>优化异步请求</h3><p>在此，我们要针对一个常见的异步请求错误进行优化，例如当异步网络请求进行时，我们卸载网络请求发起的组件后，控制台会有如下报错，在项目中，可加大网络请求时长，在刷新退出到登录页面复现错误：</p>
+<blockquote>
+<p>Warning: Can’t perform a React state update on an <strong>unmounted component</strong>. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.</p>
+</blockquote>
+<p>我们可以定义一个新的 Hook 来解决这个问题，这个 Hook 的主要功能是返回逐渐的挂载状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">export const useMountedRef = () =&gt; &#123;</span><br><span class="line">    const mountedRef = useRef(false)</span><br><span class="line">    useEffect(()=&gt;&#123;</span><br><span class="line">        mountedRef.current = true</span><br><span class="line">        return () =&gt; &#123;</span><br><span class="line">            mountedRef.current = false</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    return mountedRef</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着，只需要在<code>run</code>函数内部的<code>setData</code>前进行判断即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (mountedRef.current) setData(data);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解决遗留问题"><a href="#解决遗留问题" class="headerlink" title="解决遗留问题"></a>解决遗留问题</h3><p>之前<code>useEffect</code>中的依赖问题，我们都是使用注释的方式给镇压住，现在是解决这个问题的时机了，需要一个 React 中的 Hook 即 useCallback，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() =&gt; &#123;</span><br><span class="line">    run(fetchPorjects(), &#123; retry: fetchPorjects &#125;);</span><br><span class="line">    // eslint-disable-next-line react-hooks/exhaustive-deps</span><br><span class="line">&#125;, [param]);</span><br></pre></td></tr></table></figure>
+
+<p>此处我们可以将 run 函数放入 useCallback 中，useCallback 第二个参数需要传入依赖，根据代码提示可将<code>[config.throwOnError, mountedRef, setData, state]</code>传入，然后可将<code>setData</code>和<code>useHttp</code>的<code>request</code>也用<code>useCallback</code>包裹，不过这样操作下来页面仍然出现卡死循环，其实原因是在于我们的<code>state</code>，因为<code>run</code>函数运行时<code>setState</code>会改变<code>state</code>触发刷新，且<code>state</code>又在依赖中，即又会导致 <code>run</code> 重新运行，则导致无限循环。解决方式是在<code>setState</code>内传入函数参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setState((prevState)=&gt;&#123;...prevState, stat: &quot;&quot;&#125;)</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/01/20/linux-termux/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-02-01 18:02:04
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                        #前端
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/React/" title="React">
+                        #React
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/03/16/baota/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E5%A4%84%E7%90%86"><span class="toc-text">异步加载处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E9%A1%B5%E9%9D%A2"><span class="toc-text">登录注册页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E5%88%97%E8%A1%A8%E8%8E%B7%E5%8F%96"><span class="toc-text">工程列表获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96"><span class="toc-text">用户数据获取</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%95%E8%8E%B7%E8%BE%B9%E7%95%8C%E9%94%99%E8%AF%AF"><span class="toc-text">捕获边界错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E4%BF%AE%E6%94%B9%E6%A0%87%E9%A2%98"><span class="toc-text">动态修改标题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-react-helmet"><span class="toc-text">使用 react-helmet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#useRef-%E5%B0%81%E8%A3%85-useDocumentTitle"><span class="toc-text">useRef 封装 useDocumentTitle</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E8%AF%A6%E6%83%85%E8%B7%AF%E7%94%B1"><span class="toc-text">列表详情路由</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Router"><span class="toc-text">Router</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Routes"><span class="toc-text">Routes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Route"><span class="toc-text">Route</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Link"><span class="toc-text">Link</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Navigate"><span class="toc-text">Navigate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E8%B7%AF%E7%94%B1%E8%AE%BE%E7%BD%AE"><span class="toc-text">项目路由设置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E7%BD%AE%E6%A0%B9%E8%B7%AF%E7%94%B1"><span class="toc-text">重置根路由</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#URL-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86"><span class="toc-text">URL 状态管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E6%B8%B2%E6%9F%93%E6%A3%80%E6%B5%8B"><span class="toc-text">循环渲染检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ID-%E7%B1%BB%E5%9E%8B%E9%97%AE%E9%A2%98"><span class="toc-text">ID 类型问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%81%E8%A3%85-UserSelect"><span class="toc-text">封装 UserSelect</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E9%A1%B9%E7%9B%AE%E5%88%97%E8%A1%A8"><span class="toc-text">编辑项目列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%94%B6%E8%97%8F%E4%B8%80%E6%A0%8F"><span class="toc-text">添加收藏一栏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%90%8E%E5%88%B7%E6%96%B0%E5%88%97%E8%A1%A8"><span class="toc-text">编辑后刷新列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82"><span class="toc-text">优化异步请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E9%81%97%E7%95%99%E9%97%AE%E9%A2%98"><span class="toc-text">解决遗留问题</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E4%B9%8BReact%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E2%85%A1 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2022%2F02%2F01%2Freact-14%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2022/02/01/react-14/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

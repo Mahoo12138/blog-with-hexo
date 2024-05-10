@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      数据结构与算法学习之队列 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">数据结构与算法学习之队列</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2019-10-24 21:27:24
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" title="数据结构与算法">
+                    #数据结构与算法
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>队列，和栈一样，也是一种对数据的”存”和”取”有严格要求的线性存储结构。</p>
+<p>与栈不同之处在于，队列只能在头尾两端进行操作：</p>
+<ul>
+<li>队尾（rear）：只能从队尾添加元素，一般叫做 <strong>enQueue</strong>， 入队；</li>
+<li>队头（front）：只能从队头移除元素，一般叫做 <strong>deQueue</strong>， 出队 ；</li>
+</ul>
+<p>队列中数据的进出要遵循 “<strong>先进先出</strong>“ 的原则，即最先进队列的数据元素，同样要最先出队列。</p>
+<h2 id="队列的设计"><a href="#队列的设计" class="headerlink" title="队列的设计"></a>队列的设计</h2><p>队列存储结构的实现有以下两种方式：顺序队列和链队列；以下是接口的设计：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">size</span><span class="params">()</span>; 				<span class="comment">// 元素的数量</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span>; 			<span class="comment">// 是否为空</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span>; 				<span class="comment">// 清空</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">enQueue</span><span class="params">(E element)</span>; 	<span class="comment">// 入队</span></span><br><span class="line">E <span class="title function_">deQueue</span><span class="params">()</span>; 				<span class="comment">// 出队</span></span><br><span class="line">E <span class="title function_">front</span><span class="params">()</span>; 					<span class="comment">// 获取队列的头元素</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="双向链表实现队列"><a href="#双向链表实现队列" class="headerlink" title="双向链表实现队列"></a>双向链表实现队列</h2><p>队列的内部实现可直接利用已学的双向链表，因为队列主要是往<strong>头尾操作元素</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mahoo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.mahoo.list.LinkedList;</span><br><span class="line"><span class="keyword">import</span> com.mahoo.list.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Queue</span>&lt;E&gt; &#123;</span><br><span class="line">	<span class="keyword">private</span> List&lt;E&gt; list = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> list.size();</span><br><span class="line">	&#125;; <span class="comment">// 元素的数量</span></span><br><span class="line"></span><br><span class="line">	<span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> list.isEmpty();</span><br><span class="line">	&#125;; <span class="comment">// 是否为空</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">		list.clear();</span><br><span class="line">	&#125;; <span class="comment">// 清空</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">void</span> <span class="title function_">enQueue</span><span class="params">(E element)</span> &#123;</span><br><span class="line">		list.add(element);</span><br><span class="line">	&#125;; <span class="comment">// 入队</span></span><br><span class="line"></span><br><span class="line">	E <span class="title function_">deQueue</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> list.remove(<span class="number">0</span>);</span><br><span class="line">	&#125;; <span class="comment">// 出队</span></span><br><span class="line"></span><br><span class="line">	E <span class="title function_">front</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> list.get(<span class="number">0</span>);</span><br><span class="line">	&#125;; <span class="comment">// 获取队列的头元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="双端队列"><a href="#双端队列" class="headerlink" title="双端队列"></a>双端队列</h2><p>双端队列（Deque）：在队头和队尾都可以进行插入数据和删除数据操作，<strong>deque</strong> 是 <em>double ended queue</em> 的简称；  </p>
+<p>接口的设计顺势有些差别：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">enQueueRear</span><span class="params">(E element)</span>; 	<span class="comment">// 从队尾入队</span></span><br><span class="line">E <span class="title function_">deQueueFront</span><span class="params">()</span>; 				<span class="comment">// 从队头出队</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">enQueueFront</span><span class="params">(E element)</span>; 	<span class="comment">// 从队头入队</span></span><br><span class="line">E <span class="title function_">deQueueRear</span><span class="params">()</span>; 				<span class="comment">// 从队尾出队</span></span><br><span class="line">E <span class="title function_">rear</span><span class="params">()</span>; 						<span class="comment">// 获取队列的尾元素</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Deque</span>&lt;E&gt; &#123;</span><br><span class="line">	<span class="keyword">private</span> List&lt;E&gt; list = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">void</span> <span class="title function_">enQueueRear</span><span class="params">(E element)</span> &#123;</span><br><span class="line">		list.add(element);</span><br><span class="line">	&#125;; <span class="comment">// 从队尾入队</span></span><br><span class="line"></span><br><span class="line">	E <span class="title function_">deQueueFront</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> list.remove(<span class="number">0</span>);</span><br><span class="line">	&#125;; <span class="comment">// 从队头出队</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">void</span> <span class="title function_">enQueueFront</span><span class="params">(E element)</span> &#123;</span><br><span class="line">		list.add(<span class="number">0</span>, element);</span><br><span class="line">	&#125;; <span class="comment">// 从队头入队</span></span><br><span class="line"></span><br><span class="line">	E <span class="title function_">deQueueRear</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> list.remove(size() - <span class="number">1</span>);</span><br><span class="line">	&#125;; <span class="comment">// 从队尾出队</span></span><br><span class="line"></span><br><span class="line">	E <span class="title function_">rear</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> list.get(size() - <span class="number">1</span>);</span><br><span class="line">	&#125;; <span class="comment">// 获取队列的尾元素</span></span><br><span class="line"></span><br><span class="line">	E <span class="title function_">front</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> list.get(<span class="number">0</span>);</span><br><span class="line">	&#125;; <span class="comment">// 获取队列的头元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了看得更加直观，可在进行测试时重写队列的<code>toString()</code>，并在其中调用双向链表的该方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> list.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="循环队列"><a href="#循环队列" class="headerlink" title="循环队列"></a>循环队列</h2><p>循环队列是基于数组实现的队列，是将队列前后连成一个圆圈，以循环的方式去存取元素，能更有效率的利用数组空间，且不需要移动数据。</p>
+<p>循环队列，<em>front</em>变量指向队头，最初阶段，从对头入队时，直接顺序对数组赋值；</p>
+<p>出队操作时，则将 <em>front</em>向后移动，此时再对队列做入队操作，若数组的队尾处容量已满，而对头前还有出队剩余的位置，则循环入队到队头前；</p>
+<p>循环操作需要对数组索引，进行取模操作，稍后会在代码中演示；当数组容量完全不够时，可对数组进行动态扩容；</p>
+<h3 id="循环队列实现"><a href="#循环队列实现" class="headerlink" title="循环队列实现"></a>循环队列实现</h3><p>循环队列我们设计默认大小为 10，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CircleQueue</span>&lt;E&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> size;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> front;</span><br><span class="line">    <span class="keyword">private</span> E[] elements;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">DEFAULT_CAPACITY</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">CircleQueue</span><span class="params">()</span> &#123;</span><br><span class="line">        front = <span class="number">0</span>;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">        elements = (E[]) <span class="keyword">new</span> <span class="title class_">Object</span>[DEFAULT_CAPACITY];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="出队入队"><a href="#出队入队" class="headerlink" title="出队入队"></a>出队入队</h3><p>出队入队由于涉及到数组的边际的问题，需要对索引做一个取模操作，以此映射到新的索引，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">newIndex = oldIndex % elements.length;</span><br></pre></td></tr></table></figure>
+
+<p>但在编码中，尽量避免使用乘<code>*</code>、 除<code>/</code>、 模<code>%</code>、 浮点数运算，相对加减法，效率更低下；</p>
+<p>在队列这样的一个需求下，我们完全可以构建一个基于<em>front</em>的索引映射函数，巧妙地解决这个问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">index</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    index += front;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; elements.length) &#123;</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> index - elements.length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>依据<code>index()</code>函数，都可得到相对<em>front</em>的映射索引值，由此可得到出队和入队的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">enQueue</span><span class="params">(E element)</span> &#123;</span><br><span class="line">    ensureCapacity(size + <span class="number">1</span>);</span><br><span class="line">    elements[index(size)] = element;	<span class="comment">// front 偏移 size 位得到队尾</span></span><br><span class="line">    size++;</span><br><span class="line">&#125;; <span class="comment">// 入队</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> E <span class="title function_">deQueue</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">E</span> <span class="variable">top</span> <span class="operator">=</span> elements[front];</span><br><span class="line">    elements[front] = <span class="literal">null</span>;</span><br><span class="line">    front = index(<span class="number">1</span>);		<span class="comment">// front 移动 1 位</span></span><br><span class="line">    size--;</span><br><span class="line">    <span class="keyword">return</span> top;</span><br><span class="line">&#125;; <span class="comment">// 出队</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="队列清空"><a href="#队列清空" class="headerlink" title="队列清空"></a>队列清空</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        elements[index(i)] = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    front = <span class="number">0</span>;</span><br><span class="line">    size = <span class="number">0</span>;</span><br><span class="line">&#125;; <span class="comment">// 清空</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="动态扩容"><a href="#动态扩容" class="headerlink" title="动态扩容"></a>动态扩容</h3><p>动态扩容与之前的动态数组的扩容类似的，唯一的不同是扩容后，元素的转移是，需要从<em>front</em>开始，所以需要我们的索引映射函数，且扩容后，<em>front</em>重新指向索引为 0 的位置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">ensureCapacity</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (capacity &lt;= elements.length)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">newCapacity</span> <span class="operator">=</span> capacity + (capacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    E[] newElements = (E[]) <span class="keyword">new</span> <span class="title class_">Object</span>[newCapacity];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        newElements[i] = elements[index(i)];</span><br><span class="line">    &#125;</span><br><span class="line">    front = <span class="number">0</span>;</span><br><span class="line">    elements = newElements;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="循环双端队列"><a href="#循环双端队列" class="headerlink" title="循环双端队列"></a>循环双端队列</h2><p>循环双端队列顾名思义则是在上述循环队列的基础增加了双端的操作，能在两端添加、删除；</p>
+<p>所以，代码是明显可以和循环队列复用的，只需要编写<strong>对头入队</strong>，<strong>队尾出队</strong>即可。</p>
+<h3 id="队头入队"><a href="#队头入队" class="headerlink" title="队头入队"></a>队头入队</h3><p>对头入队时，其实是要获取到相对于<em>front</em>的前一个索引，直接取<code>index(-1);</code>即可；但是特殊情况当<code>front == 0</code>时，原来的<code>index()</code>函数时无法达到效果的，所以还要重新优化：</p>
+<p>对与循环双端队列，当<em>front</em>是数组首元素时，从队头入队，依据循环是对数组另一端的元素赋值，只需要<code>front - 1 + 数组长度</code>，如：<strong>0 (front) - 1 + 7 (length) &#x3D; 6</strong>，所以：</p>
+<img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/algorithm/20210523175916.png" style="zoom:80%;" />
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">index</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    index += front;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> index + elements.length;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; elements.length) &#123;</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> index - elements.length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因此，从队头入队的情形，即往<em>front</em>偏移一个索引的位置添加元素：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">enQueueFront</span><span class="params">(E element)</span> &#123;</span><br><span class="line">    ensureCapacity(size + <span class="number">1</span>);</span><br><span class="line">	front = index(-<span class="number">1</span>);</span><br><span class="line">	elements[front] = element;</span><br><span class="line">	size++;</span><br><span class="line">&#125;; <span class="comment">// 从队头入队</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="队尾出队"><a href="#队尾出队" class="headerlink" title="队尾出队"></a>队尾出队</h3><p>根据<code>index()</code>的索引映射，队尾出队也是得心应手：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E <span class="title function_">deQueueRear</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">E</span> <span class="variable">top</span> <span class="operator">=</span> elements[index(size - <span class="number">1</span>)]; <span class="comment">// 尾部元素映射</span></span><br><span class="line">    elements[index(size - <span class="number">1</span>)] = <span class="literal">null</span>;</span><br><span class="line">    size--;</span><br><span class="line">    <span class="keyword">return</span> top;</span><br><span class="line">&#125;; <span class="comment">// 从队尾出队</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2019/10/21/tutorial-2/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2019-10-24 21:27:24
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" title="数据结构与算法">
+                        #数据结构与算法
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2019/10/24/data-structure-and-algorithm-4/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%9F%E5%88%97%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-text">队列的设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97"><span class="toc-text">双向链表实现队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97"><span class="toc-text">双端队列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97"><span class="toc-text">循环队列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0"><span class="toc-text">循环队列实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BA%E9%98%9F%E5%85%A5%E9%98%9F"><span class="toc-text">出队入队</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%9F%E5%88%97%E6%B8%85%E7%A9%BA"><span class="toc-text">队列清空</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%89%A9%E5%AE%B9"><span class="toc-text">动态扩容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97"><span class="toc-text">循环双端队列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%9F%E5%A4%B4%E5%85%A5%E9%98%9F"><span class="toc-text">队头入队</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%9F%E5%B0%BE%E5%87%BA%E9%98%9F"><span class="toc-text">队尾出队</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%98%9F%E5%88%97 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2019%2F10%2F24%2Fdata-structure-and-algorithm-5%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2019/10/24/data-structure-and-algorithm-5/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

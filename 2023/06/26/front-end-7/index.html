@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      前端性能优化体系学习之前言 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">前端性能优化体系学习之前言</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-26 21:30:21
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                    #前端
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="前端性能优化中的难点"><a href="#前端性能优化中的难点" class="headerlink" title="前端性能优化中的难点"></a>前端性能优化中的难点</h2><ol>
+<li>成体系的性能优化资料严重缺失：<ul>
+<li>缓存请求，服务端响应优化，页面解析与处理，静态资源优化；</li>
+<li>使用该优化方式的目的，围绕该优化方式对于的指标，优化后的收益等；</li>
+</ul>
+</li>
+<li>性能监控预警平台没有开源，需要自己开发：<ul>
+<li>性能优化的重中之重是在于性能监控预警平台；</li>
+<li>开源的实现需与现有前端基建对接，以及性能平台上包含哪些东西；</li>
+<li>需要对哪些内容做预警，应该设定怎样的预警策略；</li>
+</ul>
+</li>
+<li>实践中存在许多坑，通常不会公开分享：<ul>
+<li>前端指标的制定、采集和上报；</li>
+<li>异常数据的筛选和处理；</li>
+</ul>
+</li>
+<li>性能优化立项沟通：<ul>
+<li>性能优化中的立项是个难点；</li>
+<li>如何从业务角度去思考性能优化的价值；</li>
+<li>并说服业务将性能优化提上日程；</li>
+<li>正推 &#x3D; 性能线索 -&gt; 性能问题 -&gt; 性能优化方案 -&gt; 性能收益 &#x3D; ! 反推；</li>
+</ul>
+</li>
+</ol>
+<h2 id="学习的几个重点"><a href="#学习的几个重点" class="headerlink" title="学习的几个重点"></a>学习的几个重点</h2><ul>
+<li>前端性能优化方法论</li>
+<li>指标采集上报及优化手段</li>
+<li>Hybrid 下的进阶优化</li>
+<li>性能优化数据评估及预警</li>
+<li>一线大厂性能优化体系演进</li>
+</ul>
+<h2 id="性能优化体系概览"><a href="#性能优化体系概览" class="headerlink" title="性能优化体系概览"></a>性能优化体系概览</h2><p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/frontend/Snipaste_2023-06-23_23-07-35.png"></p>
+<h3 id="性能优化流程"><a href="#性能优化流程" class="headerlink" title="性能优化流程"></a>性能优化流程</h3><p>首先是指标的设定，即我们要选择怎样的性能指标；之后确定性能标准，也就是我们性能优化目标是怎么样的，优化到什么程度合适；</p>
+<p>很多时候，为了让产品同学觉得我们是在为产品服务而不是又在造轮子，我们还需要关联产品目标进行收益评估。接下来，把业务代码接入性能监控预警平台，根据性能标准给出诊断清单；诊断出性能问题后，既可以结合性能标准和诊断清单确定相应的优化手段；</p>
+<p>之后仍不是性能优化实操，还需要进行性能项目立项，需要赢得产品经理、后端同事支持，是让优化顺利执行下去不可或缺的内容；经过优化之后，产品上线并跟踪进行效果评估，结合场景把这些项目成果以文档或代码的形式沉淀下来。</p>
+<h3 id="性能指标采集与上报"><a href="#性能指标采集与上报" class="headerlink" title="性能指标采集与上报"></a>性能指标采集与上报</h3><p>主要是将前面提到的性能指标以代码的形式分解落地确保可以采集， 然后在 SDK 封装后集合统计埋点，最后根据实际情况，指定上报策略。</p>
+<h3 id="性能监控预警平台"><a href="#性能监控预警平台" class="headerlink" title="性能监控预警平台"></a>性能监控预警平台</h3><p>当指标超过某一监控阈值时，性能监控平台会通过邮件或者短信给我们发送预警信息。</p>
+<ul>
+<li><strong>性能数据处理后台</strong>：主要是在性能采集数据上报到性能平台后，对数据进行预处理，数据清洗和数据计算，然后生成前台可视化所需数据。</li>
+<li><strong>性能可视化展现前台</strong>：主要是对核心数据进行可视化展现，对性能数据波动进行监控，对超出阈值的数据给出短信或邮件报警。</li>
+</ul>
+<p>为了确保稳定，在上线前一定要做性能专项测试，检查采取的措施和性能优化预期是否一致。</p>
+<h2 id="性能关键指标"><a href="#性能关键指标" class="headerlink" title="性能关键指标"></a>性能关键指标</h2><ul>
+<li>关注什么样的指标<ul>
+<li>可衡量，即可通过代码来度量；</li>
+<li>关注以用户为中心的关键结果（业务向）和真实体验。</li>
+</ul>
+</li>
+<li>关键指标的设定与标准<ul>
+<li>加载：进入页面时，内容的载入过程；</li>
+<li>交互：用户操作功能页面给出的回复；</li>
+</ul>
+</li>
+</ul>
+<h3 id="视觉稳定性指标"><a href="#视觉稳定性指标" class="headerlink" title="视觉稳定性指标"></a>视觉稳定性指标</h3><ul>
+<li>CLS（cumulative layout shift）即布局偏移量，是指页面一帧切换到另外一帧时，视线中不稳定元素的偏移情况。CLS 比较前沿，目前只依赖于 Google 提供的 Lighthouse 做本地采集，尚无更好的方案。</li>
+<li>白屏时间，指从输入内容回车（包括刷新，跳转等方式）后到页面开始出现第一个字符的时间。标准时间是 300 ms。<ul>
+<li>导致过长的原因：DNS 查询时间长，建立 TCP 请求太慢，服务器速度慢，客户端下载解析渲染过长，没有做Gzip 压缩，缺乏本地离线化处理等；</li>
+</ul>
+</li>
+<li>首屏时间 &#x3D; 白屏时间 + 渲染时间，从浏览器输入地址栏并回车后，到首页内容渲染完毕的时间，这期间不需要滚动鼠标或下拉页面，否则无效。<ul>
+<li><a target="_blank" rel="noopener" href="https://gtmetrix.com/%EF%BC%8C%E7%BD%91%E9%A1%B5%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7%EF%BC%9B">https://gtmetrix.com/，网页性能测试工具；</a></li>
+<li>相对于白屏时间，首屏时间更重要，侧重于用户体验；</li>
+<li>首屏时间 1s 内用户感觉快，超过 2.5 秒则感觉很慢</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/10/qr-code/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-26 21:30:21
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                        #前端
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/10/07/orange-pi-5/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B8%AD%E7%9A%84%E9%9A%BE%E7%82%B9"><span class="toc-text">前端性能优化中的难点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%87%A0%E4%B8%AA%E9%87%8D%E7%82%B9"><span class="toc-text">学习的几个重点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BD%93%E7%B3%BB%E6%A6%82%E8%A7%88"><span class="toc-text">性能优化体系概览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%B5%81%E7%A8%8B"><span class="toc-text">性能优化流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E9%87%87%E9%9B%86%E4%B8%8E%E4%B8%8A%E6%8A%A5"><span class="toc-text">性能指标采集与上报</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E9%A2%84%E8%AD%A6%E5%B9%B3%E5%8F%B0"><span class="toc-text">性能监控预警平台</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E5%85%B3%E9%94%AE%E6%8C%87%E6%A0%87"><span class="toc-text">性能关键指标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E8%A7%89%E7%A8%B3%E5%AE%9A%E6%80%A7%E6%8C%87%E6%A0%87"><span class="toc-text">视觉稳定性指标</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%89%8D%E8%A8%80 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2023%2F06%2F26%2Ffront-end-7%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2023/06/26/front-end-7/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

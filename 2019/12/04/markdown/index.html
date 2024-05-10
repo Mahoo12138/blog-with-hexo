@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      码字语法三千，我只取一瓢 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">码字语法三千，我只取一瓢</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2019-12-04 21:02:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Markdown/" title="Markdown">
+                    #Markdown
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/LaTeX/" title="LaTeX">
+                    #LaTeX
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="插入复杂表格"><a href="#插入复杂表格" class="headerlink" title="插入复杂表格"></a>插入复杂表格</h2><ol>
+<li><p>利用 <strong>Excel</strong> 将表格绘制完成</p>
+</li>
+<li><p>选择导出保存为<code>.html/.htm</code>网页文档格式</p>
+</li>
+<li><p>用文本编辑器打开，拷贝<code>table</code>标签内容即可</p>
+</li>
+<li><p>若需要居中表格，可为 table 标签添加样式属性</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">style</span>=<span class="string">&quot;margin: 0 auto&quot;</span>&gt;</span>表格内容<span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="文档脚注"><a href="#文档脚注" class="headerlink" title="文档脚注"></a>文档脚注</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这是一个链接到黄同学博客的脚注[^1]。</span><br><span class="line">[<span class="symbol">^1</span>]: <span class="link">http://www.mahoo.design</span></span><br></pre></td></tr></table></figure>
+
+<p>效果：这是一个链接到老黄博客的脚注<a target="_blank" rel="noopener" href="http://www.mahoo.design/">^1</a>。</p>
+<h2 id="字体，颜色，大小"><a href="#字体，颜色，大小" class="headerlink" title="字体，颜色，大小"></a>字体，颜色，大小</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">face</span>=<span class="string">&quot;黑体&quot;</span>&gt;</span>我是黑体字<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">face</span>=<span class="string">&quot;微软雅黑&quot;</span>&gt;</span>我是微软雅黑<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">face</span>=<span class="string">&quot;STCAIYUN&quot;</span>&gt;</span>我是华文彩云<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">red</span>&gt;</span>我是红色<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">#008000</span>&gt;</span>我是绿色<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">Blue</span>&gt;</span>我是蓝色<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">5</span>&gt;</span>我是尺寸为5<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">face</span>=<span class="string">&quot;黑体&quot;</span> <span class="attr">color</span>=<span class="string">green</span> <span class="attr">size</span>=<span class="string">5</span>&gt;</span>我是黑体，绿色，尺寸为5<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><font face="黑体">我是黑体字</font><br><font face="微软雅黑">我是微软雅黑</font><br><font face="STCAIYUN">我是华文彩云</font><br><font color=red>我是红色</font><br><font color=#008000>我是绿色</font><br><font color=Blue>我是蓝色</font><br><font size=5>我是尺寸为5</font><br><font face="黑体" color=green size=5>我是黑体，绿色，尺寸为5</font></p>
+<h2 id="Latex-数学公式"><a href="#Latex-数学公式" class="headerlink" title="Latex 数学公式"></a>Latex 数学公式</h2><h3 id="上下标"><a href="#上下标" class="headerlink" title="上下标"></a>上下标</h3><ol>
+<li>上标符号，符号：<code>^</code>，如：$x^4$            (x^4)</li>
+<li>下标符号，符号：<code>_</code>，如：$x_1$            (x_1)</li>
+<li>组合符号，符号：<code>&#123;&#125;</code>，如：${16}<em>{8}A{2}</em>{2}$         ({16}_{8}A{2}_{2})</li>
+<li>取反，符号：<code>\prime</code>，如$D^\prime$</li>
+</ol>
+<h3 id="四则运算"><a href="#四则运算" class="headerlink" title="四则运算"></a>四则运算</h3><ol>
+<li>加法运算，符号：<code>+</code>，如：$x+y&#x3D;z$</li>
+<li>减法运算，符号：<code>-</code>，如：$x-y&#x3D;z$</li>
+<li>加减运算，符号：<code>\pm</code>，如：$x \pm y&#x3D;z$</li>
+<li>减加运算，符号：<code>\mp</code>，如：$x \mp y&#x3D;z$</li>
+<li>乘法运算，符号：<code>\times</code>，如：$x \times y&#x3D;z$</li>
+<li>点乘运算，符号：<code>\cdot</code>，如：$x \cdot y&#x3D;z$</li>
+<li>星乘运算，符号：<code>\ast</code>，如：$x \ast y&#x3D;z$</li>
+<li>除法运算，符号：<code>\div</code>，如：$x \div y&#x3D;z$</li>
+<li>斜法运算，符号：<code>/</code>，如：$x&#x2F;y&#x3D;z$</li>
+<li>分式表示，符号：<code>\frac&#123;分子&#125;&#123;分母&#125;</code>，如：$\frac{x+y}{y+z}$</li>
+<li>分式表示，符号：<code>&#123;分子&#125; \over &#123;分母&#125;</code>，如：${x+y} \over {y+z}$</li>
+<li>绝对值表示，符号：<code>||</code>，如：$|x+y|$</li>
+</ol>
+<h3 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h3><ol>
+<li>等于运算，符号：<code>=</code>，如：$x+y&#x3D;z$</li>
+<li>大于运算，符号：<code>&gt;</code>，如：$x+y&gt;z$</li>
+<li>小于运算，符号：<code>&lt;</code>，如：$x+y&lt;z$</li>
+<li>大于等于运算，符号：<code>\geq</code>，如：$x+y \geq z$</li>
+<li>小于等于运算，符号：<code>\leq</code>，如：$x+y \leq z$</li>
+<li>不等于运算，符号：<code>\neq</code>，如：$x+y \neq z$</li>
+<li>不大于等于运算，符号：<code>\ngeq</code>，如：$x+y \ngeq z$</li>
+<li>不大于等于运算，符号：<code>\not\geq</code>，如：$x+y \not\geq z$</li>
+<li>不小于等于运算，符号：<code>\nleq</code>，如：$x+y \nleq z$</li>
+<li>不小于等于运算，符号：<code>\not\leq</code>，如：$x+y \not\leq z$</li>
+<li>约等于运算，符号：<code>\approx</code>，如：$x+y \approx z$</li>
+<li>恒定等于运算，符号：<code>\equiv</code>，如：$x+y \equiv z$</li>
+<li>远远大于运算，符号：<code>\gg</code>，如：$a \gg b$</li>
+<li>远远小于运算，符号：<code>\ll</code>，如：$a \ll b$</li>
+</ol>
+<h3 id="累加累乘"><a href="#累加累乘" class="headerlink" title="累加累乘"></a>累加累乘</h3><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$$\sum_{i&#x3D;1}^n \frac{1}{i^2}$$</td>
+<td><code>$\sum_&#123;i=1&#125;^n \frac&#123;1&#125;&#123;i^2&#125;$</code></td>
+</tr>
+<tr>
+<td>$\prod_{i&#x3D;1}^n \frac{1}{i^2}$</td>
+<td><code>$\prod_&#123;i=1&#125;^n \frac&#123;1&#125;&#123;i^2&#125;$</code></td>
+</tr>
+<tr>
+<td>$\bigcup_{i&#x3D;1}^{2} R$</td>
+<td><code>$\bigcup_&#123;i=1&#125;^&#123;2&#125; R$</code></td>
+</tr>
+<tr>
+<td>$\bigcap_{i&#x3D;1}^{2} R$</td>
+<td><code>$\bigcap_&#123;i=1&#125;^&#123;2&#125; R$</code></td>
+</tr>
+</tbody></table>
+<h3 id="积分运算"><a href="#积分运算" class="headerlink" title="积分运算"></a>积分运算</h3><ol>
+<li><p>积分符号 $\int$ ：<code>$\int$</code></p>
+</li>
+<li><p>双重积分符号$\iint$：<code>$\iint$</code></p>
+</li>
+<li><p>三重积分符号$\iiint$：<code>$\iiint$</code></p>
+</li>
+<li><p>曲线积分$\oint$：<code>$\oint$</code></p>
+<p>实例：$\int_0^1 {x^2} ,{\rm d}x$      ——<code>$\int_0^1 &#123;x^2&#125; \,&#123;\rm d&#125;x$</code></p>
+</li>
+</ol>
+<h3 id="多行格式"><a href="#多行格式" class="headerlink" title="多行格式"></a>多行格式</h3><ol>
+<li><p>$$y &#x3D;\begin{cases} a \ b \ c\end{cases}$$ 		<code>y =\begin&#123;cases&#125; a \\ b \\ c\end&#123;cases&#125;</code></p>
+</li>
+<li><p><code>\begin&#123;cases&#125;  1+1/2+\underbrace&#123;1/3+1/4&#125;_&#123;&gt;1/2&#125;+ \underbrace&#123;1/5+1/6+1/7+1/8&#125;_&#123;&gt;1/2&#125;+\cdots  \end&#123;cases&#125;</code><br>$$<br>\begin{cases}<br>  1+1&#x2F;2+\underbrace{1&#x2F;3+1&#x2F;4}<em>{&gt;1&#x2F;2}+<br>   \underbrace{1&#x2F;5+1&#x2F;6+1&#x2F;7+1&#x2F;8}</em>{&gt;1&#x2F;2}+\cdots<br>\end{cases}<br>$$</p>
+</li>
+</ol>
+<h3 id="其他格式"><a href="#其他格式" class="headerlink" title="其他格式"></a>其他格式</h3><ol>
+<li>$\mathop{\arg\min}\limits_{\theta}$：<code>$\mathop&#123;\arg\min&#125;\limits_&#123;\theta&#125;$</code></li>
+<li></li>
+</ol>
+<h3 id="特殊符号"><a href="#特殊符号" class="headerlink" title="特殊符号"></a>特殊符号</h3><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>实现</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$\bigotimes$</td>
+<td><code>$\bigotimes$</code></td>
+<td>克罗内克积</td>
+</tr>
+<tr>
+<td>⨁</td>
+<td><code>$\bigoplus$</code></td>
+<td>异或</td>
+</tr>
+<tr>
+<td>$\ldots$</td>
+<td><code>$\ldots$</code></td>
+<td>省略号</td>
+</tr>
+<tr>
+<td>$\angle 30^\circ$</td>
+<td><code>$\angle 30^\circ$</code></td>
+<td>角度</td>
+</tr>
+<tr>
+<td>$\uparrow$</td>
+<td><code>$\uparrow$</code></td>
+<td>向上</td>
+</tr>
+<tr>
+<td>$\downarrow$</td>
+<td><code>$\downarrow$</code></td>
+<td>向下</td>
+</tr>
+<tr>
+<td>$\leftarrow$</td>
+<td><code>$\leftarrow$</code></td>
+<td>向左</td>
+</tr>
+<tr>
+<td>$\rightarrow$</td>
+<td><code>$\rightarrow$</code></td>
+<td>向右</td>
+</tr>
+<tr>
+<td>$${\lim_{x \to +\infty}}$$</td>
+<td><code>$$&#123;\lim_&#123;x \to +\infty&#125;&#125;$$</code></td>
+<td>极限</td>
+</tr>
+</tbody></table>
+<h3 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h3><table>
+<thead>
+<tr>
+<th>字母</th>
+<th>实现</th>
+<th>字母</th>
+<th>实现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td><code>A</code></td>
+<td>α</td>
+<td><code>\alhpa</code></td>
+</tr>
+<tr>
+<td>B</td>
+<td><code>B</code></td>
+<td>β</td>
+<td><code>\beta</code></td>
+</tr>
+<tr>
+<td>Γ</td>
+<td><code>\Gamma</code></td>
+<td>γ</td>
+<td><code>\gamma</code></td>
+</tr>
+<tr>
+<td>Δ</td>
+<td><code>\Delta</code></td>
+<td>δ</td>
+<td><code>\delta</code></td>
+</tr>
+<tr>
+<td>E</td>
+<td><code>E</code></td>
+<td>ϵ</td>
+<td><code>\epsilon</code></td>
+</tr>
+<tr>
+<td>Z</td>
+<td><code>Z</code></td>
+<td>ζ</td>
+<td><code>\zeta</code></td>
+</tr>
+<tr>
+<td>H</td>
+<td><code>H</code></td>
+<td>η</td>
+<td><code>\eta</code></td>
+</tr>
+<tr>
+<td>Θ</td>
+<td><code>\Theta</code></td>
+<td>θ</td>
+<td><code>\theta</code></td>
+</tr>
+<tr>
+<td>I</td>
+<td><code>I</code></td>
+<td>ι</td>
+<td><code>\iota</code></td>
+</tr>
+<tr>
+<td>K</td>
+<td><code>K</code></td>
+<td>κ</td>
+<td><code>\kappa</code></td>
+</tr>
+<tr>
+<td>Λ</td>
+<td><code>\Lambda</code></td>
+<td>λ</td>
+<td><code>\lambda</code></td>
+</tr>
+<tr>
+<td>M</td>
+<td><code>M</code></td>
+<td>$\mu$</td>
+<td><code>\mu</code></td>
+</tr>
+<tr>
+<td>N</td>
+<td><code>N</code></td>
+<td>$\nu$</td>
+<td><code>\nu</code></td>
+</tr>
+<tr>
+<td>Ξ</td>
+<td><code>\Xi</code></td>
+<td>ξ</td>
+<td><code>\xi</code></td>
+</tr>
+<tr>
+<td>O</td>
+<td><code>O</code></td>
+<td>$\omicron$</td>
+<td><code>\omicron</code></td>
+</tr>
+<tr>
+<td>Π</td>
+<td><code>\Pi</code></td>
+<td>π</td>
+<td><code>\pi</code></td>
+</tr>
+<tr>
+<td>P</td>
+<td><code>P</code></td>
+<td>ρ</td>
+<td><code>\rho</code></td>
+</tr>
+<tr>
+<td>Σ</td>
+<td><code>\Sigma</code></td>
+<td>$\sigma$</td>
+<td><code>\sigma</code></td>
+</tr>
+<tr>
+<td>T</td>
+<td><code>T</code></td>
+<td>τ</td>
+<td><code>\tau</code></td>
+</tr>
+<tr>
+<td>Υ</td>
+<td><code>\Upsilon</code></td>
+<td>υ</td>
+<td><code>\upsilon</code></td>
+</tr>
+<tr>
+<td>$\Phi$</td>
+<td><code>\Phi</code></td>
+<td>$\phi$</td>
+<td><code>\phi</code></td>
+</tr>
+<tr>
+<td>$\Chi$</td>
+<td><code>\Chi</code></td>
+<td>$\chi$</td>
+<td><code>\chi</code></td>
+</tr>
+<tr>
+<td>$\Psi$</td>
+<td><code>\Psi</code></td>
+<td>$\psi$</td>
+<td><code>\psi</code></td>
+</tr>
+<tr>
+<td>Ω</td>
+<td><code>\Omega</code></td>
+<td>$\omega$</td>
+<td><code>\omega</code></td>
+</tr>
+<tr>
+<td>$\varphi$</td>
+<td><code>\varphi</code></td>
+<td>$\varrho$</td>
+<td><code>\varrho</code></td>
+</tr>
+</tbody></table>
+<h4 id="其他字体"><a href="#其他字体" class="headerlink" title="其他字体"></a>其他字体</h4><p>空心体：<code>\mathbb&#123;R&#125;</code>：$\mathbb{R}$</p>
+<p>斜体：<code>\mathcal&#123;R&#125;</code>：$\mathcal{R}$</p>
+<p>花体：<code>\mathscr&#123;R&#125;</code>：$\mathscr{R}$</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>取消斜体：<code>$\rm &#123;x+y&#125;$</code>，$\rm {x+y}$</p>
+<p>加粗字体：<code>$\textbf &#123;x+y&#125;$</code>，$\textbf  {x+y}$</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2019/12/03/python-1/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2019-12-04 21:02:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Markdown/" title="Markdown">
+                        #Markdown
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/LaTeX/" title="LaTeX">
+                        #LaTeX
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2019/12/05/office/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%A4%8D%E6%9D%82%E8%A1%A8%E6%A0%BC"><span class="toc-text">插入复杂表格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E8%84%9A%E6%B3%A8"><span class="toc-text">文档脚注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E4%BD%93%EF%BC%8C%E9%A2%9C%E8%89%B2%EF%BC%8C%E5%A4%A7%E5%B0%8F"><span class="toc-text">字体，颜色，大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Latex-%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F"><span class="toc-text">Latex 数学公式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%B8%8B%E6%A0%87"><span class="toc-text">上下标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E5%88%99%E8%BF%90%E7%AE%97"><span class="toc-text">四则运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97"><span class="toc-text">逻辑运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%AF%E5%8A%A0%E7%B4%AF%E4%B9%98"><span class="toc-text">累加累乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%AF%E5%88%86%E8%BF%90%E7%AE%97"><span class="toc-text">积分运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%A1%8C%E6%A0%BC%E5%BC%8F"><span class="toc-text">多行格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%A0%BC%E5%BC%8F"><span class="toc-text">其他格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7"><span class="toc-text">特殊符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%8C%E8%85%8A%E5%AD%97%E6%AF%8D"><span class="toc-text">希腊字母</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%AD%97%E4%BD%93"><span class="toc-text">其他字体</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E7%A0%81%E5%AD%97%E8%AF%AD%E6%B3%95%E4%B8%89%E5%8D%83%EF%BC%8C%E6%88%91%E5%8F%AA%E5%8F%96%E4%B8%80%E7%93%A2 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2019%2F12%2F04%2Fmarkdown%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2019/12/04/markdown/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

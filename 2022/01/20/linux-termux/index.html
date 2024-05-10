@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      关于我用旧手机折腾服务器的过程全纪实 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">关于我用旧手机折腾服务器的过程全纪实</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-01-20 22:18:14
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Linux/" title="Linux">
+                    #Linux
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%97%A7%E6%89%8B%E6%9C%BA/" title="旧手机">
+                    #旧手机
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Termux/" title="Termux">
+                    #Termux
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近，作为钉子户的我的 OnePlus5-cheeseburger 突然直接屏幕漏液了，一会就完全黑了，不知道是进水了，还是磕磕碰碰了，毕竟是裸奔的，旧的不去新的不来，索性直接下单了一个新的，旧的留来折腾算了，还换啥屏幕总成；</p>
+<p>因为之前有折腾过 Note4X-mido 的体验，SD625 性能还是太拉了，跑一些程序启动都慢，这次我特意去对比了 Raspberry Pi 4B 的BCM2711，宏观看起来，SD835领先的，此时我脑子里的想法如汩汩清泉涌流……</p>
+<h2 id="使用到的软件"><a href="#使用到的软件" class="headerlink" title="使用到的软件"></a>使用到的软件</h2><ul>
+<li>Termux - <a target="_blank" rel="noopener" href="https://github.com/termux/termux-app">https://github.com/termux/termux-app</a>)</li>
+<li>Termux:Boot - (<a target="_blank" rel="noopener" href="https://github.com/termux/termux-boot">https://github.com/termux/termux-boot</a>)</li>
+<li>BusyBox - <a target="_blank" rel="noopener" href="https://github.com/meefik/busybox/releases">https://github.com/meefik/busybox/releases</a> </li>
+<li>Linux Deploy - <a target="_blank" rel="noopener" href="https://github.com/meefik/linuxdeploy/releases">https://github.com/meefik/linuxdeploy/releases</a></li>
+<li>Genymobile&#x2F;scrcpy - <a target="_blank" rel="noopener" href="https://github.com/Genymobile/scrcpy">https://github.com/Genymobile/scrcpy</a></li>
+</ul>
+<h2 id="使用-Termux-终端"><a href="#使用-Termux-终端" class="headerlink" title="使用 Termux 终端"></a>使用 Termux 终端</h2><p>Termux 的强大之处就不用我多说，不仅仅是一个终端，而且还可以跟 Tasker 以及Termux:API 联动实现丰富的功能，轻松实现普通的服务器做不到的一些功能；</p>
+<h3 id="1-更换国内软件源"><a href="#1-更换国内软件源" class="headerlink" title="1. 更换国内软件源"></a>1. 更换国内软件源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/termux-packages-24 stable main@&#x27;</span> <span class="variable">$PREFIX</span>/etc/apt/sources.list</span><br><span class="line"></span><br><span class="line">sed -i <span class="string">&#x27;s@^\(deb.*games stable\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/game-packages-24 games stable@&#x27;</span> <span class="variable">$PREFIX</span>/etc/apt/sources.list.d/game.list</span><br><span class="line"></span><br><span class="line">sed -i <span class="string">&#x27;s@^\(deb.*science stable\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/science-packages-24 science stable@&#x27;</span> <span class="variable">$PREFIX</span>/etc/apt/sources.list.d/science.list</span><br><span class="line"></span><br><span class="line">pkg update</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-安装基本工具"><a href="#2-安装基本工具" class="headerlink" title="2. 安装基本工具"></a>2. 安装基本工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pkg update</span><br><span class="line">pkg install vim curl wget git tree openssh -y</span><br></pre></td></tr></table></figure>
+
+<h4 id="其他软件"><a href="#其他软件" class="headerlink" title="其他软件"></a>其他软件</h4><p>默认情况下，Termux 的软件源只提供较新的版本，例如 Python，可以在<a target="_blank" rel="noopener" href="https://github.com/Termux-pod/termux-pod">Termux-pod&#x2F;termux-pod</a>找到旧版本的备份，下载下来后，使用命令安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -i /path/filename.deb</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-使用-SSH-连接手机"><a href="#3-使用-SSH-连接手机" class="headerlink" title="3. 使用 SSH 连接手机"></a>3. 使用 SSH 连接手机</h3><p>SSH 连接通常有两种，一是通过密码认证连接，二是通过公私钥连接，不过公私钥太麻烦，这里用密码认证；手机上面低的端口有安全限制，默认的 sshd 默认的服务端口号为 8022：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">passwd 		<span class="comment"># 设置新密码</span></span><br><span class="line">sshd		<span class="comment"># 开启ssh服务</span></span><br><span class="line">pkill sshd	<span class="comment"># 停止ssh服务</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Termux 下的 SSH 默认配置文件的路径为 <code>$PREFIX/etc/ssh/sshd_config</code></p>
+</blockquote>
+<h3 id="4-修改连接问候语"><a href="#4-修改连接问候语" class="headerlink" title="4. 修改连接问候语"></a>4. 修改连接问候语</h3><p>连接上系统时的问候语是一个文本文件，保存在<code>$PREFIX/etc/motd</code>，你可以自定义编辑，这显然不够炫酷，我们需要极客一点；首先，安装显示设备信息的工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pkg install neofetch</span><br></pre></td></tr></table></figure>
+
+<p>编辑原来的<code>$PREFIX/etc/motd</code>作为一个脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!$PREFIX/bin/bash</span></span><br><span class="line">neofetch</span><br></pre></td></tr></table></figure>
+
+<p>并移动到<code>profile.d</code>目录即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> motd profile.d/motd.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-开机自启动"><a href="#5-开机自启动" class="headerlink" title="5. 开机自启动"></a>5. 开机自启动</h3><p>在 <code>~/.termux/</code> 目录创建 <code>boot</code> 目录，然后将开机要执行的脚本放在 <code>~/.termux/boot/</code> 目录；</p>
+<p>Termux:Boot 提供了启动 SSH 服务并防止设备进入睡眠的 shell 代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/data/data/com.termux/files/usr/bin/sh</span></span><br><span class="line">termux-wake-lock</span><br><span class="line">sshd</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用-Linux-Deploy-容器"><a href="#使用-Linux-Deploy-容器" class="headerlink" title="使用 Linux Deploy 容器"></a>使用 Linux Deploy 容器</h2><p>毕竟 Termux 提供的环境不是完全完整的 Linux，很多包在安装或者编译的时候会冒出各种各样的问题，所以还是利用 chroot 搭建一个 Ubuntu；</p>
+<h3 id="1-安装-BusyBox"><a href="#1-安装-BusyBox" class="headerlink" title="1. 安装 BusyBox"></a>1. 安装 BusyBox</h3><p>可以使用软件安装，但是我的手机貌似解锁不了 System 分区，权宜之计是使用 Magisk Module；</p>
+<p>通往罗马的路不止一条，不过要注意<strong>安装的位置</strong>，下一步用得到；</p>
+<h3 id="2-软件配置"><a href="#2-软件配置" class="headerlink" title="2. 软件配置"></a>2. 软件配置</h3><ul>
+<li>右侧 Drawer  &#x3D;&gt; 设置，打开在应用一栏中将<code>锁定WI-FI</code>和<code>CPU唤醒</code>勾选；</li>
+<li>环境一栏中设置<code>PATH变量</code>为 BusyBox 的安装路径，点击更新环境；</li>
+<li>调试一栏中，勾选<code>调试模式</code>，便于查看安装与运行中的各种信息；</li>
+</ul>
+<h3 id="3-安装配置"><a href="#3-安装配置" class="headerlink" title="3. 安装配置"></a>3. 安装配置</h3><p>进行安装的时候，选择好发行版和架构后，可继而选择是源地址安装还是包安装，源地址安装可以选择国内的各大镜像站，以加快安装速度，这里以中科大做参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://mirrors.ustc.edu.cn/centos-altarch/">http://mirrors.ustc.edu.cn/centos-altarch/</a></li>
+<li><a target="_blank" rel="noopener" href="http://mirrors.ustc.edu.cn/ubuntu-ports/">http://mirrors.ustc.edu.cn/ubuntu-ports/</a></li>
+<li><a target="_blank" rel="noopener" href="http://mirrors.ustc.edu.cn/kali/">http://mirrors.ustc.edu.cn/kali/</a></li>
+<li><a target="_blank" rel="noopener" href="http://mirrors.ustc.edu.cn/archlinuxarm/">http://mirrors.ustc.edu.cn/archlinuxarm/</a></li>
+</ul>
+<blockquote>
+<p>注意，要使用 http 协议的链接，否则会报错；</p>
+</blockquote>
+<p>如果遇到像我一样的情况，类似于这样的报错信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">W: Failure trying to run:  dpkg --force-depends --install /var/cache/apt/archives/libc6_2.27-3ubuntu1_arm64.deb</span><br><span class="line">[01:53:52] </span><br><span class="line">W: See //debootstrap/debootstrap.log <span class="keyword">for</span> details (possibly the package /var/cache/apt/archives/libc6_2.27-3ubuntu1_arm64.deb is at fault)</span><br><span class="line">[01:53:52] &lt;&lt;&lt; <span class="string">deploy</span></span><br></pre></td></tr></table></figure>
+
+<p>据我估计是<strong>安卓版本（内核版本）过高</strong>导致的，可以选择为手机刷写低版本系统或简单点修改内核，也可以使用包安装的方式，App 内的包仓库需要<strong>付费</strong>，我备份了几个常用的，在我网盘：<a target="_blank" rel="noopener" href="https://yun.mahoo12138.cn/%F0%9F%92%BDImages">OneDrive Index - Images</a>;</p>
+<p>下载系统包到手机后，在源地址中指定包<strong>全局路径</strong>，安装即可；</p>
+<p>大部分的设置项都很好理解，除了<strong>初始化</strong>，启动 linux 时开启的服务，此处选 sysv：</p>
+<ul>
+<li>sysv：Ubuntu 支持，服务用 <code>update-rc.d</code> 管理；初始化级别为默认为 3；初始用户默认为 root。</li>
+<li>run-parts：旧版本 Centos 支持，在启动 linux 时执行指定的脚本；初始化路径：要执行的脚本的路径；初始用户：要执行脚本的用户。</li>
+</ul>
+<p>安装方式，推荐使用目录安装，便于可视化操作，例如<code>/data/ubuntu</code>， GNU&#x2F;linux 需要安装在一个 ext4 或 f2fs 分区的一个目录里；</p>
+<p>镜像文件模式，安装到 fat32 的 sd卡 中可使用该选项，经常折腾手机可选择此选项，刷机格Data都不会受影响；</p>
+<h3 id="4-修改问候语"><a href="#4-修改问候语" class="headerlink" title="4. 修改问候语"></a>4. 修改问候语</h3><p>类似于 Termux 中的修改，Ubuntu 还多了目录<code>/etc/update-motd.d/</code>中的脚本，一个是打印通用的 “欢迎” 横幅。下一个打印 3 个链接，显示在哪里可以找到操作系统的帮助。另一个计算并显示本地系统包可以更新的数量。另一个脚本告诉你是否需要重新启动等等；最好全部删除；</p>
+<p>当然，这个方法看起来就相当的不优雅，最好的方式是如下操作打开配置文件，并<code>ENABLED=0</code>，关闭它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/default/motd-news</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-更换软件源"><a href="#5-更换软件源" class="headerlink" title="5. 更换软件源"></a>5. 更换软件源</h3><p>这个没啥好说的，个人倾向于中科大的，稳！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic main multiverse restricted universe</span><br><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-backports main multiverse restricted universe</span><br><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-proposed main multiverse restricted universe</span><br><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-security main multiverse restricted universe</span><br><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-updates main multiverse restricted universe</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic main multiverse restricted universe</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-backports main multiverse restricted universe</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-proposed main multiverse restricted universe</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-security main multiverse restricted universe</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-updates main multiverse restricted universe</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-修复错误"><a href="#6-修复错误" class="headerlink" title="6. 修复错误"></a>6. 修复错误</h3><blockquote>
+<p>Error: mesg: ttyname failed: inappropriate ioctl for device</p>
+</blockquote>
+<p>这个错误，其实不影响系统的正常运行，但是吧，看着碍眼，解决一下也不难；</p>
+<p>Ubuntu 知道不是每个人都会在根账户上进行图形化登录，所以在默认的.profile文件中，它被设置为在这种情况下产生一个错误。正如你所看到的，在&#x2F;root&#x2F;.profile的最后有一行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mesg n || <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>在启动的过程中，并没有终端设备, 所以 <code>mesg n</code>命令会报错；</p>
+<p>解决办法很简单粗暴，直接改为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tty</span> -s &amp;&amp; mesg n || <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>也就是只有当终端设备在线时，<code>mesg -n</code>才会执行，也就避过这个错误；</p>
+<h3 id="7-安装较新版本"><a href="#7-安装较新版本" class="headerlink" title="7. 安装较新版本"></a>7. 安装较新版本</h3><p>由于 Linux Deploy 没有内置最新的一些发行版，但是我们可以在其安装的脚本中进行更改，这里以 Ubuntu 为例：</p>
+<p>打开<code>/data/user/ru.meefik.linuxdeploy/files/include/bootstrap/ubuntu/deploy.sh</code>，将脚本内的<code>$&#123;SUITE&#125;</code>修改为你想要的版本代号，若报错<code>/bootstrap/debian/debootstrap/scripts/</code>内没有版本代号的脚本，则任取一个重命名即可，亲测能成功安装！</p>
+<p>另一种方法是，安装升级工具进行升级，还能做一些简单配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt install update-manager-core</span><br><span class="line">vim /etc/update-manager/release-upgrades	<span class="comment"># 配置文件</span></span><br></pre></td></tr></table></figure>
+
+<p>之后即可更新全部套件至最新版：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt upgrade</span><br><span class="line">sudo do-release-upgrade</span><br></pre></td></tr></table></figure>
+
+<p>如果出现<code>authenticate &#39;focal.tar.gz&#39; against &#39;focal.tar.gz.gpg&#39; Authentication failed</code>錯誤，先安装<code>gnupg</code>并执行以下指令:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install gnupg gnupg1 gnupg2</span><br><span class="line">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 871920D1991BC93C</span><br><span class="line">sudo do-release-upgrade</span><br></pre></td></tr></table></figure>
+
+<p>不过这两种方法在高版本的内核上都搞不定，原因是一样的；</p>
+<h2 id="手机服务器充电策略"><a href="#手机服务器充电策略" class="headerlink" title="手机服务器充电策略"></a>手机服务器充电策略</h2><p>将手机用作服务器后，无用的安卓服务占据大量内存，可停止安卓服务并使用 crontab 定时任务控制充电：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">停止安卓服务：</span></span><br><span class="line">unchroot /system/bin/stop</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">恢复安卓服务</span></span><br><span class="line">unchroot /system/bin/start</span><br></pre></td></tr></table></figure>
+
+<p>编辑充电控制脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># Android chroot charge limit controller</span></span><br><span class="line"><span class="comment"># author: zixijian</span></span><br><span class="line"><span class="comment"># website: zixijian.github.io</span></span><br><span class="line"><span class="comment"># co-author: Ethereal</span></span><br><span class="line"><span class="comment"># useage: crontab -e</span></span><br><span class="line"><span class="comment">#         */5 * * * * /usr/chargec.sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define</span></span><br><span class="line">charge=`<span class="built_in">cat</span> /sys/class/power_supply/battery/status`</span><br><span class="line">capacity=`<span class="built_in">cat</span> /sys/class/power_supply/battery/capacity`</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> Now battery is: <span class="variable">$charge</span>.</span><br><span class="line"><span class="built_in">echo</span> Now battery level is: <span class="variable">$capacity</span>.</span><br><span class="line"></span><br><span class="line"><span class="comment"># check max limit</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$capacity</span> -ge 85 ]; <span class="keyword">then</span></span><br><span class="line"><span class="comment"># stop</span></span><br><span class="line">  <span class="built_in">echo</span> 0 &gt; /sys/class/power_supply/battery/charging_enabled</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># check min limit</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$capacity</span> -le 35 ]; <span class="keyword">then</span></span><br><span class="line"><span class="comment"># start</span></span><br><span class="line">  <span class="built_in">echo</span> 1 &gt; /sys/class/power_supply/battery/charging_enabled</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>重启： <code>unchroot reboot -f</code>；</p>
+<p>刷新ABD：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">su</span><br><span class="line">setprop service.adb.tcp.port 5555</span><br><span class="line">stop adbd</span><br><span class="line">start adbd</span><br></pre></td></tr></table></figure>
+
+<p>查看手机温度： <code>/sys/class/thermal/thermal_zone[]</code></p>
+<p>控制震动马达：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> -n 200 &gt;/sys/class/leds/vibrator/duration</span><br><span class="line">$ <span class="built_in">echo</span> -n 1 &gt;/sys/class/leds/vibrator/activate</span><br></pre></td></tr></table></figure>
+
+<p>调节亮度：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">chmod</span> 777 /sys/class/leds/lcd-backlight/max_brightness</span><br><span class="line">$ <span class="built_in">echo</span> 1 &gt; /sys/class/leds/lcd-backlight/max_brightness</span><br><span class="line">$ <span class="built_in">chmod</span> 444 /sys/class/leds/lcd-backlight/max_brightness</span><br></pre></td></tr></table></figure>
+
+<p>清理缓存，可对宝塔的内存释放脚本进行 buff 叠加，位于<code>/www/server/panel/script/rememory.sh</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sync</span></span><br><span class="line"><span class="comment"># 释放页缓存(page cache)</span></span><br><span class="line">$ <span class="built_in">echo</span> 1 &gt; /proc/sys/vm/drop_caches</span><br><span class="line"><span class="comment"># 释放目录和索引节点缓存(inode and dentry cache)</span></span><br><span class="line">$ <span class="built_in">echo</span> 2 &gt; /proc/sys/vm/drop_caches</span><br><span class="line"><span class="comment"># 同时释放</span></span><br><span class="line">$ <span class="built_in">echo</span> 3 &gt; /proc/sys/vm/drop_caches</span><br><span class="line"><span class="comment"># 内存压缩, 尽可能地提供连续内存块</span></span><br><span class="line">$ <span class="built_in">echo</span> 1 &gt; /proc/sys/vm/compact_memory</span><br></pre></td></tr></table></figure>
+
+<p>打开设置：<code>adb shell am start -a android.intent.action.MAIN -n com.android.settings/.Settings</code></p>
+<h2 id="手机常见问题"><a href="#手机常见问题" class="headerlink" title="手机常见问题"></a>手机常见问题</h2><ol>
+<li><p>Wi-Fi 进入节能模式，表现为不能全速传输，延时高：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install iw</span><br><span class="line"><span class="comment"># 查询节能状态</span></span><br><span class="line">$ unchroot iw dev wlan0 get power_save</span><br><span class="line"><span class="comment"># 关闭节能模式</span></span><br><span class="line">$ unchroot iw wlan0 <span class="built_in">set</span> power_save off </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保持 cpu 唤醒不起作用，表现为操作卡顿、联网卡顿，使用 wakelock 锁，shell 中输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取 su 权限</span></span><br><span class="line">$ su</span><br><span class="line"><span class="comment"># 保持 cpu 唤醒:  随便写入一个变量</span></span><br><span class="line">$ <span class="built_in">echo</span> lock_me &gt; /sys/power/wake_lock</span><br><span class="line"><span class="comment"># 解除 wakelock 锁：</span></span><br><span class="line">$ <span class="built_in">echo</span> lock_me &gt; /sys/power/wake_unlock</span><br><span class="line"><span class="comment">#注：容器内使用时命令前面加 unchroot，对 /sys 分区操作时不需要（容器已经挂载了 /sys 分区）。</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>wifi </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">unchroot /vendor/bin/hw/wpa_supplicant -d -B –iwlan0 –Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf</span></span><br><span class="line">-C/data/misc/wifi/sockets</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Android 9.0+ 为/vendor/etc/wifi/wpa_supplicant.conf和/data/vendor/wifi/wpa/sockets</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="软件常见问题"><a href="#软件常见问题" class="headerlink" title="软件常见问题"></a>软件常见问题</h2><h3 id="Mysql-报错-The-server-quit-without-updating-PID-file"><a href="#Mysql-报错-The-server-quit-without-updating-PID-file" class="headerlink" title="Mysql 报错 The server quit without updating PID file"></a>Mysql 报错 The server quit without updating PID file</h3><p>查看日志，发现是对于 socket 的权限，原因是Android使用了特制的linux内核，它启用了<code>CONFIG_ANDROID_PARANOID_NETWORK</code>配置，在这种情况下，只有属于几个硬编码的群组身份的系统用户才能访问网络：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ groupadd -g 3001 aid_bt</span><br><span class="line">$ groupadd -g 3002 aid_bt_net</span><br><span class="line">$ groupadd -g 3003 aid_inet</span><br><span class="line">$ groupadd -g 3004 aid_net_raw</span><br><span class="line">$ groupadd -g 3005 aid_admin</span><br></pre></td></tr></table></figure>
+
+<p>将 mysql 用户添加入组即可，最后也把 root 加进去（一般已经在特权用户中添加了）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ usermod -a -G aid_inet,aid_net_raw mysql</span><br><span class="line">$ usermod -a -G aid_bt,aid_bt_net,aid_inet,aid_net_raw,aid_admin root</span><br></pre></td></tr></table></figure>
+
+<p>同理，其实安装 Redis 时也会出现这种类似的错误，也把 redis 加进入就行了； </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 确保启用 SSH 代理</span></span><br><span class="line"><span class="built_in">eval</span> <span class="string">&quot;<span class="subst">$(ssh-agent -s)</span>&quot;</span></span><br><span class="line"><span class="comment"># 启用 SSH 代理</span></span><br><span class="line">ssh-add ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<h3 id="vscode-连接不上"><a href="#vscode-连接不上" class="headerlink" title="vscode 连接不上"></a>vscode 连接不上</h3><ul>
+<li>删除客户端 C:\Users\你的用户名.ssh\known_hosts</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/01/18/react-13/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-01-20 22:18:14
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Linux/" title="Linux">
+                        #Linux
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%97%A7%E6%89%8B%E6%9C%BA/" title="旧手机">
+                        #旧手机
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Termux/" title="Termux">
+                        #Termux
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/02/01/react-14/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="toc-text">使用到的软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Termux-%E7%BB%88%E7%AB%AF"><span class="toc-text">使用 Termux 终端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E8%BD%AF%E4%BB%B6%E6%BA%90"><span class="toc-text">1. 更换国内软件源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7"><span class="toc-text">2. 安装基本工具</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E8%BD%AF%E4%BB%B6"><span class="toc-text">其他软件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8-SSH-%E8%BF%9E%E6%8E%A5%E6%89%8B%E6%9C%BA"><span class="toc-text">3. 使用 SSH 连接手机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BF%AE%E6%94%B9%E8%BF%9E%E6%8E%A5%E9%97%AE%E5%80%99%E8%AF%AD"><span class="toc-text">4. 修改连接问候语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="toc-text">5. 开机自启动</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Linux-Deploy-%E5%AE%B9%E5%99%A8"><span class="toc-text">使用 Linux Deploy 容器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-BusyBox"><span class="toc-text">1. 安装 BusyBox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BD%AF%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-text">2. 软件配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="toc-text">3. 安装配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BF%AE%E6%94%B9%E9%97%AE%E5%80%99%E8%AF%AD"><span class="toc-text">4. 修改问候语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9B%B4%E6%8D%A2%E8%BD%AF%E4%BB%B6%E6%BA%90"><span class="toc-text">5. 更换软件源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E4%BF%AE%E5%A4%8D%E9%94%99%E8%AF%AF"><span class="toc-text">6. 修复错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%AE%89%E8%A3%85%E8%BE%83%E6%96%B0%E7%89%88%E6%9C%AC"><span class="toc-text">7. 安装较新版本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E6%9C%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%85%85%E7%94%B5%E7%AD%96%E7%95%A5"><span class="toc-text">手机服务器充电策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E6%9C%BA%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-text">手机常见问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-text">软件常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mysql-%E6%8A%A5%E9%94%99-The-server-quit-without-updating-PID-file"><span class="toc-text">Mysql 报错 The server quit without updating PID file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vscode-%E8%BF%9E%E6%8E%A5%E4%B8%8D%E4%B8%8A"><span class="toc-text">vscode 连接不上</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%85%B3%E4%BA%8E%E6%88%91%E7%94%A8%E6%97%A7%E6%89%8B%E6%9C%BA%E6%8A%98%E8%85%BE%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E8%BF%87%E7%A8%8B%E5%85%A8%E7%BA%AA%E5%AE%9E + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2022%2F01%2F20%2Flinux-termux%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2022/01/20/linux-termux/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

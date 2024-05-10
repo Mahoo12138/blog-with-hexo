@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      51单片机学习之定时器 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">51单片机学习之定时器</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2019-10-12 20:48:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/51%E5%8D%95%E7%89%87%E6%9C%BA/" title="51单片机">
+                    #51单片机
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="概念基础"><a href="#概念基础" class="headerlink" title="概念基础"></a>概念基础</h2><h3 id="单片机延时基础"><a href="#单片机延时基础" class="headerlink" title="单片机延时基础"></a>单片机延时基础</h3><p>之前的延时我们都使用的是利用C语言的多次的空循环进行延迟操作，这样的缺点是：CPU时间被占用无法进行其他任务，导致系统效率降低。而且延时时间越长，该缺点越明显，所以，这种延时操作只适用于短暂延时，或简单的项目。</p>
+<p>而定时器&#x2F;计数器的使用，实现了单片机对时间的有效控制。单片机中有多个定时&#x2F;计数器，都可以实现定时和计数的功能。</p>
+<h3 id="定时-计数器结构"><a href="#定时-计数器结构" class="headerlink" title="定时&#x2F;计数器结构"></a>定时&#x2F;计数器结构</h3><p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/51mcu/%E5%AE%9A%E6%97%B6%E8%AE%A1%E6%95%B0%E5%99%A8.png" alt="定时/计数器结构"></p>
+<p>16位寄存器T0、T1分别由TH0、TL0和TH1、TL1四个8位计数器组成 ，其中两个定时器的区别为：</p>
+<ul>
+<li>T0（定时器0）可分成2个独立的8位定时器，而定时器1则不能； </li>
+<li>T1（定时器1）可作为串口的波特率发生器，而定时器0则不能。</li>
+</ul>
+<p>还有两个特殊功能寄存器用于控制定时&#x2F;计数器：</p>
+<ul>
+<li>TMOD，工作方式控制寄存器，确定工作方式和功能；</li>
+<li>TCON，工作状态控制寄存器，控制定时&#x2F;计数器的启动、停止及溢出标志。</li>
+</ul>
+<h3 id="定时-计数器控制"><a href="#定时-计数器控制" class="headerlink" title="定时&#x2F;计数器控制"></a>定时&#x2F;计数器控制</h3><h4 id="工作方式寄存器TMOD"><a href="#工作方式寄存器TMOD" class="headerlink" title="工作方式寄存器TMOD"></a>工作方式寄存器TMOD</h4><p>低四位（0，1，2，3）用于T0，高四位用于T1：</p>
+<table>
+<thead>
+<tr>
+<th align="center">位</th>
+<th align="center">7</th>
+<th align="center">6</th>
+<th align="center">5</th>
+<th align="center">4</th>
+<th align="center">3</th>
+<th align="center">2</th>
+<th align="center">1</th>
+<th align="center">0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">功能</td>
+<td align="center">GATE</td>
+<td align="center">$C&#x2F;\overline{T}$</td>
+<td align="center">M1</td>
+<td align="center">M0</td>
+<td align="center">GATE</td>
+<td align="center">$C&#x2F;\overline{T}$</td>
+<td align="center">M1</td>
+<td align="center">M0</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p><strong>GATE</strong>：门控位，用于控制定时器的启动是否受外部中断源的影响。当GATE &#x3D; 0时，只要使用软件将TCON中的TR0或TR1置为1，就可以启动定时&#x2F;计数器工作；当GATE &#x3D; 0时，要用软件将TCON中的TR0或TR1为1，同时外部中断的引脚INT0&#x2F;1也为高电平，才可以启动定时&#x2F;计数器。即此时多了一个启动条件：INT0&#x2F;1引脚需为高电平。</p>
+</li>
+<li><p>$C&#x2F;\overline{T}$：定时&#x2F;计数器模式选择位，当$C&#x2F;\overline{T}&#x3D;0$ 为定时模式；$C&#x2F;\overline{T}&#x3D; 1$为计数模式。</p>
+</li>
+<li><p><strong>M1&#x2F;M0</strong>：工作方式设置位，定时&#x2F;计数器有四种工作方式：</p>
+<table>
+<thead>
+<tr>
+<th align="center">M1M0</th>
+<th align="center">工作方式</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">00</td>
+<td align="center">方式0</td>
+<td align="center">13位定时&#x2F;计数器</td>
+</tr>
+<tr>
+<td align="center">01</td>
+<td align="center">方式1</td>
+<td align="center">16位定时&#x2F;计数器</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">方式2</td>
+<td align="center">8位自动重装定时&#x2F;计数器</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">方式3</td>
+<td align="center">T0分成两个独立的定位&#x2F;计数器，T1此方式停止计数</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h5 id="定时-计数器工作方式"><a href="#定时-计数器工作方式" class="headerlink" title="定时&#x2F;计数器工作方式"></a>定时&#x2F;计数器工作方式</h5><ul>
+<li><p><strong>方式0：为13位定时计数器</strong>：由TL0的低5位（高3位未用）和TH0的8位组成。TL0的低5位溢出时向TH0进位，TH0溢出时，置位TCON中的TF0标志，向CPU发出中断请求。</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/51mcu/%E6%96%B9%E5%BC%8F0.png" alt="方式0"> </p>
+<p>计数个数与计数初值的关系：$X &#x3D; 2^8-N$</p>
+</li>
+<li><p><strong>方式1：为16位定时计数器</strong>：由TL0作为低8位，TH0 作为高8位，组成了16位加1计数器 。</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/51mcu/%E6%96%B9%E5%BC%8F1.png" alt="方式1"></p>
+<p>  计数个数与计数初值的关系为：$X&#x3D;2^{16}－N$</p>
+</li>
+<li><p><strong>方式2：8位自动重装初值定时&#x2F;计数器</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/51mcu/%E6%96%B9%E5%BC%8F2.png" alt="方式2"></p>
+<p> 计数个数与计数初值的关系为：$X&#x3D;2^8－N$ </p>
+</li>
+<li><p><strong>方式3：只适用于定时&#x2F;计数器T0</strong>，定时器T1处于方式3时相当于TR1&#x3D;0，停止计数。</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/51mcu/%E6%96%B9%E5%BC%8F3.png" alt="方式3"> </p>
+<p>  工作方式3将T0分成为两个独立的8位计数器TL0和TH0 。</p>
+</li>
+</ul>
+<h4 id="工作状态寄存器TCON"><a href="#工作状态寄存器TCON" class="headerlink" title="工作状态寄存器TCON"></a>工作状态寄存器TCON</h4><table>
+<thead>
+<tr>
+<th align="center">位序</th>
+<th align="center">D7</th>
+<th align="center">D6</th>
+<th align="center">D5</th>
+<th align="center">D4</th>
+<th align="center">D3</th>
+<th align="center">D2</th>
+<th align="center">D1</th>
+<th align="center">D0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">位名称</td>
+<td align="center">TF1</td>
+<td align="center">TR1</td>
+<td align="center">TF0</td>
+<td align="center">TR0</td>
+<td align="center">IE1</td>
+<td align="center">IT1</td>
+<td align="center">IE0</td>
+<td align="center">IT0</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>TF1：T1溢出标志位</p>
+<p>当T1计数满溢出时，硬件将TF1置1，并申请中断。接入服务程序之后，其将自动清零；T1工作时，CPU可随时查询TF1的状态。所以，TF1可用作查询测试的标志。TF1也可以用软件置1或清0，同硬件的效果一样。</p>
+</li>
+<li><p>TR1：T1运行控制位</p>
+<p>TR1 &#x3D; 1：启动定时器；TR1 &#x3D; 0：关闭计时器，由软件控制。</p>
+</li>
+<li><p>TF0：T0溢出标志位</p>
+<p>功能同TF1，工作对象是T0。</p>
+</li>
+<li><p>TR0：T0运行控制位</p>
+<p>功能同TF1，工作对象是T0。</p>
+</li>
+<li><p>IE1：外部中断1请求标志位</p>
+</li>
+<li><p>IT1：外部中断1触发方式选择位</p>
+</li>
+<li><p>IE0：外部中断0请求标志位</p>
+</li>
+<li><p>IT1：外部中断0触发方式选择位</p>
+</li>
+</ul>
+<h3 id="定时-计数器原理"><a href="#定时-计数器原理" class="headerlink" title="定时&#x2F;计数器原理"></a>定时&#x2F;计数器原理</h3><p>定时&#x2F;计数器的实质是<strong>加1计数器</strong>，由高8位和低8位2个寄存器组成。加1计数器有两个计数脉冲来源：一是由系统的时钟振荡输出脉冲经12分频后送来；二是由T0或T1引脚输入的外部脉冲源。</p>
+<p>每来一个脉冲，计数器加1，当加到计数器全为1的时候，再输入一个脉冲使计数器归零，且计数器的溢出时TCON中的TF0或TF1置1，向CPU发出中断请求（定时&#x2F;计数器中断允许时）。</p>
+<p>如果定时&#x2F;计数器处于定时模式，则表示定时时间结束；计数模式即计数值已满。所以，溢出时计数器的值减去计数器的初值即为加1计数器的计数值。</p>
+<p>当设置为定时器模式时，加1计数器是对内部机器周期计数（1个机器周期相当于12个震荡周期，即**计数频率为晶振频率的$1&#x2F;12$**）。计数个数乘以机器周期$T_{cy}$就是定时时间t。</p>
+<p>设置为计数器模式时，外部事件计数脉冲由T0或T1引脚输入到计数器。在每个机器周期的S5P2期间采样T0，T1引脚电平。当某周期采样到一高电平输入，而下一周期又采样到一低电平时，则计数器加1，更新的计数值，在下一个周期的S3P1期间装入计数器。由于检测一个从1到0的下降沿需要两个机器周期，因此要求被采样的电平至少要维持一个机器周期。当晶振频率为12MHz时，最高计数频率不超过1&#x2F;2MHz，即计数脉冲的周期要大于$2\mu{s}$。</p>
+<h4 id="CPU-时序的有关知识"><a href="#CPU-时序的有关知识" class="headerlink" title="CPU 时序的有关知识"></a>CPU 时序的有关知识</h4><ul>
+<li>S5P2： 代表第5状态中的第二节拍</li>
+</ul>
+<blockquote>
+<p>机器周期：一般也叫CPU周期。 表示从内存读取一条指令字的最短时间，它是指令周期的最小单位。它等于单指令的周期长度 。 在51单片机中 一个机器周期&#x3D;6状态周期&#x3D;12时钟周期。</p>
+</blockquote>
+<blockquote>
+<p> 指令周期：一条指令包括1个或多个机器周期。所有的C语言代码最后都会编译成汇编代码来执行，而执行一条汇编指令需要的机器周期就叫做指令周期 </p>
+</blockquote>
+<blockquote>
+<p> 状态周期：在8051单片机中把一个时钟周期定义为一个节拍（用P表示），二个节拍定义为一个状态周期（用S表示）。一个状态周期等于两个时钟周期。 </p>
+</blockquote>
+<blockquote>
+<p> 时钟周期：又叫<strong>振荡周期</strong>， 是指为单片机提供时钟信号的振荡源的周期（ 晶振频率的倒数 ）。</p>
+</blockquote>
+<h3 id="定时-计数器操作"><a href="#定时-计数器操作" class="headerlink" title="定时&#x2F;计数器操作"></a>定时&#x2F;计数器操作</h3><ul>
+<li><p>步骤：</p>
+<ol>
+<li>选择工作方式（设置M1，M0）</li>
+<li>选择控制方式（设置GATE）</li>
+<li>选择模式：定时器还是计数器（设置C&#x2F;T）</li>
+<li>给定时&#x2F;计数器赋初值（设置$TH_X$和$TL_x$）</li>
+<li>开启定时器中断（设置ET0和ET1）</li>
+<li>开启总中断（设置EA）</li>
+<li>打开计数器（设置TR1和TR0）</li>
+</ol>
+</li>
+<li><p>配置计数器：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">TimerConfiguration</span><span class="params">()</span>&#123;</span><br><span class="line">    TMOD = <span class="number">0X01</span>;	<span class="comment">//定时器T0工作方式1</span></span><br><span class="line">    TH0 = <span class="number">0X3c</span>;		<span class="comment">//设置初始值</span></span><br><span class="line">    TL0 = <span class="number">0X0B0</span>;	</span><br><span class="line">    EA = <span class="number">1</span>;			<span class="comment">//打开总中断</span></span><br><span class="line">    ET0 = <span class="number">1</span>;		<span class="comment">//打开定时器T0中断</span></span><br><span class="line">    TR0 = <span class="number">1</span>;		<span class="comment">//启动定时器T0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定时器T0初值计算（晶振为12MHz）</p>
+<p> <strong>51单片机内部时钟频率是外部时钟的12分频</strong>， 也就是说当外部晶振的频率输入到单片机里面的时候要进行12分频。比如说你用的是12MHz的晶振，那么单片机内部的时钟频率就是$12MHz\over12$ &#x3D; 1MHz，当你使用12MHz的外部晶振的时候，机器周期&#x3D;$1 \over1MHz$&#x3D;$1\mu{s}$。 </p>
+<p>当我们需要定时50ms时，则计数值为${50ms}\over{1{\mu}s}$&#x3D;50000，所以<strong>初值 &#x3D; 最大值计数值 - 50000 &#x3D; 15536</strong> (3cb0)，即$TH_x$ &#x3D;0x3c，$TL_x$&#x3D; 0xb0。</p>
+</li>
+</ul>
+<h2 id="程序代码"><a href="#程序代码" class="headerlink" title="程序代码"></a>程序代码</h2><ul>
+<li><p>LED按定时器T0设定的时间周期闪烁</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line">sbit led = P1 ^ <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">t0_init</span><span class="params">()</span>&#123;</span><br><span class="line">    TMOD = <span class="number">0X01</span>;	<span class="comment">//设置定时器T0工作方式1	</span></span><br><span class="line">    TH0 = <span class="number">0X3c</span>;		<span class="comment">//设置初始值</span></span><br><span class="line">    TH0 = <span class="number">0Xb0</span>;</span><br><span class="line">    EA = <span class="number">1</span>;			<span class="comment">//打开总中断</span></span><br><span class="line">    ET0 = <span class="number">1</span>;		<span class="comment">//打开定时器T0中断</span></span><br><span class="line">    TR0 = <span class="number">1</span>;		<span class="comment">//启动定时器T0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    led = <span class="number">1</span>;</span><br><span class="line">    t0_init();</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">t0</span><span class="params">()</span> interrupt 1&#123;</span><br><span class="line">    TH0 = <span class="number">0X3c</span>;		<span class="comment">//设置初始值</span></span><br><span class="line">    TL0 = <span class="number">0Xb0</span>;</span><br><span class="line">    led = ~led;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>LED按500ms&#x2F;次的精确频率闪动</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line">sbit led = P1 ^ <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">t1_init</span><span class="params">()</span>&#123;</span><br><span class="line">    TMOD = <span class="number">0X10</span>;	<span class="comment">//设置定时器T1工作方式1	</span></span><br><span class="line">    TH0 = <span class="number">0X3c</span>;		<span class="comment">//设置初始值</span></span><br><span class="line">    TH0 = <span class="number">0Xb0</span>;</span><br><span class="line">    EA = <span class="number">1</span>;			<span class="comment">//打开总中断</span></span><br><span class="line">    ET1 = <span class="number">1</span>;		<span class="comment">//打开定时器T1中断</span></span><br><span class="line">    TR1 = <span class="number">1</span>;		<span class="comment">//启动定时器T1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    led = <span class="number">1</span>;</span><br><span class="line">    t1_init();</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i == <span class="number">10</span>)&#123;</span><br><span class="line">            led = ~led;</span><br><span class="line">            i = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">t1</span><span class="params">()</span> interrupt 3&#123;</span><br><span class="line">    TH0 = <span class="number">0X3c</span>;		<span class="comment">//设置初始值</span></span><br><span class="line">    TL0 = <span class="number">0Xb0</span>;</span><br><span class="line">   	i++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2019/10/12/51mcu-4/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2019-10-12 20:48:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/51%E5%8D%95%E7%89%87%E6%9C%BA/" title="51单片机">
+                        #51单片机
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2019/10/12/51mcu-5/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E5%9F%BA%E7%A1%80"><span class="toc-text">概念基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%89%87%E6%9C%BA%E5%BB%B6%E6%97%B6%E5%9F%BA%E7%A1%80"><span class="toc-text">单片机延时基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6-%E8%AE%A1%E6%95%B0%E5%99%A8%E7%BB%93%E6%9E%84"><span class="toc-text">定时&#x2F;计数器结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6-%E8%AE%A1%E6%95%B0%E5%99%A8%E6%8E%A7%E5%88%B6"><span class="toc-text">定时&#x2F;计数器控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F%E5%AF%84%E5%AD%98%E5%99%A8TMOD"><span class="toc-text">工作方式寄存器TMOD</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6-%E8%AE%A1%E6%95%B0%E5%99%A8%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="toc-text">定时&#x2F;计数器工作方式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81%E5%AF%84%E5%AD%98%E5%99%A8TCON"><span class="toc-text">工作状态寄存器TCON</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6-%E8%AE%A1%E6%95%B0%E5%99%A8%E5%8E%9F%E7%90%86"><span class="toc-text">定时&#x2F;计数器原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU-%E6%97%B6%E5%BA%8F%E7%9A%84%E6%9C%89%E5%85%B3%E7%9F%A5%E8%AF%86"><span class="toc-text">CPU 时序的有关知识</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6-%E8%AE%A1%E6%95%B0%E5%99%A8%E6%93%8D%E4%BD%9C"><span class="toc-text">定时&#x2F;计数器操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E4%BB%A3%E7%A0%81"><span class="toc-text">程序代码</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 51%E5%8D%95%E7%89%87%E6%9C%BA%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%AE%9A%E6%97%B6%E5%99%A8 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2019%2F10%2F12%2F51mcu-6%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2019/10/12/51mcu-6/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

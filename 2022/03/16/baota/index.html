@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Linux 宝塔面板魔改记录 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Linux 宝塔面板魔改记录</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-03-16 19:48:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E5%AE%9D%E5%A1%94/" title="宝塔">
+                    #宝塔
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Linux/" title="Linux">
+                    #Linux
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="去除版本更新"><a href="#去除版本更新" class="headerlink" title="去除版本更新"></a>去除版本更新</h2><p>服务器安装宝塔后，好几次更新版本，我觉得软件业务稳定后的更新都是不重要的了，大多都是商业性的了，如下小节，直接关闭更新：</p>
+<ul>
+<li>定位到目录<code>/www/server/panel/class</code>，打开代码文件<code>ajax.py</code>；</li>
+<li><strong>CTRL + F</strong> 搜索函数<code>UpdatePanel</code>，注释函数内的操作即可；</li>
+<li>另外，上级目录的<code>task.py</code>中的函数中的<code>update_panel</code>也可注释；</li>
+<li>既然如此，那么也可注释<code>tools.py</code>下对于命令行输入选项<code>u_input == 16</code>的修复代码；</li>
+</ul>
+<p>这样修改后，每次进入宝塔控制台都会报错，也要把<code>index.js</code>检查更新的代码注释：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// setTimeout(function () &#123;</span></span><br><span class="line"><span class="comment">//   bt.system.check_update(function (rdata) &#123;</span></span><br><span class="line"><span class="comment">//     index.consultancy_services(rdata.msg.adviser);</span></span><br><span class="line"><span class="comment">//     if (rdata.status !== false) &#123;</span></span><br><span class="line"><span class="comment">//       $(&#x27;#toUpdate a&#x27;).html(&#x27;更新&lt;i style=&quot;display: inline-block; color: red; font-size: 40px;position: absolute;top: -35px; font-style: normal; right: -8px;&quot;&gt;.&lt;/i&gt;&#x27;);</span></span><br><span class="line"><span class="comment">//       $(&#x27;#toUpdate a&#x27;).css(&quot;position&quot;, &quot;relative&quot;);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//     &#125;</span></span><br><span class="line"><span class="comment">//     if (rdata.msg.is_beta === 1) &#123;</span></span><br><span class="line"><span class="comment">//       $(&#x27;#btversion&#x27;).prepend(&#x27;&lt;span style=&quot;margin-right:5px;&quot;&gt;Beta&lt;/span&gt;&#x27;);</span></span><br><span class="line"><span class="comment">//       $(&#x27;#btversion&#x27;).append(&#x27;&lt;a class=&quot;btlink&quot; href=&quot;https://www.bt.cn/bbs/forum-39-1.html&quot; target=&quot;_blank&quot;&gt;  [找Bug奖宝塔币]&lt;/a&gt;&#x27;);</span></span><br><span class="line"><span class="comment">//     &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//   &#125;, false)</span></span><br><span class="line"><span class="comment">// &#125;, 700)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="去除首页推广"><a href="#去除首页推广" class="headerlink" title="去除首页推广"></a>去除首页推广</h2><p>最新的宝塔版本中，软件首页<strong>软件推荐</strong>很不清爽，于是想去除掉，直接还是老办法，注释代码：</p>
+<ul>
+<li>定位到<code>/www/server/panel/class/ajax.py</code>；</li>
+<li><strong>CTRL + F</strong> 搜索函数<code>__get_home_list</code>，注释函数体；</li>
+</ul>
+<p>横幅广告推广，定位 <code>/www/server/panel/BTPanel/static/js/index.js</code>，搜索关键字 <code>recommend_paid_version</code>，将 <code>try...catch</code>内部代码删除；</p>
+<p>其次还有一个<strong>邀请推荐</strong>，定位到<code>/www/server/panel/BTPanel/templates/default</code>下的<code>index.html</code>，删除以下代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if data[&#x27;pd&#x27;].find(&#x27;免费版&#x27;) != -1 %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;bt-fuli&quot;</span> <span class="attr">class</span>=<span class="string">&quot;bt-dashi&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;btlink ml5&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://www.bt.cn/invite&quot;</span> <span class="attr">target</span>=<span class="string">&quot;_blank&quot;</span>&gt;</span>邀请奖励<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="主面板添加电池信息"><a href="#主面板添加电池信息" class="headerlink" title="主面板添加电池信息"></a>主面板添加电池信息</h2><p>旧手机作为服务器，我觉得添加一个电池信息很有必要，可以查看当前电量，设计电量，实际电量，是否正在充电等，首先需要定位首页信息的获取方法，大抵是在<code>/www/server/panel/class</code>的<code>system.py</code>内；</p>
+<p>添加一个获取电池信息的方法，简单直接地获取:smile::</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">GetPowerInfo</span>(<span class="params">self,get=<span class="literal">None</span></span>):</span><br><span class="line">    powerInfo = &#123;&#125;</span><br><span class="line">    capacity = public.ExecShell(<span class="string">&#x27;cat /sys/class/power_supply/battery/capacity&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">    charge = public.ExecShell(<span class="string">&#x27;cat /sys/class/power_supply/battery/status&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">    current = public.ExecShell(<span class="string">&#x27;cat /sys/class/power_supply/battery/current_now&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">    voltage = public.ExecShell(<span class="string">&#x27;cat /sys/class/power_supply/battery/voltage_now&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">    charge_full = public.ExecShell(<span class="string">&#x27;cat /sys/class/power_supply/battery/charge_full&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">    powerInfo[<span class="string">&#x27;voltage&#x27;</span>] = <span class="built_in">round</span>(<span class="built_in">int</span>(voltage) / <span class="number">1000000</span>, <span class="number">2</span>)</span><br><span class="line">    powerInfo[<span class="string">&#x27;current&#x27;</span>] = <span class="built_in">round</span>(<span class="built_in">int</span>(current) / <span class="number">1000</span>)</span><br><span class="line">    powerInfo[<span class="string">&#x27;capacity&#x27;</span>] = <span class="built_in">int</span>(capacity)</span><br><span class="line">    powerInfo[<span class="string">&#x27;full&#x27;</span>] = <span class="built_in">int</span>(charge_full) / <span class="number">1000</span></span><br><span class="line">    <span class="keyword">if</span>(charge == <span class="string">&quot;Discharging&quot;</span>):</span><br><span class="line">        powerInfo[<span class="string">&#x27;status&#x27;</span>] = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            powerInfo[<span class="string">&#x27;status&#x27;</span>] = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">return</span> powerInfo</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>之后在主页面一直调用的函数内<code>GetNetWork</code>添加数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">networkInfo[<span class="string">&#x27;power&#x27;</span>] = self.GetPowerInfo()</span><br></pre></td></tr></table></figure>
+
+<p>接着就是前端页面，其实我觉得这个电池信息一直和宝塔原来地几个检测表不合式，因为电池容量按理来说是越低越糟糕会变成颜色会变红，而原有地CPU、内存、网络都是越多才显红，哎，别管那么多，能看着就行了；</p>
+<p>依照其他的图表，添加一个电池电量的，id 设为 powChart：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;rank col-xs-6 col-sm-3 col-md-3 col-lg-2 mtb20 circle-box text-center&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;titles&quot;</span>&gt;</span>电池电量<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;powChart&quot;</span> <span class="attr">class</span>=<span class="string">&quot;chart-li&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;outerCircle&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;innerCircle&quot;</span>&gt;</span>0%<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;pow&quot;</span> <span class="attr">class</span>=<span class="string">&quot;info-status&quot;</span>&gt;</span>获取中...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改的地方太多，照着其他几个表来就行了，我给出我修改的几个重点：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// init_chart_view 函数 </span></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">chart_view</span>[<span class="string">&#x27;pow&#x27;</span>] = echarts.<span class="title function_">init</span>(<span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#powChart&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">// set_chart_data 函数</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="title function_">chart_active</span>(<span class="string">&quot;pow&quot;</span>)</span><br><span class="line"><span class="comment">// chart_active 函数</span></span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;pow&#x27;</span>:</span><br><span class="line">val = ((<span class="variable language_">this</span>.<span class="property">chart_result</span>.<span class="property">power</span>.<span class="property">full</span> * <span class="variable language_">this</span>.<span class="property">chart_result</span>.<span class="property">power</span>.<span class="property">capacity</span>) / <span class="number">100</span>).<span class="title function_">toFixed</span>(<span class="number">0</span>) + <span class="string">&quot; / &quot;</span> + <span class="variable language_">this</span>.<span class="property">chart_result</span>.<span class="property">power</span>.<span class="property">full</span> + <span class="string">&quot;(mAH)&quot;</span></span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line"><span class="comment">// reander_system_info 函数</span></span><br><span class="line"><span class="keyword">var</span> powCount = res.<span class="property">power</span>.<span class="property">capacity</span></span><br><span class="line"><span class="keyword">var</span> powInfo = _this.<span class="title function_">chart_color_active</span>(powCount);</span><br><span class="line"></span><br><span class="line"><span class="comment">// get_init 函数</span></span><br><span class="line">$(<span class="string">&#x27;#powChart&#x27;</span>).<span class="title function_">hover</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> power = rdata.<span class="property">power</span>, texts = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    texts += <span class="string">&quot;&lt;strong&gt;状态&lt;/strong&gt;&lt;/br&gt;正在&quot;</span> + (power.<span class="property">status</span> ? <span class="string">&#x27;充电&#x27;</span> : <span class="string">&quot;放电&quot;</span>)</span><br><span class="line">    texts += <span class="string">&quot;&lt;/br&gt;&lt;strong&gt;容量信息&lt;/strong&gt;&lt;/br&gt;&quot;</span></span><br><span class="line">    texts += <span class="string">&quot;设计电量：&quot;</span> + power.<span class="property">full</span> + <span class="string">&quot; mAH&lt;/br&gt;&quot;</span></span><br><span class="line">    texts += <span class="string">&quot;当前电量：&quot;</span> + power.<span class="property">current</span> + <span class="string">&quot; mAH&lt;/br&gt;&quot;</span></span><br><span class="line">    texts += <span class="string">&quot;当前电流：&quot;</span> + (power.<span class="property">status</span> ? <span class="string">&#x27;&#x27;</span> : <span class="string">&#x27;-&#x27;</span>) + power.<span class="property">current</span> + <span class="string">&quot; mA&lt;/br&gt;&quot;</span></span><br><span class="line">    texts += <span class="string">&quot;当前电压：&quot;</span> + power.<span class="property">voltage</span> + <span class="string">&quot; V&lt;/br&gt;&quot;</span></span><br><span class="line"></span><br><span class="line">    layer.<span class="title function_">tips</span>(texts, <span class="variable language_">this</span>, &#123; <span class="attr">time</span>: <span class="number">0</span>, <span class="attr">tips</span>: [<span class="number">1</span>, <span class="string">&#x27;#999&#x27;</span>] &#125;);</span><br><span class="line">&#125;, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    layer.<span class="title function_">closeAll</span>(<span class="string">&#x27;tips&#x27;</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 电池数据专用颜色函数</span></span><br><span class="line"><span class="attr">power_color_active</span>: <span class="keyword">function</span> (<span class="params">number</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> activeInfo = &#123;&#125;;</span><br><span class="line">    <span class="keyword">if</span> (number &gt;= <span class="number">85</span>) &#123;</span><br><span class="line">        activeInfo = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="variable language_">this</span>.<span class="property">load_config</span>[<span class="number">1</span>]));</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (number &lt;= <span class="number">30</span>) &#123;</span><br><span class="line">        activeInfo = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="variable language_">this</span>.<span class="property">load_config</span>[<span class="number">0</span>]));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        activeInfo = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="variable language_">this</span>.<span class="property">load_config</span>[<span class="number">2</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">    activeInfo.<span class="property">val</span> = number;</span><br><span class="line">    <span class="keyword">return</span> activeInfo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="宝塔挂载-SD-卡"><a href="#宝塔挂载-SD-卡" class="headerlink" title="宝塔挂载 SD 卡"></a>宝塔挂载 SD 卡</h2><p>本来这个内容应该是 Linux Deploy 的内容，也就是上一篇博客的相关，但是想想还是放在这里来吧；</p>
+<p>由于旧手机是 32G 的存储空间，实际容量也就 20 几个 G 部署了几个项目以后，存储空间竟然快见底了，于是翻箱倒柜找出一张大容量 SD 卡出来，插入了旧手机，旧手机就是旧手机，还能如此先进地支持扩展存储；</p>
+<p>首先，需要对 SD 卡进行格式化，选择 <code>ext4</code>，之后打开 shell，查看 SD 卡，容量大致对得上那个就是我们的 SD 卡了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsblk</span><br></pre></td></tr></table></figure>
+
+<p>我这里的是<code>mmcblk1</code>，对于的路径也就是<code>/dev/block/mmcblk1</code>，之后我们打开 Linux Deploy，进去到【挂载安卓资源】，新增一个挂载点，将<code>/dev/block/mmcblk1</code>挂载到容器内任意一个路径下，我选择的是根目录的<code>/sdcard</code>，到这重新配置一下 Linux Deploy，重启就OK了。</p>
+<p>当然，更简单的方法是，先把 SD 卡挂载到安卓这边，然后通过安卓系统中的路径，在 Linux Deploy 中进行挂载，但是，我通常会关闭安卓系统。</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ul>
+<li>关闭安全入口：<code>rm -f /www/server/panel/data/admin_path.pl</code></li>
+</ul>
+<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><p>宝塔内安装 nginx 时报错，日志提示缺少依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install libxslt-dev libxml2-dev</span><br></pre></td></tr></table></figure>
+
+<p>命令行使用宝塔指令无效，宝塔假死：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> /etc/init.d/bt   /tmp/bt_back</span><br><span class="line"><span class="built_in">cp</span> /www/server/panel/init.sh  /etc/init.d/bt &amp;&amp; <span class="built_in">chmod</span> +x  /etc/init.d/bt</span><br><span class="line">/etc/init.d/bt  restart</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/02/01/react-14/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-03-16 19:48:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E5%AE%9D%E5%A1%94/" title="宝塔">
+                        #宝塔
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Linux/" title="Linux">
+                        #Linux
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/03/18/react-15/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0"><span class="toc-text">去除版本更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E9%A6%96%E9%A1%B5%E6%8E%A8%E5%B9%BF"><span class="toc-text">去除首页推广</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E9%9D%A2%E6%9D%BF%E6%B7%BB%E5%8A%A0%E7%94%B5%E6%B1%A0%E4%BF%A1%E6%81%AF"><span class="toc-text">主面板添加电池信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9D%E5%A1%94%E6%8C%82%E8%BD%BD-SD-%E5%8D%A1"><span class="toc-text">宝塔挂载 SD 卡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="toc-text">其他问题</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Linux%20%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E9%AD%94%E6%94%B9%E8%AE%B0%E5%BD%95 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2022%2F03%2F16%2Fbaota%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2022/03/16/baota/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

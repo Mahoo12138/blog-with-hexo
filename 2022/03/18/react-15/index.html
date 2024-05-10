@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      前端学习之React项目实战Ⅲ 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">前端学习之React项目实战Ⅲ</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-03-18 22:54:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                    #前端
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/React/" title="React">
+                    #React
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="添加项目页面"><a href="#添加项目页面" class="headerlink" title="添加项目页面"></a>添加项目页面</h2><h3 id="状态提升"><a href="#状态提升" class="headerlink" title="状态提升"></a>状态提升</h3><p>按照项目的设计，在 Header ，项目列表以及编辑项目三处都会打开新增项目或者说是编辑项目的 Modal，这些组件都需要这个控制 Modal 的状态，常见的做法是使用状态提升，将其共同需要的状态提升至距离它们最近的父组件中，在项目中是<code> AuthenticateApp</code>这个组件，即在此创建一个新的状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const [projectModalOpen,setProjectModalOpen] = useState(false)</span><br></pre></td></tr></table></figure>
+
+<p>之后即是对于 Modal 组件的大致编写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export const ProjectModal = (props: &#123;projectModalOpen: boolean,onClose:()=&gt;void&#125;) =&gt; &#123;</span><br><span class="line">  return &lt;Drawer onClose=&#123;props.onClose&#125; visible=&#123;props.projectModalOpen&#125;&gt;</span><br><span class="line">   &lt;h1&gt; Project Modal &lt;/h1&gt;</span><br><span class="line">   &lt;Button onClick=&#123;props.onClose&#125;&gt;关闭&lt;/Button&gt;</span><br><span class="line">  &lt;/Drawer&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后将<code>setProjectModalOpen</code>进行传递：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;Route path=&#123;&quot;/projects&quot;&#125; element=&#123;&lt;ProjectListPage setProjectModalOpen=&#123;setProjectModalOpen&#125; /&gt;&#125; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;List</span><br><span class="line">    ...otherProps</span><br><span class="line">    setProjectModalOpen=&#123;props.setProjectModalOpen&#125;</span><br><span class="line">    /&gt;</span><br><span class="line"></span><br><span class="line">// project list </span><br><span class="line">&#123;</span><br><span class="line">    render(value,project)&#123;</span><br><span class="line">        return &lt;Dropdown overlay=&#123;&lt;Menu&gt;</span><br><span class="line">                                      &lt;Menu.Item&gt;</span><br><span class="line">                                          &lt;ButtonNoPadding type=&#123;&#x27;link&#x27;&#125; onClick=&#123;()=&gt;props.setProjectModalOpen(true)&#125;&gt;编辑&lt;/ButtonNoPadding&gt;</span><br><span class="line">                                      &lt;/Menu.Item&gt;</span><br><span class="line">                                  &lt;/Menu&gt;&#125;&gt;</span><br><span class="line">            &lt;ButtonNoPadding type=&#123;&#x27;link&#x27;&#125;&gt;...&lt;/ButtonNoPadding&gt;</span><br><span class="line">        &lt;/Dropdown&gt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 props 这样传输，会根据组件的复杂程度，传递相当多次，这样的现象叫做 <strong>prop drilling</strong>；如此的下钻，使用是没有问题的，但是定义和调用相距太远，导致层级差距太大的组件耦合，如需要修改业务的时候，就需要每一处都做修改；</p>
+<h3 id="组件组合"><a href="#组件组合" class="headerlink" title="组件组合"></a>组件组合</h3><p>React 官网提供一种方案叫做<strong>组件组合</strong>，能够避免这类情况，即它选择 JSX 组件直接作为 props 传入，修改时只需要修改最初的传入值即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;PageHeader projectButton=&#123;</span><br><span class="line">        &lt;ButtonNoPadding</span><br><span class="line">            type=&quot;link&quot;</span><br><span class="line">            onClick=&#123;() =&gt; setProjectModalOpen(true)&#125;</span><br><span class="line">            &gt;</span><br><span class="line">            创建项目</span><br><span class="line">        &lt;/ButtonNoPadding&gt;</span><br><span class="line">     &#125; /&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="URL管理全局状态"><a href="#URL管理全局状态" class="headerlink" title="URL管理全局状态"></a>URL管理全局状态</h3><p>上面演示了常用的两种对于处理状态的模式，但我们都不会采用，而是会使用 URL 来管理，来写个 Hook 吧：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">export const useProjectModal = ()=&gt;&#123;</span><br><span class="line">  const [&#123;projectCreate&#125;, setProjectCreate] = useUrlQueryParam([</span><br><span class="line">    &#x27;projectCreate&#x27;</span><br><span class="line">  ])</span><br><span class="line">  const open = () =&gt; setProjectCreate(&#123;projectCreate: true&#125;)</span><br><span class="line">  const close = () =&gt; setProjectCreate(&#123;projectCreate: undefined&#125;)</span><br><span class="line">  return &#123;</span><br><span class="line">    projectCreate: projectCreate === &#x27;true&#x27;,</span><br><span class="line">    open,</span><br><span class="line">    close</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样下来，只需要在需要打开 Modal 组件内，使用该Hook就行了，但是这里有一个小问题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useLocation() may be used only in the context of a &lt;Router&gt; component.</span><br></pre></td></tr></table></figure>
+
+<p>当看到<strong>context</strong>这个字眼时，我们并不应该陌生，类似我们自己创建的<code>useAuth</code>中使用的 context，大概率是因为我们使用了<code>useSearchParams</code>这个 Hook，其中可能间接使用了<code>useLocation</code>，所以我们将用到了<code>useSearchParams</code>组件都放到<code>Router</code>组件内部，没错，猜测是正确的！</p>
+<h2 id="处理服务端缓存"><a href="#处理服务端缓存" class="headerlink" title="处理服务端缓存"></a>处理服务端缓存</h2><h3 id="类型守卫"><a href="#类型守卫" class="headerlink" title="类型守卫"></a>类型守卫</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;error ? (</span><br><span class="line">    &lt;Typography.Text type=&quot;danger&quot;&gt;&#123;error.message&#125;&lt;/Typography.Text&gt;</span><br><span class="line">) : null&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于我们之前对错误的显示，也可以加以优化，如封装一个组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 自定义类型守卫</span><br><span class="line">const isError = (value:any):value is Error  =&gt; value?.message</span><br><span class="line"></span><br><span class="line">export const ErrorBox = (&#123;error&#125; : &#123;error:unknown&#125;)=&gt;&#123;</span><br><span class="line">  if(isError(error))&#123;</span><br><span class="line">    return &lt;Typography.Text type=&quot;danger&quot;&gt;&#123;error.message&#125;&lt;/Typography.Text&gt;</span><br><span class="line">  &#125;</span><br><span class="line">  return null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对此，可引出<strong>类型守卫</strong>这个概念，其所指的是一种类型推断的行为，能在语句的块级作用域内「收紧」变量的类型，以下是常用的四种：</p>
+<ul>
+<li>类型判断：<code>typeof</code></li>
+<li>实例判断：<code>instanceof</code></li>
+<li>属性判断：<code>in</code></li>
+<li>字面量相等判断：<code>==</code>, <code>===</code>, <code>!=</code>, <code>!==</code></li>
+</ul>
+<p>而我们上面代码中的是形如<code>&#123;形参&#125; is &#123;类型&#125;</code>的自定义的类型守卫，通过返回布尔值的条件函数赋予类型守卫的能力；</p>
+<h3 id="使用-Redux-Toolkit"><a href="#使用-Redux-Toolkit" class="headerlink" title="使用 Redux Toolkit"></a>使用 Redux Toolkit</h3><p>相较于传统的 React-Redux 状态管理模式，Redux ToolKit 再抽象封装了一层 API ，使得在面对大型状态管理时，更易读和管理：</p>
+<ul>
+<li><strong>configureStore</strong>：像从 Redux 中创建原始的 createStore 一样创建一个 Redux store 实例，但接受一个命名的选项对象并自动设置 Redux DevTools 扩展。</li>
+<li><strong>createAction</strong>：接受一个 Action 类型字符串，并返回一个使用该类型的 Action 创建函数。</li>
+<li><strong>createReducer</strong>：接受初始状态值和 Action 类型的查找表到 reducer 函数，并创建一个处理所有 Action类型的 reducer。</li>
+<li><strong>createSlice</strong>：接受一个初始状态和一个带有 reducer 名称和函数的查找表，并自动生成 action creator 函数、action 类型字符串和一个 reducer 函数。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">import &#123; createSlice &#125; from &#x27;@reduxjs/toolkit&#x27;;</span><br><span class="line">export const initialState = &#123;</span><br><span class="line">  users: [],</span><br><span class="line">  loading: false,</span><br><span class="line">  error: false,</span><br><span class="line">&#125;;</span><br><span class="line">const userSlice = createSlice(&#123;</span><br><span class="line">  name: &#x27;user&#x27;,</span><br><span class="line">  initialState,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    getUser: (state, action) =&gt; &#123;</span><br><span class="line">      state.users = action.payload;</span><br><span class="line">      state.loading = true;</span><br><span class="line">      state.error = false;</span><br><span class="line">    &#125;,</span><br><span class="line">    createUser: (state, action) =&gt; &#123;</span><br><span class="line">      state.users.unshift(action.payload);</span><br><span class="line">      state.loading = false;</span><br><span class="line">    &#125;,</span><br><span class="line">    deleteUser: (state, action) =&gt; &#123;</span><br><span class="line">      state.users.filter((user) =&gt; user.id !== action.payload.id);</span><br><span class="line">      state.loading = false;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line">// 导出 action 和 reducer</span><br><span class="line">export const &#123; createUser, deleteUser, getUser &#125; = userSlice.actions;</span><br><span class="line">export default userSlice.reducer;</span><br></pre></td></tr></table></figure>
+
+<p>相较于传统的redux应用，createSlice 不需要在管理和识别 action，也无需为 action 和 reducer 创建单独的目录进行管理，在导出后引入即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import &#123; configureStore &#125; from &quot;@reduxjs/toolkit&quot;;</span><br><span class="line">import userSlice from &quot;./features/user/userSlice&quot;;</span><br><span class="line">export default configureStore(&#123;</span><br><span class="line"> reducer: &#123;</span><br><span class="line">  user: userSlice,</span><br><span class="line"> &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-React-Query"><a href="#使用-React-Query" class="headerlink" title="使用 React Query"></a>使用 React Query</h3><p>  <code>React-Query</code>是一个基于<code>React Hooks</code>的数据请求库，这个库将帮助你获取、同步、更新和<strong>缓存</strong>你的远程数据， 提供两个简单的 hooks，就能完成增删改查等操作；</p>
+<p>例如，我们使用<code>React Query</code>中的最常用的<code>useQuery</code>来改造<code>useProject	</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export const useProjects = (param?: Partial&lt;Project&gt;) =&gt; &#123;</span><br><span class="line">    const request = useHttp();</span><br><span class="line">    return useQuery&lt;Project[]&gt;([&#x27;projects&#x27;,param],() =&gt; request(&quot;projects&quot;, &#123; data: cleanObject(param || &#123;&#125;) &#125;))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>useQuery</code>用于查询数据第一个参数<code>queryKey</code>，指定用于查询的 key，当 key 更改时，则会再次自动查询；其次则是返回 Promise 的函数，第三个参数用于操作的配置；</p>
+<p>下一个改造的则是<code>useEditProject</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">export const useEditProject = () =&gt; &#123;</span><br><span class="line">  const client = useHttp();</span><br><span class="line">  const queryClient = useQueryClient()</span><br><span class="line"></span><br><span class="line">  return useMutation(</span><br><span class="line">    (params: Partial&lt;Project&gt;) =&gt; &#123;</span><br><span class="line">      return client(`projects/$&#123;params.id&#125;`, &#123;</span><br><span class="line">        method: &quot;PATCH&quot;,</span><br><span class="line">        data: params,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">    onSuccess: () =&gt; queryClient.invalidateQueries(&#x27;projects&#x27;)</span><br><span class="line">  &#125;</span><br><span class="line">  )</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>useMutation</code>处理数据的增&#x2F;删&#x2F;改，这里比查询多了第三个参数中的<code>onSuccess</code>回调，用于更改后刷新列表；其中返回的<code>mutate</code>函数，可传入参数和回调函数进行更新数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const pinProject = (id: number) =&gt; (pin: boolean) =&gt; mutate(&#123; id, pin &#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="编辑和添加项目"><a href="#编辑和添加项目" class="headerlink" title="编辑和添加项目"></a>编辑和添加项目</h2><p>在编辑页面前，我们需要在<code>useProjectModal</code>内添加一些东西：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const [&#123; projectCreate, editingProjectId &#125;, setProjectParam] =</span><br><span class="line">      useUrlQueryParam([&quot;projectCreate&quot;, &quot;editingProjectId&quot;]);</span><br><span class="line"></span><br><span class="line">const &#123; data: editingProject, isLoading &#125; = useProject(+editingProjectId);</span><br><span class="line"></span><br><span class="line">const open = () =&gt; setProjectParam(&#123; projectCreate: true &#125;);</span><br><span class="line">const close = () =&gt;</span><br><span class="line">setProjectParam(&#123; projectCreate: undefined, editingProjectId: undefined &#125;);</span><br><span class="line">const startEdit = (id: number) =&gt; setProjectParam(&#123; editingProjectId: id &#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>editingProjectId</code>编辑的项目的 id，也选择用 URL 来管理，并且获取到该对应项目的数据；<code>startEdit</code>函数用于打开编辑的页面，会将参数 id 设置为待编辑项目；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const &#123; startEdit &#125; = useProjectModal();</span><br><span class="line">const editProject = (id: number) =&gt; () =&gt; startEdit(id);</span><br><span class="line"></span><br><span class="line">&lt;Menu.Item onClick=&#123;editProject(project.id)&#125; key=&#123;&quot;edit&quot;&#125;&gt;</span><br><span class="line">    编辑</span><br><span class="line">&lt;/Menu.Item&gt;</span><br></pre></td></tr></table></figure>
+
+<p>再来是编辑页面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const &#123; projectModalOpen, close, editingProject, isLoading &#125; =</span><br><span class="line">      useProjectModal();</span><br><span class="line">const title = editingProject ? &quot;编辑项目&quot; : &quot;添加项目&quot;;</span><br><span class="line"></span><br><span class="line">const useMutationProject = editingProject ? useEditProject : useAddProject;</span><br><span class="line">const &#123; isLoading: mutateLoading, mutateAsync, error &#125; = useMutationProject();</span><br><span class="line"></span><br><span class="line">const [form] = useForm();</span><br><span class="line">const onFinish = (value: any) =&gt; &#123;</span><br><span class="line">    mutateAsync(&#123; ...editingProject, ...value &#125;).then(() =&gt; &#123;</span><br><span class="line">        form.resetFields();</span><br><span class="line">        close();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">useEffect(() =&gt; &#123;</span><br><span class="line">    form.setFieldsValue(editingProject);</span><br><span class="line">&#125;, [editingProject, form]);</span><br></pre></td></tr></table></figure>
+
+<p>首先拿到<code>editingProject</code>看看是否存在，决定是添加还是编辑任务；使用<code>useForm</code>创建一个 form 实例用于绑定到 From 表单，继续数据操作；<code>onFinish</code>函数用于表单提交，且使用的是异步执行函数，确保操作成功后关闭页面，并且清空表单数据；<code>useEffect</code>内，初始化表单；以下是编辑页面的 JSX 结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">export const ProjectModal = () =&gt; &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;Drawer forceRender onClose=&#123;close&#125; visible=&#123;projectModalOpen&#125; width=&quot;100%&quot;&gt;</span><br><span class="line">      &lt;Container&gt;</span><br><span class="line">        &#123;isLoading ? (</span><br><span class="line">          &lt;Spin size=&#123;&quot;large&quot;&#125; /&gt;</span><br><span class="line">        ) : (</span><br><span class="line">          &lt;&gt;</span><br><span class="line">            &lt;h1&gt;&#123;title&#125;&lt;/h1&gt;</span><br><span class="line">            &lt;ErrorBox error=&#123;error&#125; /&gt;</span><br><span class="line">            &lt;Form</span><br><span class="line">              form=&#123;form&#125;</span><br><span class="line">              layout=&#123;&quot;vertical&quot;&#125;</span><br><span class="line">              style=&#123;&#123; width: &quot;40rem&quot; &#125;&#125;</span><br><span class="line">              onFinish=&#123;onFinish&#125;</span><br><span class="line">            &gt;</span><br><span class="line">              &lt;Form.Item</span><br><span class="line">                label=&quot;名称&quot;</span><br><span class="line">                key=&#123;&quot;name&quot;&#125;</span><br><span class="line">                name=&#123;&quot;name&quot;&#125;</span><br><span class="line">                rules=&#123;[&#123; required: true, message: &quot;请输入项目名称&quot; &#125;]&#125;</span><br><span class="line">              &gt;</span><br><span class="line">                &lt;Input placeholder=&#123;&quot;请输入项目名&quot;&#125;&gt;&lt;/Input&gt;</span><br><span class="line">              &lt;/Form.Item&gt;</span><br><span class="line">              &lt;Form.Item</span><br><span class="line">                label=&quot;部门&quot;</span><br><span class="line">                key=&#123;&quot;organization&quot;&#125;</span><br><span class="line">                name=&#123;&quot;organization&quot;&#125;</span><br><span class="line">                rules=&#123;[&#123; required: true, message: &quot;请输入部门名称&quot; &#125;]&#125;</span><br><span class="line">              &gt;</span><br><span class="line">                &lt;Input placeholder=&#123;&quot;请输入部门名&quot;&#125;&gt;&lt;/Input&gt;</span><br><span class="line">              &lt;/Form.Item&gt;</span><br><span class="line">              &lt;Form.Item label=&quot;负责人&quot; key=&#123;&quot;person&quot;&#125; name=&#123;&quot;personId&quot;&#125;&gt;</span><br><span class="line">                &lt;UserSelect defaultOptionName=&quot;负责人&quot;&gt;&lt;/UserSelect&gt;</span><br><span class="line">              &lt;/Form.Item&gt;</span><br><span class="line">              &lt;Form.Item key=&#123;&quot;submit&quot;&#125; style=&#123;&#123; textAlign: &quot;right&quot; &#125;&#125;&gt;</span><br><span class="line">                &lt;Button</span><br><span class="line">                  loading=&#123;mutateLoading&#125;</span><br><span class="line">                  type=&#123;&quot;ghost&quot;&#125;</span><br><span class="line">                  style=&#123;&#123; marginRight: &quot;2rem&quot; &#125;&#125;</span><br><span class="line">                  onClick=&#123;close&#125;</span><br><span class="line">                &gt;</span><br><span class="line">                  取消</span><br><span class="line">                &lt;/Button&gt;</span><br><span class="line">                &lt;Button</span><br><span class="line">                  loading=&#123;mutateLoading&#125;</span><br><span class="line">                  type=&#123;&quot;primary&quot;&#125;</span><br><span class="line">                  htmlType=&#123;&quot;submit&quot;&#125;</span><br><span class="line">                &gt;</span><br><span class="line">                  提交</span><br><span class="line">                &lt;/Button&gt;</span><br><span class="line">              &lt;/Form.Item&gt;</span><br><span class="line">            &lt;/Form&gt;</span><br><span class="line">          &lt;/&gt;</span><br><span class="line">        )&#125;</span><br><span class="line">      &lt;/Container&gt;</span><br><span class="line">    &lt;/Drawer&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const Container = styled.div`</span><br><span class="line">  display: flex;</span><br><span class="line">  flex-direction: column;</span><br><span class="line">  justify-content: center;</span><br><span class="line">  align-items: center;</span><br><span class="line">  height: 80vh;</span><br><span class="line">`;</span><br></pre></td></tr></table></figure>
+
+<h3 id="乐观更新"><a href="#乐观更新" class="headerlink" title="乐观更新"></a>乐观更新</h3><p>对于项目的操作，我们在此可引入乐观更新这个概念，也就是可以达到原生应用的效果，进行操作后立即更新UI，然后根据实际服务端返回的数据进行覆盖或者回滚；先拿<code>useEditProject</code>下手：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">return useMutation(</span><br><span class="line">    (params: Partial&lt;Project&gt;) =&gt; &#123;</span><br><span class="line">        return client(`projects/$&#123;params.id&#125;`, &#123;</span><br><span class="line">            method: &quot;PATCH&quot;,</span><br><span class="line">            data: params,</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        onSuccess: () =&gt; &#123;</span><br><span class="line">            queryClient.invalidateQueries(queryKey)</span><br><span class="line">        &#125;,</span><br><span class="line">        async onMutate(target) &#123;</span><br><span class="line">            // 撤销查询，以免覆盖乐观更新数据</span><br><span class="line">            await queryClient.cancelQueries(queryKey)</span><br><span class="line">            const previousItems = queryClient.getQueryData(queryKey)</span><br><span class="line">            queryClient.setQueryData(queryKey, (old?: Project[]) =&gt; &#123;</span><br><span class="line">                return old?.map(project =&gt; project.id === target.id ? &#123; ...project, ...target &#125; : project) || []</span><br><span class="line">            &#125;)</span><br><span class="line">            // 保留上一次的快照到 context</span><br><span class="line">            return &#123; previousItems &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        onError(error, newItem, context: any) &#123;</span><br><span class="line">            queryClient.setQueryData(queryKey, context.previousItems)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>在<code>useEditProject</code>中我们返回了<code>useMutation</code>进行数据操作，在其的配置参数中，传入了<code>onMutate</code>和<code>onError</code>，分别是立即执行和遇到错误后执行；</p>
+<p><code>onMutate</code>中，首先撤销了对该 queryKey 的查询，之后根据当前操作的数据对原数据进行处理，最后返回将原数据保存到上下文中；</p>
+<p>若请求数据过程出现错误，会回调<code>onError</code>，将上下文中保存的原数据进行回滚；</p>
+<p>不过这样的写法，只是针对<code>useEditProject</code>单独做了乐观更新，完全耦合在一起的，我们也可以抽离出一个独立的工具，因为是通用方法，所以避免类型过于复杂，直接使用 Any 大法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">export const useConfig = (</span><br><span class="line">  queryKey: QueryKey,</span><br><span class="line">  callback: (target: any, old?: any[]) =&gt; any[]</span><br><span class="line">) =&gt; &#123;</span><br><span class="line">  const queryClient = useQueryClient();</span><br><span class="line">  return &#123;</span><br><span class="line">    onSuccess: () =&gt; &#123;</span><br><span class="line">      queryClient.invalidateQueries(queryKey);</span><br><span class="line">    &#125;,</span><br><span class="line">    async onMutate(target: any) &#123;</span><br><span class="line">      await queryClient.cancelQueries(queryKey);</span><br><span class="line">      const previousItems = queryClient.getQueryData(queryKey);</span><br><span class="line">      queryClient.setQueryData(queryKey, (old?: any[]) =&gt; &#123;</span><br><span class="line">        return callback(target, old);</span><br><span class="line">      &#125;);</span><br><span class="line">      return &#123; previousItems &#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">    onError(error: any, newItem: any, context: any) &#123;</span><br><span class="line">      queryClient.setQueryData(queryKey, context.previousItems);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 根据 useConfig 可编写其他的 Hook...</span><br><span class="line">export const useDeleteConfig = (queryKey: QueryKey) =&gt;</span><br><span class="line">  useConfig(</span><br><span class="line">    queryKey,</span><br><span class="line">    (target, old) =&gt; old?.filter((item) =&gt; item.id !== target.id) || []</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+
+<p>这样一来，<code>useEditProject</code>则直接添加一个<code>queryKey</code>参数即可根据外部状态进行查询操作了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">export const useEditProject = (queryKey: QueryKey) =&gt; &#123;</span><br><span class="line">    const client = useHttp();</span><br><span class="line">    return useMutation(</span><br><span class="line">        (params: Partial&lt;Project&gt;) =&gt; &#123;</span><br><span class="line">            return client(`projects/$&#123;params.id&#125;`, &#123;</span><br><span class="line">                method: &quot;PATCH&quot;,</span><br><span class="line">                data: params,</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;,</span><br><span class="line">        useEditConfig(queryKey)</span><br><span class="line">    );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除项目"><a href="#删除项目" class="headerlink" title="删除项目"></a>删除项目</h3><p>做了上述工作后，我们可以将编辑项目和删除项目的 popMenu 单独抽成一个组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">const More = (&#123; project &#125;: &#123; project: Project &#125;) =&gt; &#123;</span><br><span class="line">  const &#123; startEdit &#125; = useProjectModal();</span><br><span class="line">  const editProject = (id: number) =&gt; () =&gt; startEdit(id);</span><br><span class="line">  const &#123; mutate: delProject &#125; = useDeleteProject(useProjectQueryKey());</span><br><span class="line">  const confirmDeleteProject = (dProject: Project) =&gt; &#123;</span><br><span class="line">    Modal.confirm(&#123;</span><br><span class="line">      title: `确认要删除项目 $&#123;dProject.name&#125; 吗？`,</span><br><span class="line">      content: &quot;点击确认删除&quot;,</span><br><span class="line">      okText: &quot;删除&quot;,</span><br><span class="line">      onOk() &#123;</span><br><span class="line">        delProject(dProject);</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line">  return (</span><br><span class="line">    &lt;Dropdown</span><br><span class="line">      overlay=&#123;</span><br><span class="line">        &lt;Menu&gt;</span><br><span class="line">          &lt;Menu.Item onClick=&#123;editProject(project.id)&#125; key=&#123;&quot;edit&quot;&#125;&gt;</span><br><span class="line">            编辑</span><br><span class="line">          &lt;/Menu.Item&gt;</span><br><span class="line">          &lt;Menu.Item</span><br><span class="line">            onClick=&#123;() =&gt; confirmDeleteProject(project)&#125;</span><br><span class="line">            key=&#123;&quot;delete&quot;&#125;</span><br><span class="line">          &gt;</span><br><span class="line">            删除</span><br><span class="line">          &lt;/Menu.Item&gt;</span><br><span class="line">        &lt;/Menu&gt;</span><br><span class="line">      &#125;</span><br><span class="line">    &gt;</span><br><span class="line">      &lt;ButtonNoPadding type=&#123;&quot;link&quot;&#125;&gt;...&lt;/ButtonNoPadding&gt;</span><br><span class="line">    &lt;/Dropdown&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Bug-修复"><a href="#Bug-修复" class="headerlink" title="Bug 修复"></a>Bug 修复</h3><ol>
+<li><p>编辑项目后，表单内容未清除，编写一个关闭函数，内部清除表单：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const closeModal = () =&gt;&#123;</span><br><span class="line">    form.resetFields()</span><br><span class="line">    close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开编辑项目Modal时，需要等待异步获取待编辑项目数据，而不是进入Loading，修改判断条件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">projectModalOpen: projectCreate === &quot;true&quot; || Boolean(editingProjectId),</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在当前用户退出登录，其他用户登录时，也跳闪缓存的数据，在登出时对缓存数据进行清除：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const logout = () =&gt;</span><br><span class="line">auth.logout().then(() =&gt; &#123;</span><br><span class="line">    queryClient.clear(); </span><br><span class="line">    setUser(null);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="看板列表开发"><a href="#看板列表开发" class="headerlink" title="看板列表开发"></a>看板列表开发</h2><p>引入部分 svg 会报错，这是因为在 JSX 中属性需要使用驼峰格式，可最快速的方法是使用工具替换：</p>
+<blockquote>
+<p>SyntaxError: unknown: Namespace tags are not supported by default. React’s JSX doesn’t support namespace tags. You can set <code>throwIfNamespace: false</code> to bypass this warning.</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.svgminify.com/">SVG Minifier (svgminify.com)</a></li>
+</ul>
+<h3 id="搜索关键字高亮"><a href="#搜索关键字高亮" class="headerlink" title="搜索关键字高亮"></a>搜索关键字高亮</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">const Mark = (&#123; keyword, name &#125;: &#123; name: string; keyword: string &#125;) =&gt; &#123;</span><br><span class="line">    if (!keyword) return &lt;&gt;&#123;name&#125;&lt;/&gt;;</span><br><span class="line">    const arr = name.split(keyword);</span><br><span class="line">    return (</span><br><span class="line">        &lt;&gt;</span><br><span class="line">        &#123;arr.map((str, index) =&gt; (</span><br><span class="line">        &lt;span key=&#123;index&#125;&gt;</span><br><span class="line">            &#123;str&#125;</span><br><span class="line">            &#123;index === arr.length - 1 ? null : (</span><br><span class="line">                &lt;span style=&#123;&#123; color: &quot;#257AFD&quot; &#125;&#125;&gt;&#123;keyword&#125;&lt;/span&gt;</span><br><span class="line">            )&#125;</span><br><span class="line">        &lt;/span&gt;</span><br><span class="line">    ))&#125;</span><br><span class="line">&lt;/&gt;</span><br><span class="line">);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="拖拽实现"><a href="#拖拽实现" class="headerlink" title="拖拽实现"></a>拖拽实现</h3><p>过于复杂，且不常用，使用第三包<code>react-beautiful-dnd</code>实现；</p>
+<h3 id="排序乐观更新"><a href="#排序乐观更新" class="headerlink" title="排序乐观更新"></a>排序乐观更新</h3><h2 id="代码测试"><a href="#代码测试" class="headerlink" title="代码测试"></a>代码测试</h2>
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/03/16/baota/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-03-18 22:54:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                        #前端
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/React/" title="React">
+                        #React
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/04/21/typescript-challenge/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E9%A1%B9%E7%9B%AE%E9%A1%B5%E9%9D%A2"><span class="toc-text">添加项目页面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%8F%90%E5%8D%87"><span class="toc-text">状态提升</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E7%BB%84%E5%90%88"><span class="toc-text">组件组合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#URL%E7%AE%A1%E7%90%86%E5%85%A8%E5%B1%80%E7%8A%B6%E6%80%81"><span class="toc-text">URL管理全局状态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%BC%93%E5%AD%98"><span class="toc-text">处理服务端缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E5%AE%88%E5%8D%AB"><span class="toc-text">类型守卫</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Redux-Toolkit"><span class="toc-text">使用 Redux Toolkit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-React-Query"><span class="toc-text">使用 React Query</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%92%8C%E6%B7%BB%E5%8A%A0%E9%A1%B9%E7%9B%AE"><span class="toc-text">编辑和添加项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%90%E8%A7%82%E6%9B%B4%E6%96%B0"><span class="toc-text">乐观更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E9%A1%B9%E7%9B%AE"><span class="toc-text">删除项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bug-%E4%BF%AE%E5%A4%8D"><span class="toc-text">Bug 修复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9C%8B%E6%9D%BF%E5%88%97%E8%A1%A8%E5%BC%80%E5%8F%91"><span class="toc-text">看板列表开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%85%B3%E9%94%AE%E5%AD%97%E9%AB%98%E4%BA%AE"><span class="toc-text">搜索关键字高亮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%96%E6%8B%BD%E5%AE%9E%E7%8E%B0"><span class="toc-text">拖拽实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E4%B9%90%E8%A7%82%E6%9B%B4%E6%96%B0"><span class="toc-text">排序乐观更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%B5%8B%E8%AF%95"><span class="toc-text">代码测试</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E4%B9%8BReact%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E2%85%A2 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2022%2F03%2F18%2Freact-15%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2022/03/18/react-15/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

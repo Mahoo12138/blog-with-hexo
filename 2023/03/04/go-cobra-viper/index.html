@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Golang 每日一库之 Cobra &amp; Viper 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Golang 每日一库之 Cobra & Viper</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-03-04 11:28:23
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Golang/" title="Golang">
+                    #Golang
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Cobra 是 Go 的 CLI 框架，由 Go <a target="_blank" rel="noopener" href="https://docker.com/">Docker</a>, <a target="_blank" rel="noopener" href="https://mongodb.com/">MongoDB</a> 项目成员， <a target="_blank" rel="noopener" href="https://gohugo.io/">Hugo</a> 作者 <a target="_blank" rel="noopener" href="https://github.com/spf13">spf13</a> 创建。</p>
+<p>Viper 是适用于 Go 的完整配置解决方案，处理所有类型的配置需求和格式，作者同样是 <a target="_blank" rel="noopener" href="https://github.com/spf13">spf13</a>。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ go get -u github.com/spf13/cobra</span><br><span class="line">$ go get -u github.com/spf13/viper</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h3><p>使用 cobra 的程序通常遵循如下的目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cobra-demo</span><br><span class="line">│  go.mod</span><br><span class="line">│  go.sum</span><br><span class="line">│  main.go</span><br><span class="line">└─cmd</span><br><span class="line">   config.go</span><br><span class="line">   create.go</span><br><span class="line">   serve.go</span><br><span class="line">   root.go</span><br></pre></td></tr></table></figure>
+
+<p>在 main.go 文件也有惯例，也就是对 cobra 进行初始化：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;mahoo/cobra-demo/cmd&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	cmd.Execute()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从项目结构中，推荐到做法是，新建一个 cobra 专属的目录或者说包，导出一个函数（常使用 Excute）进行 cobra 初始化。</p>
+<blockquote>
+<p>这是手动创建 cobra 程序的步骤，其也提供了生成器 <a target="_blank" rel="noopener" href="https://github.com/spf13/cobra-cli/blob/main/README.md">cobra-cli&#x2F;README.md at main · spf13&#x2F;cobra-cli </a>，用于简化初始化过程。</p>
+</blockquote>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>初始过程中，无需对 cobra 做过多配置，直接使用<code>rootCmd</code>创建自己的命令：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> rootCmd = &amp;cobra.Command&#123;</span><br><span class="line">	Use:   <span class="string">&quot;hugo&quot;</span>,</span><br><span class="line">	Short: <span class="string">&quot;Hugo is a very fast static site generator&quot;</span>,</span><br><span class="line">  	Long: <span class="string">`A Fast and Flexible Static Site Generator built with</span></span><br><span class="line"><span class="string">           love by spf13 and friends in Go.</span></span><br><span class="line"><span class="string">           Complete documentation is available at http://hugo.spf13.com`</span>,</span><br><span class="line">  Run: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="type">string</span>)</span></span> &#123;</span><br><span class="line">      fmt.Println(args)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Execute</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> err := rootCmd.Execute(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		os.Exit(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>rootCmd</code> 是不调用子命令的基础命令，会执行内部的 Run 函数：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> run  .\main.<span class="keyword">go</span> <span class="string">&quot;test&quot;</span> <span class="string">&quot;demo&quot;</span></span><br><span class="line">[test demo]</span><br></pre></td></tr></table></figure>
+
+<p><code>Command</code>的<code>Execute</code>命令，会将所有子命令添加到root命令并适当设置标志 ？？</p>
+<p>在 <code>init()</code> 可以初始化配置， 可以定义标志并处理：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	cobra.OnInitialize(initConfig)</span><br><span class="line">	rootCmd.PersistentFlags().StringVar(&amp;cfgFile, <span class="string">&quot;config&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;config file (default is $HOME/.cobra.yaml)&quot;</span>)</span><br><span class="line">	rootCmd.PersistentFlags().StringVarP(&amp;projectBase, <span class="string">&quot;projectbase&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;base project directory eg. github.com/spf13/&quot;</span>)</span><br><span class="line">	rootCmd.PersistentFlags().StringP(<span class="string">&quot;author&quot;</span>, <span class="string">&quot;a&quot;</span>, <span class="string">&quot;YOUR NAME&quot;</span>, <span class="string">&quot;Author name for copyright attribution&quot;</span>)</span><br><span class="line">	rootCmd.PersistentFlags().StringVarP(&amp;userLicense, <span class="string">&quot;license&quot;</span>, <span class="string">&quot;l&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;Name of license for the project (can provide `licensetext` in config)&quot;</span>)</span><br><span class="line">	rootCmd.PersistentFlags().Bool(<span class="string">&quot;viper&quot;</span>, <span class="literal">true</span>, <span class="string">&quot;Use Viper for configuration&quot;</span>)</span><br><span class="line">	viper.BindPFlag(<span class="string">&quot;author&quot;</span>, rootCmd.PersistentFlags().Lookup(<span class="string">&quot;author&quot;</span>))</span><br><span class="line">	viper.BindPFlag(<span class="string">&quot;projectbase&quot;</span>, rootCmd.PersistentFlags().Lookup(<span class="string">&quot;projectbase&quot;</span>))</span><br><span class="line">	viper.BindPFlag(<span class="string">&quot;useViper&quot;</span>, rootCmd.PersistentFlags().Lookup(<span class="string">&quot;viper&quot;</span>))</span><br><span class="line">	viper.SetDefault(<span class="string">&quot;author&quot;</span>, <span class="string">&quot;NAME HERE &lt;EMAIL ADDRESS&gt;&quot;</span>)</span><br><span class="line">	viper.SetDefault(<span class="string">&quot;license&quot;</span>, <span class="string">&quot;apache&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">initConfig</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> cfgFile != <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		viper.SetConfigFile(cfgFile)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		home, err := homedir.Dir()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(err)</span><br><span class="line">			os.Exit(<span class="number">1</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		viper.AddConfigPath(home)</span><br><span class="line">		viper.SetConfigName(<span class="string">&quot;.cobra&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	 <span class="keyword">if</span> err := viper.ReadInConfig(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	 	fmt.Println(<span class="string">&quot;Can&#x27;t read config:&quot;</span>, err)</span><br><span class="line">	 	os.Exit(<span class="number">1</span>)</span><br><span class="line">	 &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="子命令"><a href="#子命令" class="headerlink" title="子命令"></a>子命令</h3><p>创建其他子命令时，通常会在 <em>.&#x2F;cmd</em>目录下，创建一个单独的文件，例如，我们新建一个 <code>version</code> 子命令：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cmd</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">&quot;fmt&quot;</span></span><br><span class="line">  <span class="string">&quot;github.com/spf13/cobra&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">  rootCmd.AddCommand(versionCmd)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> versionCmd = &amp;cobra.Command&#123;</span><br><span class="line">  Use:   <span class="string">&quot;version&quot;</span>,</span><br><span class="line">  Short: <span class="string">&quot;Print the version number of Demo&quot;</span>,</span><br><span class="line">  Long:  <span class="string">`All software has versions. This is test demo version`</span>,</span><br><span class="line">  Run: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="type">string</span>)</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;test version 0.0.1&quot;</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们可以运行该子命令进行测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ .\main.exe version</span><br><span class="line"><span class="built_in">test</span> version 0.0.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用标志"><a href="#使用标志" class="headerlink" title="使用标志"></a>使用标志</h3><p>由于标志是在不同位置定义和使用的，我们需要在外部定义一个具有正确作用域的变量，以分配要使用的标志。</p>
+<p>在命令的<code>Run</code>函数中，我们读取该标志对应的变量，描述特定逻辑。</p>
+<h4 id="持久标志"><a href="#持久标志" class="headerlink" title="持久标志"></a>持久标志</h4><p>标志可以是 “persistent” 的，这意味着该标志将可用于分配给它的命令以及该命令下的每个子命令。所以，对于全局标志，可将标志分配为根命令上的持久标志。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rootCmd.PersistentFlags().BoolVarP(&amp;verbose, <span class="string">&quot;verbose&quot;</span>, <span class="string">&quot;v&quot;</span>, <span class="literal">false</span>, <span class="string">&quot;verbose output&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="本地标志"><a href="#本地标志" class="headerlink" title="本地标志"></a>本地标志</h4><p>也可以在本地分配一个标志，该标志仅适用于该特定命令。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rootCmd.Flags().StringVarP(&amp;source, <span class="string">&quot;source&quot;</span>, <span class="string">&quot;s&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;Source directory to read from&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="父命令上的本地标志"><a href="#父命令上的本地标志" class="headerlink" title="父命令上的本地标志"></a>父命令上的本地标志</h4><p>默认情况下，Cobra 仅解析目标命令上的本地标志，而忽略父命令上的任何本地标志。通过启用 <code>Command.TraverseChildren</code>，Cobra 将在执行目标命令之前解析每个命令上的本地标志：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">command := cobra.Command&#123;</span><br><span class="line">  Use: <span class="string">&quot;print [OPTIONS] [COMMANDS]&quot;</span>,</span><br><span class="line">  TraverseChildren: <span class="literal">true</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="用配置绑定标志"><a href="#用配置绑定标志" class="headerlink" title="用配置绑定标志"></a>用配置绑定标志</h4><p>还可以将标志与 viper 绑定：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> author <span class="type">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    rootCmd.PersistentFlags().StringVar(&amp;author, <span class="string">&quot;author&quot;</span>, <span class="string">&quot;YOUR NAME&quot;</span>, <span class="string">&quot;Author name&quot;</span>)</span><br><span class="line">    rootCmd.PersistentFlags().Bool(<span class="string">&quot;viper&quot;</span>, <span class="literal">true</span>, <span class="string">&quot;Use Viper for configuration&quot;</span>)</span><br><span class="line">    viper.BindPFlag(<span class="string">&quot;author&quot;</span>, rootCmd.PersistentFlags().Lookup(<span class="string">&quot;author&quot;</span>))</span><br><span class="line">    viper.BindPFlag(<span class="string">&quot;useViper&quot;</span>, rootCmd.PersistentFlags().Lookup(<span class="string">&quot;viper&quot;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在此示例中，持久标记 <code>author</code> 与 viper 绑定。请注意，当用户未提供 <code>--author</code> 标志时，变量 <code>author</code> 不会设置为 <code>config</code> 中的值。</p>
+<p>命令执行时，对于没有绑定到变量的标志位，可以通过以下方式读取：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useViper := viper.GetBool(<span class="string">&quot;useViper&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="必需标志"><a href="#必需标志" class="headerlink" title="必需标志"></a>必需标志</h4><p>标志默认是可选的。如果想在缺少标志时命令报错，请设置该标志为必需：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> region <span class="type">string</span></span><br><span class="line"></span><br><span class="line">rootCmd.Flags().StringVarP(&amp;region, <span class="string">&quot;region&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;AWS region (required)&quot;</span>)</span><br><span class="line">rootCmd.MarkFlagRequired(<span class="string">&quot;region&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="位置和自定义参数"><a href="#位置和自定义参数" class="headerlink" title="位置和自定义参数"></a>位置和自定义参数</h3><p>可以使用 Command 的 Args 字段指定位置参数的验证。</p>
+<p>下面的验证符是内置的：</p>
+<ul>
+<li><code>NoArgs</code> - 如果有任何位置参数，该命令将报告错误。</li>
+<li><code>ArbitraryArgs</code> - 命令将接受任意参数</li>
+<li><code>OnlyValidArgs</code> - 如果 Command 的 <code>ValidArgs</code> 字段中不存在该位置参数，则该命令将报告错误。</li>
+<li><code>MinimumNArgs(int)</code> - 如果不存在至少 N 个位置参数，则该命令将报告错误。</li>
+<li><code>MaximumNArgs(int)</code> - 如果存在超过 N 个位置参数，则该命令将报告错误。</li>
+<li><code>ExactArgs(int)</code> - 如果不存在 N 个位置参数，则该命令将报告错误。</li>
+<li><code>ExactValidArgs(int)</code> - 如果没有确切的 N 个位置参数，或者如果 Command 的 ValidArgs 字段中不存在该位置参数，则该命令将报告并出错。</li>
+<li><code>RangeArgs(min, max)</code> - 如果 args 的数目不在期望的 args 的最小和最大数目之间，则该命令将报告并出错。</li>
+</ul>
+<p>内置验证符使用实例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cmd = &amp;cobra.Command&#123;</span><br><span class="line">	Use:   <span class="string">&quot;hello&quot;</span>,</span><br><span class="line">	Short: <span class="string">&quot;hello&quot;</span>,</span><br><span class="line">	Args:  cobra.MinimumNArgs(<span class="number">2</span>),</span><br><span class="line">	Run: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="type">string</span>)</span></span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Hello, World!&quot;</span>)</span><br><span class="line">	&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，也可以设置自定义验证器：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cmd = &amp;cobra.Command&#123;</span><br><span class="line">  Short: <span class="string">&quot;hello&quot;</span>,</span><br><span class="line">  Args: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="type">string</span>)</span></span> <span class="type">error</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(args) &lt; <span class="number">1</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> errors.New(<span class="string">&quot;requires at least one arg&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> myapp.IsValidColor(args[<span class="number">0</span>]) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;invalid color specified: %s&quot;</span>, args[<span class="number">0</span>])</span><br><span class="line">  &#125;,</span><br><span class="line">  Run: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="type">string</span>)</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;Hello, World!&quot;</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h3><p>当你添加了子命令，Cobra 会自动添加一些帮助命令，当输入不存在的命令或标志时，则会显示 <code>usage</code> 帮助信息；</p>
+<h4 id="定义你自己的-help"><a href="#定义你自己的-help" class="headerlink" title="定义你自己的 help"></a>定义你自己的 help</h4><p>你可以使用下面的方法提供你自己的 Help 命令或模板。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmd.SetHelpCommand(cmd *Command)</span><br><span class="line">cmd.setHelpCommand(f <span class="function"><span class="keyword">func</span><span class="params">(*Command, []<span class="type">string</span>)</span></span>)</span><br><span class="line">cmd.setHelpTemplate(s <span class="type">string</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="定义你自己的使用信息"><a href="#定义你自己的使用信息" class="headerlink" title="定义你自己的使用信息"></a>定义你自己的使用信息</h4><p>你可以提供你自己的 usage 函数或模板。像 <code>help</code> 一样，函数和模板可通过公共方法重写：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmd.SetUsageFunc(f <span class="function"><span class="keyword">func</span><span class="params">(*Command)</span></span> <span class="type">error</span>)</span><br><span class="line">cmd.SetUsageTemplate(s <span class="type">string</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="版本标志"><a href="#版本标志" class="headerlink" title="版本标志"></a>版本标志</h3><p>如果给根命令设置了 <code>Version</code> 字段，Cobra 会添加一个顶级的 <code>--version</code> 标志。运行带有 <code>–version</code> 标志的应用程序，将使用版本模板将版本打印到 stdout。模板可以使用 <code>cmd.SetVersionTemplate(s string)</code> 函数自定义。</p>
+<h3 id="PreRun-和-PostRun-Hooks"><a href="#PreRun-和-PostRun-Hooks" class="headerlink" title="PreRun 和 PostRun Hooks"></a>PreRun 和 PostRun Hooks</h3><p>可以在执行命令之前和之后运行一个函数。<code>PersistentPreRun</code> 和 <code>PreRun</code> 函数将在 <code>Run</code> 之前执行。<code>PersistentPostRun</code> 和 <code>PostRun</code> 会在 <code>Run</code> 之后运行。如果子级未声明自己的 <code>Persistent * Run</code> 函数，则子级将继承父级的。这些函数的执行顺续如下：</p>
+<ul>
+<li>PersistentPreRun</li>
+<li>PreRun</li>
+<li>Run</li>
+<li>PostRun</li>
+<li>PersistentPostRun</li>
+</ul>
+<h3 id="“unknown-command”-时的提示"><a href="#“unknown-command”-时的提示" class="headerlink" title="“unknown command” 时的提示"></a>“unknown command” 时的提示</h3><p>当 <code>&quot;unknown command&quot;</code> 错误发生时，Cobra 会自动打印提示。这和 git 命令的行为一致。比如</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ hugo srever</span><br><span class="line">Error: unknown <span class="built_in">command</span> <span class="string">&quot;srever&quot;</span> <span class="keyword">for</span> <span class="string">&quot;hugo&quot;</span></span><br><span class="line"></span><br><span class="line">Did you mean this?</span><br><span class="line">        server</span><br><span class="line"></span><br><span class="line">Run <span class="string">&#x27;hugo --help&#x27;</span> <span class="keyword">for</span> usage.</span><br></pre></td></tr></table></figure>
+
+<p>系统会根据注册的每个子命令自动生成建议，并使用<a href="https://link.juejin.cn/?target=https://zh.wikipedia.org/wiki/%E8%90%8A%E6%96%87%E6%96%AF%E5%9D%A6%E8%B7%9D%E9%9B%A2">萊文斯坦距離</a>的实现。每个匹配最小距离 2（忽略大小写）的注册命令都将显示为建议。</p>
+<p>如果需要禁用建议或在命令中调整字符串距离，请使用：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd.DisableSuggestions = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd.SuggestionsMinimumDistance = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>您还可以使用 <code>SuggestFor</code> 属性显式为给定命令设置建议的名称。这样就可以针对不是距离很近的字符串提出建议，但是对于您的命令集和不希望使用别名的命令来说，它们都是有意义的。比如：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl remove</span><br><span class="line">Error: unknown <span class="built_in">command</span> <span class="string">&quot;remove&quot;</span> <span class="keyword">for</span> <span class="string">&quot;kubectl&quot;</span></span><br><span class="line"></span><br><span class="line">Did you mean this?</span><br><span class="line">        delete</span><br><span class="line"></span><br><span class="line">Run <span class="string">&#x27;kubectl help&#x27;</span> <span class="keyword">for</span> usage.</span><br></pre></td></tr></table></figure>
+
+<h3 id="Viper-API"><a href="#Viper-API" class="headerlink" title="Viper API"></a>Viper API</h3><h3 id="AutomaticEnv"><a href="#AutomaticEnv" class="headerlink" title="AutomaticEnv"></a>AutomaticEnv</h3><p>通常在 init 函数或<code>cobra.OnInitialize</code>回调中，调用<code>AutomaticEnv</code>方法绑定全部环境变量，然后可以通过<code>Get</code>方法获取：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">initConfig</span><span class="params">()</span></span> &#123;</span><br><span class="line">    viper.AutomaticEnv()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">fmt.Println(<span class="string">&quot;GOPATH: &quot;</span>, viper.Get(<span class="string">&quot;GOPATH&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>当然也可以单独绑定某个环境变量，可以使用特定类型的 Get 方法进行获取：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">viper.BindEnv(<span class="string">&quot;port&quot;</span>)</span><br><span class="line">viper.GetInt(<span class="string">&quot;port&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>还可以通过<code>viper.SetEnvPrefix</code>方法设置环境变量前缀，然后获取时，将自动带上这个前缀。</p>
+<h3 id="Unmarshal"><a href="#Unmarshal" class="headerlink" title="Unmarshal"></a>Unmarshal</h3><p><code>viper.Unmarshal</code> 支持将配置项<code>Unmarshal</code>导出到一个结构体中，为结构体中的对应字段赋值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置默认值</span></span><br><span class="line">viper.SetDefault(<span class="string">&quot;mode&quot;</span>, <span class="string">&quot;demo&quot;</span>)</span><br><span class="line">viper.SetDefault(<span class="string">&quot;port&quot;</span>, <span class="number">8081</span>)</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">type</span> Profile <span class="keyword">struct</span> &#123;</span><br><span class="line">    Mode <span class="type">string</span> <span class="string">`json:&quot;mode&quot;`</span></span><br><span class="line">    Port <span class="type">int</span> <span class="string">`json:&quot;-&quot;`</span></span><br><span class="line">    Data <span class="type">string</span> <span class="string">`json:&quot;-&quot;`</span></span><br><span class="line">    DSN <span class="type">string</span> <span class="string">`json:&quot;-&quot;`</span></span><br><span class="line">    Version <span class="type">string</span> <span class="string">`json:&quot;version&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">profile := Profile&#123;&#125;</span><br><span class="line"><span class="comment">// 获取并设置配置中的默认值</span></span><br><span class="line">err := viper.Unmarshal(&amp;profile)</span><br></pre></td></tr></table></figure>
+
+
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/03/01/baota-webdav/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-03-04 11:28:23
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Golang/" title="Golang">
+                        #Golang
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/03/19/front-end-6/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84"><span class="toc-text">代码结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%91%BD%E4%BB%A4"><span class="toc-text">子命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%A0%87%E5%BF%97"><span class="toc-text">使用标志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%81%E4%B9%85%E6%A0%87%E5%BF%97"><span class="toc-text">持久标志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%A0%87%E5%BF%97"><span class="toc-text">本地标志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%88%B6%E5%91%BD%E4%BB%A4%E4%B8%8A%E7%9A%84%E6%9C%AC%E5%9C%B0%E6%A0%87%E5%BF%97"><span class="toc-text">父命令上的本地标志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E9%85%8D%E7%BD%AE%E7%BB%91%E5%AE%9A%E6%A0%87%E5%BF%97"><span class="toc-text">用配置绑定标志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BF%85%E9%9C%80%E6%A0%87%E5%BF%97"><span class="toc-text">必需标志</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%BD%AE%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8F%82%E6%95%B0"><span class="toc-text">位置和自定义参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%AE%E5%8A%A9%E5%91%BD%E4%BB%A4"><span class="toc-text">帮助命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E4%BD%A0%E8%87%AA%E5%B7%B1%E7%9A%84-help"><span class="toc-text">定义你自己的 help</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E4%BD%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BF%A1%E6%81%AF"><span class="toc-text">定义你自己的使用信息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%A0%87%E5%BF%97"><span class="toc-text">版本标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PreRun-%E5%92%8C-PostRun-Hooks"><span class="toc-text">PreRun 和 PostRun Hooks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9Cunknown-command%E2%80%9D-%E6%97%B6%E7%9A%84%E6%8F%90%E7%A4%BA"><span class="toc-text">“unknown command” 时的提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Viper-API"><span class="toc-text">Viper API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AutomaticEnv"><span class="toc-text">AutomaticEnv</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unmarshal"><span class="toc-text">Unmarshal</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Golang%20%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B%20Cobra%20%26%20Viper + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2023%2F03%2F04%2Fgo-cobra-viper%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2023/03/04/go-cobra-viper/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

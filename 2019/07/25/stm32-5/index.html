@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      利用FSMC模拟8080时序控制LCD 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">利用FSMC模拟8080时序控制LCD</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2019-07-25 10:12:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/STM32/" title="STM32">
+                    #STM32
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>注：本文属博主学习时所作笔记，内容源大参考于野火的《零死角玩转STM32F103》以及部分网络资料，笔记内容仅作为自己参考，免去频繁查询参考手册的麻烦，如有错误，还请指出！</p>
+<h2 id="ILI9341-液晶控制器"><a href="#ILI9341-液晶控制器" class="headerlink" title="ILI9341 液晶控制器"></a>ILI9341 液晶控制器</h2><p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/STM32/ili9341.png" alt="ILI9341控制器内部框图"></p>
+<p>ILI9341 控制器内部电路连接完后，其余信号线引出到排针</p>
+<img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/STM32/lcd.png" alt="液晶屏引出的信号线" style="zoom:67%;" />
+
+<h3 id="液晶屏引出的信号线说明"><a href="#液晶屏引出的信号线说明" class="headerlink" title="液晶屏引出的信号线说明"></a>液晶屏引出的信号线说明</h3><table>
+<thead>
+<tr>
+<th align="center">信号线</th>
+<th align="center">ILI9341 对 应 的信号线</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">LCD_DB[15:0]</td>
+<td align="center">D[15:0]</td>
+<td align="left">数据信号</td>
+</tr>
+<tr>
+<td align="center">LCD_RD</td>
+<td align="center">RDX</td>
+<td align="left">读数据信号，低电平有效 ，</td>
+</tr>
+<tr>
+<td align="center">LCD_RS</td>
+<td align="center">D&#x2F;CX</td>
+<td align="left">数据&#x2F;命令信号，高电平时， D[15:0]表示的是数据(RGB 像素数据或命令数据)；低电平时，D[15:0]表示控制命令</td>
+</tr>
+<tr>
+<td align="center">LCD_RESET</td>
+<td align="center">RESX</td>
+<td align="left">复位信号，低电平有效</td>
+</tr>
+<tr>
+<td align="center">LCD_WR</td>
+<td align="center">WRX</td>
+<td align="left">写数据信号，低电平有效</td>
+</tr>
+<tr>
+<td align="center">LCD_CS</td>
+<td align="center">CSX</td>
+<td align="left">片选信号，低电平有效</td>
+</tr>
+<tr>
+<td align="center">LCD_BK</td>
+<td align="center">-</td>
+<td align="left">背光信号，低电平点亮</td>
+</tr>
+<tr>
+<td align="center">GPIO[5:1]</td>
+<td align="center">-</td>
+<td align="left">触摸屏的控制信号线，下一章再介绍</td>
+</tr>
+</tbody></table>
+<h2 id="FSMC简介"><a href="#FSMC简介" class="headerlink" title="FSMC简介"></a>FSMC简介</h2><p>STM32F1 系列芯片使用 FSMC 外设来管理扩展的存储器， FSMC 是 Flexible Static<br>Memory Controller 的缩写，译为灵活的静态存储控制器。它可以用于驱动包括 SRAM、<br>NOR FLASH 以及 NAND FLSAH 类型的存储器，不能驱动如 SDRAM 这种动态的存储器而<br>在 STM32F429 系列的控制器中，它具有 FMC 外设，支持控制 SDRAM 存储器。  </p>
+<img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/STM32/fsmc.png" style="zoom:80%;" />
+
+<p>MCU 对液晶屏的操作实际上就是把显示数据写入到显存中，与控制存储器非常类似，且8080 接口的通讯时序完全可以使用 FSMC 外设产生。</p>
+<h3 id="模拟-8080-接口时序"><a href="#模拟-8080-接口时序" class="headerlink" title="模拟 8080 接口时序"></a>模拟 8080 接口时序</h3><p>在模拟控制 LCD 时，是使用 FSMC 的 NOR\PSRAM 模式的， 而且使用的是类似异步、 地址与数据线独立的  NOR FLASH 类型的模式 B，实际上 CLK、 NWAIT、 NADV 引脚并没有使用到。  </p>
+<table>
+<thead>
+<tr>
+<th align="center">FSMC 信 号 名</th>
+<th align="center">信号方向</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CLK</td>
+<td align="center">输出</td>
+<td>时钟（同步突发模式使用）</td>
+</tr>
+<tr>
+<td align="center">A[25:0]</td>
+<td align="center">输出</td>
+<td>地址总线</td>
+</tr>
+<tr>
+<td align="center">D[15:0]</td>
+<td align="center">输入&#x2F;输出</td>
+<td>双向数据总线</td>
+</tr>
+<tr>
+<td align="center">NE[x]</td>
+<td align="center">输出</td>
+<td>片选， x &#x3D; 1…4</td>
+</tr>
+<tr>
+<td align="center">NOE</td>
+<td align="center">输出</td>
+<td>输出使能</td>
+</tr>
+<tr>
+<td align="center">NWE</td>
+<td align="center">输出</td>
+<td>写使能</td>
+</tr>
+<tr>
+<td align="center">NWAIT</td>
+<td align="center">输入</td>
+<td>NOR 闪存要求 FSMC 等待的信号</td>
+</tr>
+<tr>
+<td align="center">NADV</td>
+<td align="center">输出</td>
+<td>地址、数据线复用时作锁存信号</td>
+</tr>
+</tbody></table>
+<p>对比 FSMC NOR&#x2F;PSRAM 中的模式 B 时序与 ILI9341 液晶控制器芯片使用的 8080 时序可发现，这两个时序是十分相似的(除了 FSMC 的地址线 A 和 8080 的 D&#x2F;CX 线，可以说是完全一样)  </p>
+<img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/STM32/8080vsnorflash.png" alt="FSMC模式B时序与8080时序对比（写过程）" style="zoom:80%;" />
+
+<table>
+<thead>
+<tr>
+<th>FSMC-NOR信号线</th>
+<th>功能</th>
+<th>8080 信号线</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NEx</td>
+<td>片选信号</td>
+<td>CSX</td>
+<td>片选信号</td>
+</tr>
+<tr>
+<td>NWR</td>
+<td>写使能</td>
+<td>WRX</td>
+<td>写使能</td>
+</tr>
+<tr>
+<td>NOE  D[15:0]</td>
+<td>读使能  数据信号</td>
+<td>RDX  D[15:0]</td>
+<td>读使能 数据信号</td>
+</tr>
+<tr>
+<td>A[25:0]</td>
+<td>地址信号</td>
+<td>D&#x2F;CX</td>
+<td>数据&#x2F;命令选择</td>
+</tr>
+</tbody></table>
+<p>为了模拟出 8080 时序，我们可以把 FSMC 的 A0 地址线(也可以使用其它 A1&#x2F;A2 等地<br>址线)与 ILI9341 芯片 8080 接口的 D&#x2F;CX 信号线连接，那么当 A0 为高电平时(即 D&#x2F;CX 为高<br>电平)，数据线 D[15:0]的信号会被 ILI9341 理解为数值，若 A0 为低电平时(即 D&#x2F;CX 为低电<br>平)，传输的信号则会被理解为命令。  </p>
+<h3 id="FSMC的地址映射"><a href="#FSMC的地址映射" class="headerlink" title="FSMC的地址映射"></a>FSMC的地址映射</h3><p>使用 FSMC 外接存储器时，其存储单元是映射到 STM32 的内部寻址空间的，这里也涉及到使用地址线某个引脚时，需要计算对应的地址，以达到控制输出高低电平。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/STM32/fsmc_addr.png" alt="FSMC 的地址映射"></p>
+<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><h3 id="液晶LCD硬件相关宏定义"><a href="#液晶LCD硬件相关宏定义" class="headerlink" title="液晶LCD硬件相关宏定义"></a>液晶LCD硬件相关宏定义</h3><p>根据液晶屏的原理图，将FSMC 控制液晶屏硬件相关的配置都以宏的形式定义：</p>
+<img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/STM32/lcd_pin.png" alt="开发板与屏幕的连接" style="zoom:67%;" />
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*****************	LCD控制信号	******************/</span></span><br><span class="line"><span class="comment">//片选引脚</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>		ILI9341_CS_CLK		RCC_APB2Periph_GPIOD</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> 	ILI9341_CS_PORT 	GPIOD</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> 	ILI9341_CS_PIN 		GPIO_Pin_7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//数据命令引脚</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>		ILI9341_DC_CLK		RCC_APB2Periph_GPIOD</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>		ILI9341_DC_PORT		GPIOD</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>		ILI9341_DC_PIN		GPIO_Pin_11</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/****************	数据信号线	*****************/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> 	ILI9341_D0_CLK 		RCC_APB2Periph_GPIOD</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> 	ILI9341_D0_PORT 	GPIOD</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> 	ILI9341_D0_PIN 		GPIO_Pin_14</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//其他引脚省略</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-FSMC-的-GPIO"><a href="#初始化-FSMC-的-GPIO" class="headerlink" title="初始化 FSMC 的 GPIO"></a>初始化 FSMC 的 GPIO</h3><p>利用上面的宏，编写 FSMC 的 GPIO 引脚初始化函数，对于 FSMC 引脚，全部直接初始化为复用推挽输出模式即可，而背光 BK 引脚及液晶复信 RST 信号则被初始化成普通的推挽输出模式，这两个液晶控制信号直接输出普通的电平控制即可。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">ILI9341_GPIO_Config</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使能 FSMC 对应相应管脚时钟*/</span></span><br><span class="line">    RCC_APB2PeriphClockCmd (</span><br><span class="line">    <span class="comment">/* 控制信号 */</span></span><br><span class="line">    ILI9341_CS_CLK|ILI9341_DC_CLK|ILI9341_WR_CLK|</span><br><span class="line">    ILI9341_RD_CLK |ILI9341_BK_CLK|ILI9341_RST_CLK|</span><br><span class="line">    <span class="comment">/* 数据信号 */</span></span><br><span class="line">    ILI9341_D0_CLK|ILI9341_D1_CLK, ENABLE);</span><br><span class="line">    <span class="comment">/* 省略部分信号线 */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 配置 FSMC 相对应的数据线,FSMC-D0~D15 */</span></span><br><span class="line">    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;</span><br><span class="line">    GPIO_InitStructure.GPIO_Pin = ILI9341_D0_PIN;</span><br><span class="line">    </span><br><span class="line">    GPIO_Init(ILI9341_D0_PORT, &amp;GPIO_InitStructure);</span><br><span class="line">	<span class="comment">/* 省略部分信号线 */</span></span><br><span class="line">	</span><br><span class="line">    <span class="comment">//设置复用推挽输出</span></span><br><span class="line"> 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;</span><br><span class="line">    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">    </span><br><span class="line"> 	GPIO_InitStructure.GPIO_Pin = ILI9341_RD_PIN;</span><br><span class="line"> 	GPIO_Init (ILI9341_RD_PORT, &amp;GPIO_InitStructure);</span><br><span class="line">	<span class="comment">/* 省略WR, CS, DC 控制引脚 */</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//设置普通推挽输出</span></span><br><span class="line">    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;	</span><br><span class="line"> 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">    <span class="comment">/* 配置 LCD 复位 RST 控制管脚 */</span></span><br><span class="line"> 	GPIO_InitStructure.GPIO_Pin = ILI9341_RST_PIN;</span><br><span class="line"> 	GPIO_Init (ILI9341_RST_PORT, &amp;GPIO_InitStructure);</span><br><span class="line">    <span class="comment">/* 配置 LCD 背光控制管脚 BK */</span></span><br><span class="line">    GPIO_InitStructure.GPIO_Pin = ILI9341_BK_PIN;</span><br><span class="line"> 	GPIO_Init (ILI9341_BK_PORT, &amp;GPIO_InitStructure);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置-FSMC-的模式"><a href="#配置-FSMC-的模式" class="headerlink" title="配置 FSMC 的模式"></a>配置 FSMC 的模式</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">ILI9341_FSMC_Config</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;	</span><br><span class="line">    <span class="comment">/* FSMC模式初始化结构体 */</span></span><br><span class="line">	FSMC_NORSRAMInitTypeDef 		FSMC_NORSRAMInitStructure;</span><br><span class="line">    <span class="comment">/* 读写时序结构体 */</span></span><br><span class="line"> 	FSMC_NORSRAMTimingInitTypeDef 	readWriteTiming;</span><br><span class="line"> </span><br><span class="line"> 	<span class="comment">/* 使能 FSMC 时钟*/</span></span><br><span class="line"> 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);</span><br><span class="line"> 	</span><br><span class="line"> 	<span class="comment">//地址建立时间（ADDSET）为 1 个 HCLK 2/72M=28ns</span></span><br><span class="line"> 	readWriteTiming.FSMC_AddressSetupTime = <span class="number">0x01</span>; <span class="comment">//地址建立时间</span></span><br><span class="line"> 	<span class="comment">//数据保持时间（DATAST） + 1 个 HCLK = 5/72M=70ns</span></span><br><span class="line">    readWriteTiming.FSMC_DataSetupTime = <span class="number">0x04</span>; <span class="comment">//数据建立时间</span></span><br><span class="line"> 	<span class="comment">//选择控制的模式</span></span><br><span class="line"> 	<span class="comment">//模式 B, 异步 NOR FLASH 模式，与 ILI9341 的 8080 时序匹配</span></span><br><span class="line"> 	readWriteTiming.FSMC_AccessMode = FSMC_AccessMode_B;</span><br><span class="line"> </span><br><span class="line"> 	<span class="comment">/* 以下配置与模式 B 无关 */</span></span><br><span class="line"> 	readWriteTiming.FSMC_AddressHoldTime = <span class="number">0x00</span>; <span class="comment">//地址保持时间，模式 B未用到</span></span><br><span class="line"> 	<span class="comment">//设置总线转换周期，仅用于复用模式的 NOR 操作</span></span><br><span class="line"> 	readWriteTiming.FSMC_BusTurnAroundDuration = <span class="number">0x00</span>;</span><br><span class="line">  	<span class="comment">//设置时钟分频，仅用于同步类型的存储器</span></span><br><span class="line"> 	readWriteTiming.FSMC_CLKDivision = <span class="number">0x00</span>;</span><br><span class="line"> 	<span class="comment">//数据保持时间，仅用于同步型的 NOR</span></span><br><span class="line"> 	readWriteTiming.FSMC_DataLatency = <span class="number">0x00</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//选择使用的bank, 本次实例中使用的是FSMC_NE1</span></span><br><span class="line">    <span class="comment">//需要在宏定义中定义：#define FSMC_Bank1_NORSRAMx FSMC_Bank1_NORSRAM1</span></span><br><span class="line">    FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAMx;</span><br><span class="line">    <span class="comment">//设置地址总线是否与数据总线是否复用，仅用于NOR</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable;</span><br><span class="line">    <span class="comment">//设置要控制的存储器类型：本实例使用的是异步NOR</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_MemoryType = FSMC_MemoryType_NOR;</span><br><span class="line">    <span class="comment">/* 设置存储器的数据宽度 */</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_MemoryDataWidth = FSMC_MemoryDataWidth_16b;</span><br><span class="line">    <span class="comment">/* 设置是否支持突发访问模式，只支持同步类型的存储器 */</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_BurstAccessMode = FSMC_BurstAccessMode_Disable;</span><br><span class="line">    <span class="comment">/* 设置等待信号的极性，仅用于同步类型存储器 */</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_WaitSignalPolarity = FSMC_WaitSignalPolarity_Low;</span><br><span class="line">    <span class="comment">/* 设置是否支持对齐的突发模式，仅用于同步 */</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_WrapMode = FSMC_WrapMode_Disable;</span><br><span class="line">    <span class="comment">/* 配置等待信号（插入时间）在等待前有效还是等待期间有效，仅用于同步 */</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_WaitSignalActive = FSMC_WaitSignalActive_BeforeWaitState;</span><br><span class="line">    <span class="comment">/* 设置是否写使能 */</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_WriteOperation = FSMC_WriteOperation_Enable;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* 设置是否使能等待状态插入，用于设置当存储器处于突发传输模式时，</span></span><br><span class="line"><span class="comment">     * 是否允许通过 NWAIT 信号插入等待状态，不使用 </span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable;</span><br><span class="line">    <span class="comment">/* 设置是否使能扩展模式，不使用，读写同一时序*/</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;</span><br><span class="line">    <span class="comment">/* 设置是否使能写突发操作 */</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable;</span><br><span class="line">    <span class="comment">/* 当不使用扩展模式时，本参数用于配置读写时序，否则用于配置读时序 */</span></span><br><span class="line"> 	FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &amp;readWriteTiming;</span><br><span class="line">    <span class="comment">/* 当使用扩展模式时，本参数用于配置写时序 */</span></span><br><span class="line">	FSMC_NORSRAMInitStructure.FSMC_WriteTimingStruct = &amp;readWriteTiming;</span><br><span class="line"> 	<span class="comment">//初始化FSMC的配置</span></span><br><span class="line"> 	FSMC_NORSRAMInit (&amp;FSMC_NORSRAMInitStructure);</span><br><span class="line"> 	<span class="comment">/* 使能 FSMC_Bank1_NORSRAMx */</span></span><br><span class="line"> 	FSMC_NORSRAMCmd (FSMC_Bank1_NORSRAMx, ENABLE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="计算控制液晶屏时使用的地址"><a href="#计算控制液晶屏时使用的地址" class="headerlink" title="计算控制液晶屏时使用的地址"></a>计算控制液晶屏时使用的地址</h3><p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/STM32/lie.png"></p>
+<ul>
+<li><p>首先确定板子NEx引脚的连接，本次实例使用的是<code>FSMC_NE1</code></p>
+</li>
+<li><p>在 数据手册 –&gt; 存储器映像 中查询<code>FSMC_bnak1 NOR/PSRAM 1</code>的地址：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/STM32/fsmc_bank1_nor_addr.png"></p>
+</li>
+<li><p>使用的是<code>FSMS_NE1</code>也就是当访问到<code>0x6000000-0x63FFFFFF</code>这个地址范围内时，FSMC都会产生有效的访问时序；本实例中使用的是<code>FSMC_A16</code>地址线作为命令&#x2F;数据选择线，即：</p>
+<ul>
+<li><p>使<code>FSMC_A16</code>为高电平，即第十六位为 1 ，可用地址范围内任意地址做一下运算：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0X6000</span> <span class="number">0000</span> |= (<span class="number">1</span>&lt;&lt;<span class="number">16</span>) = <span class="number">0x6001</span> <span class="number">0000</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同样的，使<code>FSMC_A16</code>为低电平，即：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0X6000</span> <span class="number">0000</span> &amp;= ~ (<span class="number">1</span>&lt;&lt;<span class="number">16</span>) = <span class="number">0x6000</span> <span class="number">0000</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>由于地址线转换的问题，这里不细说，需要知道的是，STM32 内部的 HADDR 与 FSMC 的连接关系会左移一位，计算关系也会改变：</p>
+<ul>
+<li><p>使<code>FSMC_A16</code>地址线为高电平：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0X6000</span> <span class="number">0000</span> |= (<span class="number">1</span>&lt;&lt;(<span class="number">16</span>+<span class="number">1</span>)) = <span class="number">0x6002</span> <span class="number">0000</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使<code>FSMC_A16</code>地址线为低电平：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0X6000</span> <span class="number">0000</span> &amp;= ~(<span class="number">1</span>&lt;&lt;(<span class="number">16</span>+<span class="number">1</span>)) = <span class="number">0x6000</span> <span class="number">0000</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h5 id="封装函数"><a href="#封装函数" class="headerlink" title="封装函数"></a>封装函数</h5><p>因为在实例后面会频繁对LCD进行操作，所以把发送命令及发送数据的操作封装成了内联函数，会更方便调用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*********** 定义 FSMC 参数宏 **********/</span></span><br><span class="line"><span class="comment">//FSMC_Bank1_NORSRAM 用于 LCD 命令操作的地址</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FSMC_Addr_ILI9341_CMD ( ( uint32_t ) 0x60020000 )</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//FSMC_Bank1_NORSRAM 用于 LCD 数据操作的地址</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FSMC_Addr_ILI9341_DATA ( ( uint32_t ) 0x60000000 )</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//发送数据</span></span><br><span class="line">__inline <span class="type">void</span> <span class="title function_">ILI9341_Write_Cmd</span> <span class="params">(<span class="type">uint16_t</span> usCmd)</span></span><br><span class="line">&#123;</span><br><span class="line">    (__IO <span class="type">uint16_t</span> *)(FSMC_Addr_ILI9341_CMD) = usCmd;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//写入数据</span></span><br><span class="line">__inline <span class="type">void</span> <span class="title function_">ILI9341_Write_Data</span> <span class="params">(<span class="type">uint16_t</span> usData)</span></span><br><span class="line">&#123;</span><br><span class="line">	(__IO <span class="type">uint16_t</span> *)(FSMC_Addr_ILI9341_DATA) = usData;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要写操作时，只要把要发送的命令代码或数据作为参数输入到函数然后调用即可，对于液晶屏的读操作，把向指针赋值的过程改为读取指针内容即可。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取数据</span></span><br><span class="line">__inline <span class="type">uint16_t</span> <span class="title function_">ILI9341_Read_Data</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> (*FSMC_Addr_ILI9341_DATA);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="检验封装"><a href="#检验封装" class="headerlink" title="检验封装"></a>检验封装</h4><p>在上述函数封装好之后，进行一些测试检验使很有必要，我们可以查询<code>ILI9341</code>的数据文档，选择合适的命令进行测试：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/study/STM32/ili9341_0ch.png"></p>
+<p>当发送命令<code>0x0C</code>，第二个参数会返回 LCD 的像素信息，可以封装一个检验函数如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">uint16_t</span> <span class="title function_">Read_Pixel_Format</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    ILI9341_Write_Cmd(<span class="number">0x0C</span>);	<span class="comment">//发送命令参数</span></span><br><span class="line">    ILI9341_Read_Data();		<span class="comment">//读取第一个返回参数</span></span><br><span class="line">    <span class="keyword">return</span> ILI9341_Read_Data();	<span class="comment">//返回第二个读取参数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2019/07/14/android-5/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2019-07-25 10:12:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/STM32/" title="STM32">
+                        #STM32
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2019/07/25/android-4/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ILI9341-%E6%B6%B2%E6%99%B6%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="toc-text">ILI9341 液晶控制器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%B2%E6%99%B6%E5%B1%8F%E5%BC%95%E5%87%BA%E7%9A%84%E4%BF%A1%E5%8F%B7%E7%BA%BF%E8%AF%B4%E6%98%8E"><span class="toc-text">液晶屏引出的信号线说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSMC%E7%AE%80%E4%BB%8B"><span class="toc-text">FSMC简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F-8080-%E6%8E%A5%E5%8F%A3%E6%97%B6%E5%BA%8F"><span class="toc-text">模拟 8080 接口时序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FSMC%E7%9A%84%E5%9C%B0%E5%9D%80%E6%98%A0%E5%B0%84"><span class="toc-text">FSMC的地址映射</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">代码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%B2%E6%99%B6LCD%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3%E5%AE%8F%E5%AE%9A%E4%B9%89"><span class="toc-text">液晶LCD硬件相关宏定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-FSMC-%E7%9A%84-GPIO"><span class="toc-text">初始化 FSMC 的 GPIO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-FSMC-%E7%9A%84%E6%A8%A1%E5%BC%8F"><span class="toc-text">配置 FSMC 的模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%8E%A7%E5%88%B6%E6%B6%B2%E6%99%B6%E5%B1%8F%E6%97%B6%E4%BD%BF%E7%94%A8%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="toc-text">计算控制液晶屏时使用的地址</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B0%81%E8%A3%85%E5%87%BD%E6%95%B0"><span class="toc-text">封装函数</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E9%AA%8C%E5%B0%81%E8%A3%85"><span class="toc-text">检验封装</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%88%A9%E7%94%A8FSMC%E6%A8%A1%E6%8B%9F8080%E6%97%B6%E5%BA%8F%E6%8E%A7%E5%88%B6LCD + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2019%2F07%2F25%2Fstm32-5%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2019/07/25/stm32-5/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

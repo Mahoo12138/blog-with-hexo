@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      TypeScript学习-类型体操训练 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">TypeScript学习-类型体操训练</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-04-21 15:12:52
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/TypeScript/" title="TypeScript">
+                    #TypeScript
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p><strong>类型</strong>可以简单看成一个值的集合，在做类型运算的时，可分为两类：</p>
+<ul>
+<li>包含一个元素的类型（值）：<code>0</code>，<code>&quot;foo&quot;</code>；</li>
+<li>包含多个（无限个）元素的类型：<code>number</code>， <code>string</code>；</li>
+</ul>
+<p>还有两个特殊的类型：<code>any</code>  全集，<code>never</code>  空集；</p>
+<hr>
+<p>交叉类型，可把现有的类型合并为新的类型，如<code>type A = B &amp; C;</code>，A 可同时获得 B 和 C 的所有属性；当存在相同属性而类型不一致时，会得到<code>never</code>类型；</p>
+<p>当同种属性其一被<code>readonly</code>修饰时，由于是交叉会取合并类型，即<code>readonly</code>会被“覆盖”；<a target="_blank" rel="noopener" href="https://github.com/microsoft/TypeScript/issues/45122">相关说明</a></p>
+<p>按照我的理解，<code>readonly</code>是在编译类型检查时把<code>setter</code>屏蔽了，类似于<code>const</code>，简单来看，可看作被修饰的属性没有<code>setter</code>。那么联合类型则是取相同（<code>getter</code>）的，交叉类型则是全都取（<code>getter &amp; setter</code>）。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="variable constant_">P1</span> = <span class="title class_">Pick</span>&lt;&#123; <span class="keyword">readonly</span> <span class="attr">p</span>: <span class="built_in">any</span> &#125; | &#123; <span class="attr">p</span>: <span class="built_in">any</span> &#125;, <span class="string">&quot;p&quot;</span>&gt;	<span class="comment">// &#123; readonly p: any; &#125;</span></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">P2</span> = <span class="title class_">Pick</span>&lt;&#123; <span class="keyword">readonly</span> <span class="attr">p</span>: <span class="built_in">any</span> &#125; &amp; &#123; <span class="attr">p</span>: <span class="built_in">any</span> &#125;, <span class="string">&quot;p&quot;</span>&gt;	<span class="comment">// &#123; p: any; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><code>A extends B ? C : D</code> 的意义是判断 <code>A</code> 集合是否为 <code>B</code> 集合的子集，如果是那么返回 <code>C</code> 否则返回 <code>D</code>；以此可以引申出对值和类型的运算：</p>
+<ul>
+<li>判断值是否相等：<code>===</code>；</li>
+<li>判断值是否属于某个类型：<code>typeof</code>；</li>
+</ul>
+<hr>
+<p><code>type A&lt;B, C&gt; = D</code> ，自定义类型，可以当作是一个<strong>函数</strong>，等号左边泛型可进行输入作为<em>函数参数</em>，等号右边是输出，也就是会返回的类型；</p>
+<hr>
+<p><code>type ParamType&lt;T&gt; = T extends (...args: infer P) =&gt; any ? P : T;</code>，意为如果 <code>T</code> 能赋值给 <code>(...args: infer P) =&gt; any</code>，则结果是 <code>(...args: infer P) =&gt; any</code> 类型中的参数 <code>P</code>，否则返回为 <code>T</code>，<code>infer P</code> 表示待推断的函数参数；<code>infer</code>可以类比纯函数式语言中的声明局部变量；</p>
+<p>貌似<code>infer</code>有点像 ES6 中的解构，实际上，这种称为<strong>模式匹配</strong>：也就是拿到匹配后确切的值后再拆解；</p>
+<h2 id="工具泛型"><a href="#工具泛型" class="headerlink" title="工具泛型"></a>工具泛型</h2><h3 id="Partial"><a href="#Partial" class="headerlink" title="Partial"></a>Partial</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Make all properties in T optional</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Partial</span>&lt;T&gt; = &#123;</span><br><span class="line">    [P <span class="keyword">in</span> keyof T]?: T[P];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>将传入的属性变为可选类型，代码的核心在于 <code>keyof</code> 和 <code>in</code>，<code>keyof</code> 用于取得一个接口所有 <code>key</code> 值（联合类型），而<code>in</code>是用于迭代联合类型中的所有元素，用于在<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/2/mapped-types.html">映射类型(Mapped Types)</a>中，上述代码<code>[P in keyof T]?: T[P]	</code>即为一个映射类型；</p>
+<p>而且<code>in</code>关键字还能用于在<a target="_blank" rel="noopener" href="https://github.com/microsoft/TypeScript/pull/15256">类型守卫</a>上，例如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123;</span><br><span class="line">  <span class="attr">x</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> B &#123;</span><br><span class="line">  <span class="attr">y</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">q</span>: A | B = ...;</span><br><span class="line"><span class="keyword">if</span> (<span class="string">&#x27;x&#x27;</span> <span class="keyword">in</span> q) &#123;</span><br><span class="line">  <span class="comment">// q: A</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// q: B</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回到正题，在映射类型<code>Partial</code>通过传入泛型&lt;T&gt;，获取的 T 的 key 的联合类型，然后迭代成一个新的类型，新的类型的 key 还是对应着T类型中的 value，不过都变为了可选属性。</p>
+<h3 id="Required"><a href="#Required" class="headerlink" title="Required"></a>Required</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Make all properties in T required</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Required</span>&lt;T&gt; = &#123;</span><br><span class="line">    [P <span class="keyword">in</span> keyof T]-?: T[P];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>将 T 中的类型都变成必选类型，其中<code>-</code>符号表示移除某个<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#mapping-modifiers">映射修饰符(Mapping Modifiers)</a>，如<code>?</code>可选，<code>readonly</code>只读，如上的<code>Partial</code>则为未指定情况，假定为<code>+</code>；</p>
+<h3 id="Readonly"><a href="#Readonly" class="headerlink" title="Readonly"></a>Readonly</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Make all properties in T readonly</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Readonly</span>&lt;T&gt; = &#123;</span><br><span class="line">    <span class="keyword">readonly</span> [P <span class="keyword">in</span> keyof T]: T[P];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>将所有属性设置为只读，若设置为<code>-readonly</code>，则为移除属性的 Readonly 修饰符； </p>
+<h3 id="Pick"><a href="#Pick" class="headerlink" title="Pick"></a>Pick</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * From T, pick a set of properties whose keys are in the union K</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Pick</span>&lt;T, K <span class="keyword">extends</span> keyof T&gt; = &#123;</span><br><span class="line">    [P <span class="keyword">in</span> K]: T[P];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>从 T 中挑选出一组 key 存在于联合类型 K 中的属性，简而言之，就是从 T 中选择几个指定的属性；</p>
+<p>这里指定传入类型时使用了<code>extends</code>作为判断的标准，必须满足<code>keyof T</code>，即 K 必须是 T 的 key 才行；</p>
+<p>内部又是一个映射类型，将欲选出的属性（key 和 value）作为新类型返回；</p>
+<h3 id="Record"><a href="#Record" class="headerlink" title="Record"></a>Record</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Construct a type with a set of properties K of type T</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Record</span>&lt;K <span class="keyword">extends</span> keyof <span class="built_in">any</span>, T&gt; = &#123;</span><br><span class="line">    [P <span class="keyword">in</span> K]: T;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>构造一个属性类型为 K，值类型为 T 的类型；注意这有个 <code>keyof any</code> 很耐人寻味，首先我们能看到 K 在满足<code>extends keyof any</code>时的类型为<code>string | number | symbol</code>，这正是 ts 中允许被作为对象的索引的类型，这样我们就能明白了：对 <code>any</code> 取 <code>keyof </code>操作，可以得到所有的索引的类型，毕竟是 <strong>any</strong> ，这样也就限制住了 K 的类型。</p>
+<p>另一个需要注意的地方，若多个 <code>Record</code> 泛型进行交叉时，<code>Record</code> 若有相同的 key，不同的 value，则会 value 会被推导为 <code>never</code> ：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> testRecord = <span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt; &amp; <span class="title class_">Record</span>&lt;<span class="built_in">string</span>,<span class="built_in">number</span>&gt;</span><br><span class="line"><span class="keyword">type</span> result = testRecord1 <span class="keyword">extends</span> <span class="title class_">Record</span>&lt;<span class="built_in">string</span>,<span class="built_in">never</span>&gt; ? <span class="string">&quot;yes&quot;</span> : <span class="string">&quot;no&quot;</span>	<span class="comment">// yes</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以写一个泛型工具对交叉类型进行合并，可以查看的更直观：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">MergeInsertions</span>&lt;T&gt; =</span><br><span class="line">  T <span class="keyword">extends</span> <span class="built_in">object</span></span><br><span class="line">    ? &#123; [K <span class="keyword">in</span> keyof T]: <span class="title class_">MergeInsertions</span>&lt;T[K]&gt; &#125;</span><br><span class="line">    : T</span><br></pre></td></tr></table></figure>
+
+<h3 id="Exclude"><a href="#Exclude" class="headerlink" title="Exclude"></a>Exclude</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Exclude from T those types that are assignable to U</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Exclude</span>&lt;T, U&gt; = T <span class="keyword">extends</span> U ? <span class="built_in">never</span> : T;</span><br></pre></td></tr></table></figure>
+
+<p>与 Pick 相反，Exclude 用于在 T 中排除可分配给 U 的子类型；这里有一个很重要的概念，<strong>分发条件类型</strong>（Distributive Conditional Types），上述的 Exclude 类型若 T 被指定为<strong>联合类型</strong>，则构成了分配条件类型，官网的一个例子如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">ToArray</span>&lt;<span class="title class_">Type</span>&gt; = <span class="title class_">Type</span> <span class="keyword">extends</span> <span class="built_in">any</span> ? <span class="title class_">Type</span>[] : <span class="built_in">never</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StrArrOrNumArr</span> = <span class="title class_">ToArray</span>&lt;<span class="built_in">string</span> | <span class="built_in">number</span>&gt;;	 <span class="comment">// string[] | number[]</span></span><br></pre></td></tr></table></figure>
+
+<p>总结来说就是<code>extends</code>会将联合类型拆开，分别传入类型定义，如此的设定可以让我们过滤联合类型的特定成员。通常，联合类型是默认分配的，但是能通过<code>[]</code>将<code>extends</code>两边的泛型参数包裹起来，如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> P&lt;T&gt; = [T] <span class="keyword">extends</span> [<span class="built_in">any</span>] ? <span class="built_in">string</span> : <span class="built_in">number</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个特殊情况，就是 <code>never</code>，如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> P&lt;T&gt; = T <span class="keyword">extends</span> <span class="built_in">any</span> ? <span class="built_in">string</span> : <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Test1</span> = <span class="built_in">never</span> <span class="keyword">extends</span> <span class="built_in">any</span> ? <span class="built_in">string</span> : <span class="built_in">number</span>; <span class="comment">// string</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Test2</span> = P&lt;<span class="built_in">never</span>&gt; <span class="comment">// never</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Test1</code>的结果是因为<code>string</code>是任何类型的子类型，返回<code>string</code>，；</p>
+<p><code>Test2</code>的结果是<code>never</code>，在此情况下，<code>never</code> 被认为是空的联合类型，因为没有联合项可以分配，即<code>P&lt;T&gt;</code>的表达式其实根本就没有执行，也就类似于没有返回值的函数，是 never 类型；</p>
+<h3 id="ThisType"><a href="#ThisType" class="headerlink" title="ThisType"></a>ThisType</h3><p>ThisType 的作用是可以在对象字面量中指定 this 的类型。ThisType 不返回转换后的类型，而是通过 ThisType 的泛型参数指定 this 的类型；</p>
+<blockquote>
+<p>注意：如果你想使用这个工具类型，那么需要在 <strong>tsconfig.json</strong> 中开启 <code>noImplicitThis</code> 配置；</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">ObjectDescriptor</span>&lt;D, M&gt; = &#123;</span><br><span class="line">  data?: D;</span><br><span class="line">  methods?: M &amp; <span class="title class_">ThisType</span>&lt;D &amp; M&gt;; <span class="comment">// methods 中 this 的类型是 D &amp; M</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">function</span> makeObject&lt;D, M&gt;(<span class="attr">desc</span>: <span class="title class_">ObjectDescriptor</span>&lt;D, M&gt;): D &amp; M &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">data</span>: <span class="built_in">object</span> = desc.<span class="property">data</span> || &#123;&#125;;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">methods</span>: <span class="built_in">object</span> = desc.<span class="property">methods</span> || &#123;&#125;;</span><br><span class="line">  <span class="keyword">return</span> &#123; ...data, ...methods &#125; <span class="keyword">as</span> D &amp; M;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> obj = <span class="title function_">makeObject</span>(&#123;</span><br><span class="line">  <span class="attr">data</span>: &#123; <span class="attr">x</span>: <span class="number">0</span>, <span class="attr">y</span>: <span class="number">0</span> &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">    <span class="title function_">moveBy</span>(<span class="params">dx: <span class="built_in">number</span>, dy: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">x</span> += dx; <span class="comment">// this =&gt; D &amp; M</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">y</span> += dy; <span class="comment">// this =&gt; D &amp; M</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line">obj.<span class="property">x</span> = <span class="number">10</span>;</span><br><span class="line">obj.<span class="property">y</span> = <span class="number">20</span>;</span><br><span class="line">obj.<span class="title function_">moveBy</span>(<span class="number">5</span>, <span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>methods</code> 属性的 <code>this</code> 类型为 <code>D &amp; M</code>，在上下文中指代 <code>&#123; x: number, y: number &#125; &amp; &#123; moveBy(dx: number, dy: number): void &#125;</code>。这是官方文档中的例子，看起来其实并不直观；</p>
+<p>简单来说，对某一个对象进行<code>&amp; ThisType&lt;SomeType&gt;</code>那么就能指定该对象中 this 的类型为<code>SomeType</code>；</p>
+<p>ThisType 工具类型实际上只是提供了一个空的泛型接口，仅可以在对象字面量上下文中被 TypeScript 识别，也就是说该类型的作用相当于任意空接口。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">ThisType</span>&lt;T&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="类型体操"><a href="#类型体操" class="headerlink" title="类型体操"></a>类型体操</h2><h3 id="hard-tuple-to-enum-object"><a href="#hard-tuple-to-enum-object" class="headerlink" title="hard-tuple-to-enum-object"></a><a target="_blank" rel="noopener" href="https://github.com/type-challenges/type-challenges/blob/main/questions/00472-hard-tuple-to-enum-object/README.md">hard-tuple-to-enum-object</a></h3><p>传入一个元组，将元组转换为枚举对象，如果第二个参数为 true，那么值应该是数字字面量</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Format</span>&lt;T <span class="keyword">extends</span> <span class="keyword">readonly</span> <span class="built_in">string</span>[], P <span class="keyword">extends</span> <span class="built_in">any</span>[] = []&gt;</span><br><span class="line">	= T <span class="keyword">extends</span> <span class="keyword">readonly</span> [infer R, ...infer S]</span><br><span class="line">	? S <span class="keyword">extends</span> <span class="keyword">readonly</span> <span class="built_in">any</span>[]</span><br><span class="line">		? [[R, P[<span class="string">&quot;length&quot;</span>]], ...<span class="title class_">Format</span>&lt;S, [...P, <span class="built_in">any</span>]&gt;]</span><br><span class="line">  		: []</span><br><span class="line">	: []</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Enum</span>&lt;T <span class="keyword">extends</span> <span class="keyword">readonly</span> <span class="built_in">string</span>[], F <span class="keyword">extends</span> <span class="title class_">Boolean</span> = <span class="literal">false</span>&gt; = &#123;</span><br><span class="line">  <span class="keyword">readonly</span> [K <span class="keyword">in</span> <span class="title class_">Format</span>&lt;T&gt;[<span class="built_in">number</span>] <span class="keyword">as</span> <span class="title class_">Capitalize</span>&lt;K[<span class="number">0</span>]&gt;]: F <span class="keyword">extends</span> <span class="literal">true</span> ? K[<span class="number">1</span>] : K[<span class="number">0</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Enum</span>&lt;[<span class="string">&quot;macOS&quot;</span>, <span class="string">&quot;Windows&quot;</span>, <span class="string">&quot;Linux&quot;</span>]&gt;</span><br><span class="line"><span class="comment">// -&gt; &#123; readonly MacOS: &quot;macOS&quot;, readonly Windows: &quot;Windows&quot;, readonly Linux: &quot;Linux&quot; &#125;</span></span><br><span class="line"><span class="title class_">Enum</span>&lt;[<span class="string">&quot;macOS&quot;</span>, <span class="string">&quot;Windows&quot;</span>, <span class="string">&quot;Linux&quot;</span>], <span class="literal">true</span>&gt;</span><br><span class="line"><span class="comment">// -&gt; &#123; readonly MacOS: 0, readonly Windows: 1, readonly Linux: 2 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>首先来看<code>Format</code>泛型，传入一个字符串数组和 any 数组，内部是一个递归，作用是提取到传入的元组的值及其序列。</p>
+<p>首先会使用<code>infer</code>推导提取第一个元素<code>R</code>，以及剩余元素<code>S</code>，然后根据<code>S</code>是否为空判断是否终止递归；终止返回空数组，否则返回一个数组，内部也是数组结构，内部第一个数组<code>[R, P[&quot;length&quot;]]</code>包括第一个元素和传入的数组<code>P</code>的长度，因为默认是传入空数组的，所以第一个元素的该值是 0；之后是递归的操作，会将剩余元素<code>S</code>以及<code>[...P, any]</code>传入<code>Format</code>中，<code>[...P, any]</code>这个操作可谓一绝，直接将数组元素加一，然后之后的元素进行<code>P[&quot;length&quot;]</code>推导时即完成了枚举类型的递增操作。</p>
+<p>有了上述的基础操作，那么<code>Enum</code>操作就简单了。按照题目要求，传入数组和布尔值。<code>Format&lt;T&gt;[number]</code>拿到<code>Format</code>匹配结果的数组元素的联合类型，<code>as</code>操作符对<code>in</code>遍历联合类型的结果做一个转换，即取到<code>[0]</code>的值并利用内置的<code>Capitalize</code>工具泛型将字符串的首字母大写。最后则是判断<code>F</code>，返回<code>K[1]</code>或<code>K[0]</code>。</p>
+<p>当然也没必要这么复杂地将元组格式化成新的数据结构，简单地拿到每一个值的就很够的了：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">FindIndex</span>&lt;T <span class="keyword">extends</span> <span class="keyword">readonly</span> <span class="built_in">any</span>[], K, A <span class="keyword">extends</span> <span class="built_in">any</span>[] = []&gt; </span><br><span class="line">	= T <span class="keyword">extends</span> <span class="keyword">readonly</span> [infer H, ...infer R] </span><br><span class="line">	? [H] <span class="keyword">extends</span> [K] </span><br><span class="line">		? A[<span class="string">&quot;length&quot;</span>] </span><br><span class="line">		: <span class="title class_">FindIndex</span>&lt;R, K, [...A, <span class="built_in">any</span>]&gt; </span><br><span class="line">	: -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Enum</span>&lt;T <span class="keyword">extends</span> <span class="keyword">readonly</span> <span class="built_in">string</span>[], N <span class="keyword">extends</span> <span class="built_in">boolean</span> = <span class="literal">false</span>&gt; = &#123;</span><br><span class="line">  <span class="keyword">readonly</span> [k <span class="keyword">in</span> T[<span class="built_in">number</span>] <span class="keyword">as</span> <span class="string">`<span class="subst">$&#123;Capitalize&lt;k&gt;&#125;</span>`</span>]: N <span class="keyword">extends</span> <span class="literal">false</span> ? k : <span class="title class_">FindIndex</span>&lt;T, k&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/03/18/react-15/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-04-21 15:12:52
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/TypeScript/" title="TypeScript">
+                        #TypeScript
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/06/14/data-structure-and-algorithm-6/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E6%B3%9B%E5%9E%8B"><span class="toc-text">工具泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Partial"><span class="toc-text">Partial</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Required"><span class="toc-text">Required</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Readonly"><span class="toc-text">Readonly</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pick"><span class="toc-text">Pick</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Record"><span class="toc-text">Record</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exclude"><span class="toc-text">Exclude</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ThisType"><span class="toc-text">ThisType</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%BD%93%E6%93%8D"><span class="toc-text">类型体操</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hard-tuple-to-enum-object"><span class="toc-text">hard-tuple-to-enum-object</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + TypeScript%E5%AD%A6%E4%B9%A0-%E7%B1%BB%E5%9E%8B%E4%BD%93%E6%93%8D%E8%AE%AD%E7%BB%83 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2022%2F04%2F21%2Ftypescript-challenge%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2022/04/21/typescript-challenge/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

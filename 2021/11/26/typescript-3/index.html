@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      TypeScript学习-03-语法进阶 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">TypeScript学习-03-语法进阶</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2021-11-26 16:52:45
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/TypeScript/" title="TypeScript">
+                    #TypeScript
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><p>枚举是组织收集有关联变量的一种方式，可以清晰地表达意图或创建一组有区别的用例，使用<code>enum</code>定义枚举类型：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Day</span> &#123;</span><br><span class="line">  <span class="variable constant_">SUNDAY</span>,</span><br><span class="line">  <span class="variable constant_">MONDAY</span>,</span><br><span class="line">  <span class="variable constant_">TUESDAY</span>,</span><br><span class="line">  <span class="variable constant_">WEDNESDAY</span>,</span><br><span class="line">  <span class="variable constant_">THURSDAY</span>,</span><br><span class="line">  <span class="variable constant_">FRIDAY</span>,</span><br><span class="line">  <span class="variable constant_">SATURDAY</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认从 0 开始递增的数字集合，称之为<strong>数字枚举</strong>；</p>
+<p>数字枚举在定义值时，可以使用计算值和常量，且该字段后面紧接着的字段必须设置初始值；</p>
+<p>定义值是字符串字面量的枚举称为字符串枚举，字符串枚举值要求<strong>每个字段的值都必须是字符串字面量，或者是该枚举值中另一个字符串枚举成员；</strong>字符串枚举允许提供一个运行时有意义的并且可读的值，独立于枚举成员的名字。</p>
+<p>对于枚举类型的值，可以分开进行声明，编译时会对枚举值进行<strong>合并操作</strong>；在枚举的延续块中，必须重新初始化第一个成员，否则会报错；</p>
+<h3 id="数字类型作为标志"><a href="#数字类型作为标志" class="headerlink" title="数字类型作为标志"></a>数字类型作为标志</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">AnimalFlags</span> &#123;</span><br><span class="line">  <span class="title class_">None</span>        = <span class="number">0</span>,		<span class="comment">// 0000</span></span><br><span class="line">  <span class="title class_">HasClaws</span>    = <span class="number">1</span> &lt;&lt; <span class="number">0</span>,	<span class="comment">// 0001</span></span><br><span class="line">  <span class="title class_">CanFly</span>      = <span class="number">1</span> &lt;&lt; <span class="number">1</span>,	<span class="comment">// 0010</span></span><br><span class="line">  <span class="title class_">EatsFish</span>    = <span class="number">1</span> &lt;&lt; <span class="number">2</span>,	<span class="comment">// 0100</span></span><br><span class="line">  <span class="title class_">Endangered</span>  = <span class="number">1</span> &lt;&lt; <span class="number">3</span>	<span class="comment">// 1000</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>|=</code> 来添加一个标志，组合使用 <code>&amp;=</code> 和 <code>~</code> 来清理一个标志，<code>|</code> 来合并标志：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> animal = &#123; <span class="attr">flags</span>: <span class="title class_">AnimalFlags</span>.<span class="property">None</span> &#125;;					<span class="comment">// 0000</span></span><br><span class="line">animal.<span class="property">flags</span> |= <span class="title class_">AnimalFlags</span>.<span class="property">HasClaws</span>;						<span class="comment">// 0001</span></span><br><span class="line">animal.<span class="property">flags</span> &amp;= ~<span class="title class_">AnimalFlags</span>.<span class="property">HasClaws</span>;						<span class="comment">// 0000</span></span><br><span class="line">animal.<span class="property">flags</span> |= <span class="title class_">AnimalFlags</span>.<span class="property">HasClaws</span> | <span class="title class_">AnimalFlags</span>.<span class="property">CanFly</span>;	<span class="comment">// 0011</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="枚举成员类型"><a href="#枚举成员类型" class="headerlink" title="枚举成员类型"></a>枚举成员类型</h3><p>字面量枚举成员是指不带有初始值的常量枚举成员，或者是值被初始化为</p>
+<ul>
+<li>任何字符串字面量（例如： <code>&quot;foo&quot;</code>， <code>&quot;bar&quot;</code>， <code>&quot;baz&quot;</code>）</li>
+<li>任何数字字面量（例如： <code>1</code>, <code>100</code>）</li>
+<li>应用了一元 <code>-</code>符号的数字字面量（例如： <code>-1</code>, <code>-100</code>）</li>
+</ul>
+<p>当所有枚举成员都拥有字面量枚举值时，枚举成员则成为了类型，而枚举类型本身变成了每个枚举成员的联合；</p>
+<h3 id="有静态方法的枚举"><a href="#有静态方法的枚举" class="headerlink" title="有静态方法的枚举"></a>有静态方法的枚举</h3><p>可以使用 <code>enum</code> + <code>namespace</code> 的声明的方式向枚举类型添加静态方法；</p>
+<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p>设计泛型的关键目的是在成员之间提供有意义的约束，这些成员可以是：</p>
+<ul>
+<li>类的实例成员</li>
+<li>类的方法</li>
+<li>函数参数</li>
+<li>函数返回值</li>
+</ul>
+<h3 id="泛型约束"><a href="#泛型约束" class="headerlink" title="泛型约束"></a>泛型约束</h3> <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Lengthwise</span> &#123;</span><br><span class="line">  <span class="attr">length</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> loggingIdentity&lt;T <span class="keyword">extends</span> <span class="title class_">Lengthwise</span>&gt;(<span class="attr">arg</span>: T): T &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(arg.<span class="property">length</span>);</span><br><span class="line">  <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>泛型被定义了约束后，不再适用于任意类型，传入符合约束类型的值，必须包含特定的属性：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">loggingIdentity</span>(&#123;<span class="attr">length</span>: <span class="number">10</span>, <span class="attr">value</span>: <span class="number">3</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="在泛型里使用类类型"><a href="#在泛型里使用类类型" class="headerlink" title="在泛型里使用类类型"></a>在泛型里使用类类型</h3><p>在TypeScript使用泛型创建<strong>工厂函数</strong>时，需要引用构造函数的类类型。比如，</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> create&lt;T&gt;(<span class="attr">c</span>: &#123;<span class="title function_">new</span>(): T; &#125;): T &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">c</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>create</code>函数需要传入一个对象或者说类，其中的<code>new()</code>表示类的构造函数，且返回的类型是<code>create</code>指定的泛型，<code>create</code>函数内部即实例化了<code>c</code>对象并返回，以此创建了一个工厂函数；</p>
+<h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><p>TypeScript使用 [duck-typing](<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B">鸭子类型 - 维基百科，自由的百科全书 (wikipedia.org)</a>) （也叫做结构类型系统，Structural type system）的方法来比较一个对象和其他对象，方法是检查两个对象是否具有相同的类型匹配名称。与之相反的是标明类型系统 （Nominative type system），表示类型若要相等，就必须具有相同的“名字”；</p>
+<blockquote>
+<p>在这种风格中，一个对象有效的语义，不是由继承自特定的类或实现特定的接口，而是由”当前方法和属性的集合”决定。这个概念的名字来源于由<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E8%A9%B9%E5%A7%86%E6%96%AF%C2%B7%E6%83%A0%E7%89%B9%E7%A7%91%E5%A7%86%C2%B7%E8%8E%B1%E5%88%A9&action=edit&redlink=1">詹姆斯·惠特科姆·莱利</a>提出的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%B8%AD%E5%AD%90%E6%B5%8B%E8%AF%95">鸭子测试</a>，“鸭子测试”可以这样表述：</p>
+<p>“当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称为鸭子。”</p>
+</blockquote>
+<h3 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h3><p><code>keyof</code> 用于<strong>索引类型查询操作符</strong>，它会返回其后参数类型的键值组成的字面量类型(literal types)：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> foo &#123;</span><br><span class="line">  <span class="attr">a</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">b</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">AB</span> = keyof foo; <span class="comment">// &quot;a&quot; | &quot;b&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>字面量类型包括字符串字面量、数字字面量、布尔值字面量。</p>
+</blockquote>
+<h3 id="映射类型"><a href="#映射类型" class="headerlink" title="映射类型"></a>映射类型</h3><h3 id="条件类型"><a href="#条件类型" class="headerlink" title="条件类型"></a>条件类型</h3><p>TS 在 2.8 中引入了条件类型表达式，使用关键词 <code>extends</code>，形如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T <span class="keyword">extends</span> U ? X : Y</span><br></pre></td></tr></table></figure>
+
+<p>简单来说，即 T 类型被U类型所限制住，T 必须为 U 的子集类型；</p>
+<h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h2><p>用<code>namespace</code>关键字创建命名空间，命名空间内的可以定义类，函数和接口等，而想让它们再外部也能访问到需要使用<code>export</code>导出：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Utility</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">error</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// usage</span></span><br><span class="line"><span class="title class_">Utility</span>.<span class="title function_">log</span>(<span class="string">&#x27;Call me&#x27;</span>);</span><br><span class="line"><span class="title class_">Utility</span>.<span class="title function_">error</span>(<span class="string">&#x27;maybe&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>命名空间可以分割在多个文件中，它们是可以合并的，不同文件之间存在依赖关系，需要加入了引用标签来告诉编译器文件之间的关联；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;reference path=&quot;Namespace.ts&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>当操作命名空间中的内容时，可以使用<code>import</code>为其取一个别名：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Shapes</span> &#123;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Triangle</span> &#123; &#125;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Square</span> &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">import</span> triangle = <span class="title class_">Shapes</span>.<span class="property">Triangle</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>目前 typescript 版本 4.1 装饰器仍是一项实验性特性，之后的版本中可能会发生改变；Javascript 规范里的装饰器目前处在 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=4m/XBcfeohg7YXijaq/tfw==.TsI206OuLG3jW69AunLAqgWyWC3Z3ucYNdHBCh/+r47GvbJPWIJpSbgs/xJDRAPC">建议征集的第二阶段</a>，也就意味着不能在原生代码中直接使用，浏览器暂不支持。</p>
+<blockquote>
+<p>装饰者模式（Decorator Pattern）也称为装饰器模式，在不改变对象自身的基础上，动态增加额外的职责。属于结构型模式的一种；</p>
+<p>使用装饰者模式的优点：能够很好的抽象代码，把对象核心职责和要装饰的功能分开了，最适合用来包装可能会多处复用的逻辑</p>
+</blockquote>
+<p>装饰器是一种特殊的表达式声明，可以被附加到类声明、方法、 访问符(getter&#x2F;setter)、属性和参数上，对应着的可分为类装饰器（Class decorators）、属性装饰器（Property decorators）、方法装饰器（Method decorators）、参数装饰器（Parameter decorators）；</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">type</span> <span class="title class_">ClassDecorator</span> = &lt;<span class="title class_">TFunction</span> <span class="keyword">extends</span> <span class="title class_">Function</span>&gt;<span class="function">(<span class="params">target: TFunction</span>) =&gt;</span> <span class="title class_">TFunction</span> | <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">type</span> <span class="title class_">PropertyDecorator</span> = <span class="function">(<span class="params">target: <span class="built_in">Object</span>, propertyKey: <span class="built_in">string</span> | <span class="built_in">symbol</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">type</span> <span class="title class_">MethodDecorator</span> = &lt;T&gt;<span class="function">(<span class="params">target: <span class="built_in">Object</span>, propertyKey: <span class="built_in">string</span> | <span class="built_in">symbol</span>, descriptor: TypedPropertyDescriptor&lt;T&gt;</span>) =&gt;</span> <span class="title class_">TypedPropertyDescriptor</span>&lt;T&gt; | <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">type</span> <span class="title class_">ParameterDecorator</span> = <span class="function">(<span class="params">target: <span class="built_in">Object</span>, propertyKey: <span class="built_in">string</span> | <span class="built_in">symbol</span>, parameterIndex: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure>
+
+<p>装饰器使用时形如<code>@expression</code>，该表达式求值后必须为一个函数，它会在运行时被调用，被装饰的内容作为参数传入；</p>
+<p>若要启用实验性的装饰器特性，必须启用 <code>experimentalDecorators</code> 编译器选项：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ES5&quot;</span><span class="punctuation">,</span></span><br><span class="line">     <span class="attr">&quot;experimentalDecorators&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>装饰器的执行顺序为：首先执行属性装饰器，然后执行方法装饰器，其次是方法参数装饰器，最后是类装饰器；</p>
+<p>多个装饰器组合在一起，在运行时，要注意，调用顺序是 <strong>从下至上</strong> 依次调用，类似于栈，先进后出；</p>
+<h3 id="装饰器工厂"><a href="#装饰器工厂" class="headerlink" title="装饰器工厂"></a>装饰器工厂</h3><p>但需要给装饰器传入参数时，可借助装饰器工厂这种方法，其本质上是一个高阶函数，传参返回的函数才作为装饰器函数；</p>
+<p>当装饰的是装饰器工厂函数时，他们会从上到下依次执行，而内部返回的真正的装饰器函数还是会从下到上执行；</p>
+<h3 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h3><p>顾名思义，作用在类声明上的装饰器，可以用来监视，修改或替换类定义。类装饰器表达式会在运行时当作函数被调用，<strong>类的构造函数作为其唯一的参数</strong>。</p>
+<p>当我们声明一个类时，装饰器就会被调用，而不是等到类实例化的时候；当装饰一个类的时候，装饰器并不会对该类的子类生效；</p>
+<p>如果装饰函数有返回值，该返回值会重新定义这个类，也就是说当装饰函数有返回值时，其实是生成了一个新类，该新类通过返回值来定义；</p>
+<h3 id="方法装饰器"><a href="#方法装饰器" class="headerlink" title="方法装饰器"></a>方法装饰器</h3><p>方法装饰器用于覆写一个方法，改变它的执行流程，以及在它执行前后额外运行一些代码，作用在类的方法上，会被应用到方法的 <em>属性描述符</em>（描述对象）上，可以用来监视，修改或者替换方法定义，有静态方法和原型方法：</p>
+<ul>
+<li><p>作用在静态方法上，装饰器函数接收的是类构造函数；</p>
+</li>
+<li><p>作用在原型方法上，装饰器函数接收的是<strong>原型对象</strong>；</p>
+</li>
+</ul>
+<p>另外传入下列2个参数：</p>
+<ol>
+<li>成员的名字。</li>
+<li>成员的<em>属性描述符</em>（描述对象）。</li>
+</ol>
+<p>如果方法装饰器返回一个值，会作为方法的<em>属性描述符</em>，代码输出目标版本小于<code>ES5</code>返回值会被忽略；</p>
+<h3 id="属性装饰器"><a href="#属性装饰器" class="headerlink" title="属性装饰器"></a>属性装饰器</h3><p>作用在类中定义的属性上，这些属性不是原型上的属性，而是通过类实例化得到的实例对象上的属性，接收两个参数：</p>
+<ul>
+<li>对于静态成员来说是类的构造函数，对于实例成员是类的原型对象；</li>
+<li>该属性成员的名字；</li>
+</ul>
+<p>没有属性描述对象，这与TypeScript是如何初始化属性装饰器的有关；目前没有办法在定义一个原型对象的成员时描述一个实例属性；属性装饰器极其有用，因为它<strong>可以监听对象状态的变化</strong>；</p>
+<h3 id="参数装饰器"><a href="#参数装饰器" class="headerlink" title="参数装饰器"></a>参数装饰器</h3><p>参数装饰器应用于类构造函数或方法声明，以修饰类的构造函数中的参数，以及类中其他普通函数中的参数。该装饰器在类的方法被调用的时候执行，并传入下列3个参数：</p>
+<ol>
+<li>对于静态成员来说是类的构造函数，对于实例成员是类的原型对象；</li>
+<li>该参数所在的函数的函数名；</li>
+<li>参数在函数参数列表中的索引；</li>
+</ol>
+<p>参数装饰器的返回值会被忽略，</p>
+<h3 id="元数据反射"><a href="#元数据反射" class="headerlink" title="元数据反射"></a>元数据反射</h3><p>反射，就是在运行时动态获取一个对象的一切信息如方法、属性等，特点在于动态<strong>类型反推导</strong>。在 TypeScript 中，反射的原理是通过设计阶段对对象注入元数据信息，在运行阶段读取注入的元数据，从而得到对象信息；</p>
+<p>反射可以获取对象的类型，成员&#x2F;静态属性的信息(类型)，方法的参数类型、返回类型；</p>
+<p>TypeScript 结合自身静态类型语言的特点，为使用了装饰器的代码声明注入了 3 组元数据：</p>
+<ul>
+<li><code>design:type</code>: 成员类型；</li>
+<li><code>design:paramtypes</code>: 成员所有参数类型；</li>
+<li><code>design:returntype</code>: 成员返回类型；</li>
+</ul>
+<p>元数据反射也是实验性 API，需要启用这个实验性特性：</p>
+ <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ES5&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;emitDecoratorMetadata&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>还需要安装插件：<code>npm i reflect-metadata --save</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;reflect-metadata&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">target: <span class="built_in">Object</span>, key: <span class="built_in">string</span>, descriptor: <span class="built_in">any</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 获取成员类型</span></span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">type</span> = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:type&#x27;</span>, target, key)</span><br><span class="line">  <span class="comment">// 获取成员参数类型</span></span><br><span class="line">  <span class="keyword">let</span> paramtypes = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:paramtypes&#x27;</span>, target, key)</span><br><span class="line">  <span class="comment">// 获取成员返回类型</span></span><br><span class="line">  <span class="keyword">let</span> returntype = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:returntype&#x27;</span>, target, key)</span><br><span class="line">  <span class="comment">// 获取所有元数据 key (由 TypeScript 注入)</span></span><br><span class="line">  <span class="keyword">let</span> keys = <span class="title class_">Reflect</span>.<span class="title function_">getMetadataKeys</span>(target, key)</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(keys) <span class="comment">// [ &#x27;design:returntype&#x27;, &#x27;design:paramtypes&#x27;, &#x27;design:type&#x27; ]</span></span><br><span class="line">  <span class="comment">// 成员类型</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">type</span>) <span class="comment">// Function</span></span><br><span class="line">  <span class="comment">// 参数类型</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(paramtypes) <span class="comment">// [String]</span></span><br><span class="line">  <span class="comment">// 成员返回类型</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(returntype) <span class="comment">// String</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> originalMethod = descriptor.<span class="property">value</span>; </span><br><span class="line"></span><br><span class="line">  descriptor.<span class="property">value</span> =  <span class="keyword">function</span> (<span class="params">...args: <span class="built_in">any</span>[]</span>) &#123;</span><br><span class="line">      <span class="comment">// 将“foo”函数的参数列表转化为字符串</span></span><br><span class="line">      <span class="keyword">var</span> a = args.<span class="title function_">map</span>(<span class="function"><span class="params">a</span> =&gt;</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(a)).<span class="title function_">join</span>();</span><br><span class="line">      <span class="comment">// 调用 foo() 并获取它的返回值</span></span><br><span class="line">      <span class="keyword">var</span> result = originalMethod.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args);</span><br><span class="line">      <span class="comment">// 将返回的结果转成字符串</span></span><br><span class="line">      <span class="keyword">var</span> r = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(result);</span><br><span class="line">      <span class="comment">// 打印日志</span></span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Call: <span class="subst">$&#123;key&#125;</span>(<span class="subst">$&#123;a&#125;</span>) =&gt; <span class="subst">$&#123;r&#125;</span>`</span>);</span><br><span class="line">      <span class="comment">// 返回调用 foo 的结果</span></span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 返回已编辑的描述符</span></span><br><span class="line">  <span class="keyword">return</span> descriptor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="meta">@log</span></span><br><span class="line">  <span class="title function_">foo</span>(<span class="params">n: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> n * <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> c = <span class="keyword">new</span> <span class="title function_">C</span>() </span><br><span class="line">c.<span class="title function_">foo</span>(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们通过这个例子，对上述内容做一个彻底的分析，以下是编译生成的 es5 的 JavaScript 代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> __decorate = (<span class="variable language_">this</span> &amp;&amp; <span class="variable language_">this</span>.<span class="property">__decorate</span>) || <span class="keyword">function</span> (<span class="params">decorators, target, key, desc</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> c = <span class="variable language_">arguments</span>.<span class="property">length</span>, r = c &lt; <span class="number">3</span> ? target : desc === <span class="literal">null</span> ? desc = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(target, key) : desc, d;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="title class_">Reflect</span> === <span class="string">&quot;object&quot;</span> &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Reflect</span>.<span class="property">decorate</span> === <span class="string">&quot;function&quot;</span>) r = <span class="title class_">Reflect</span>.<span class="title function_">decorate</span>(decorators, target, key, desc);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">for</span> (<span class="keyword">var</span> i = decorators.<span class="property">length</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) <span class="keyword">if</span> (d = decorators[i]) r = (c &lt; <span class="number">3</span> ? <span class="title function_">d</span>(r) : c &gt; <span class="number">3</span> ? <span class="title function_">d</span>(target, key, r) : <span class="title function_">d</span>(target, key)) || r;</span><br><span class="line">    <span class="keyword">return</span> c &gt; <span class="number">3</span> &amp;&amp; r &amp;&amp; <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(target, key, r), r;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> __metadata = (<span class="variable language_">this</span> &amp;&amp; <span class="variable language_">this</span>.<span class="property">__metadata</span>) || <span class="keyword">function</span> (<span class="params">k, v</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="title class_">Reflect</span> === <span class="string">&quot;object&quot;</span> &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Reflect</span>.<span class="property">metadata</span> === <span class="string">&quot;function&quot;</span>) <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">metadata</span>(k, v);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="built_in">exports</span>, <span class="string">&quot;__esModule&quot;</span>, &#123; <span class="attr">value</span>: <span class="literal">true</span> &#125;);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">&quot;reflect-metadata&quot;</span>);</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">target, key, descriptor</span>) &#123;</span><br><span class="line">    <span class="comment">// 获取成员类型</span></span><br><span class="line">    <span class="keyword">var</span> type = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:type&#x27;</span>, target, key);</span><br><span class="line">    <span class="comment">// 获取成员参数类型</span></span><br><span class="line">    <span class="keyword">var</span> paramtypes = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:paramtypes&#x27;</span>, target, key);</span><br><span class="line">    <span class="comment">// 获取成员返回类型</span></span><br><span class="line">    <span class="keyword">var</span> returntype = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:returntype&#x27;</span>, target, key);</span><br><span class="line">    <span class="comment">// 获取所有元数据 key (由 TypeScript 注入)</span></span><br><span class="line">    <span class="keyword">var</span> keys = <span class="title class_">Reflect</span>.<span class="title function_">getMetadataKeys</span>(target, key);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(keys); <span class="comment">// [ &#x27;design:returntype&#x27;, &#x27;design:paramtypes&#x27;, &#x27;design:type&#x27; ]</span></span><br><span class="line">    <span class="comment">// 成员类型</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(type); <span class="comment">// Function</span></span><br><span class="line">    <span class="comment">// 参数类型</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(paramtypes); <span class="comment">// [String]</span></span><br><span class="line">    <span class="comment">// 成员返回类型</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(returntype); <span class="comment">// String</span></span><br><span class="line">    <span class="keyword">var</span> originalMethod = descriptor.<span class="property">value</span>;</span><br><span class="line">    descriptor.<span class="property">value</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> args = [];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> _i = <span class="number">0</span>; _i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; _i++) &#123;</span><br><span class="line">            args[_i] = <span class="variable language_">arguments</span>[_i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 将“foo”函数的参数列表转化为字符串</span></span><br><span class="line">        <span class="keyword">var</span> a = args.<span class="title function_">map</span>(<span class="keyword">function</span> (<span class="params">a</span>) &#123; <span class="keyword">return</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(a); &#125;).<span class="title function_">join</span>();</span><br><span class="line">        <span class="comment">// 调用 foo() 并获取它的返回值</span></span><br><span class="line">        <span class="keyword">var</span> result = originalMethod.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args);</span><br><span class="line">        <span class="comment">// 将返回的结果转成字符串</span></span><br><span class="line">        <span class="keyword">var</span> r = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(result);</span><br><span class="line">        <span class="comment">// 打印日志</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Call: &quot;</span> + key + <span class="string">&quot;(&quot;</span> + a + <span class="string">&quot;) =&gt; &quot;</span> + r);</span><br><span class="line">        <span class="comment">// 返回调用 foo 的结果</span></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// 返回已编辑的描述符</span></span><br><span class="line">    <span class="keyword">return</span> descriptor;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> C = <span class="comment">/** <span class="doctag">@class</span> */</span> (<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">C</span>(<span class="params"></span>) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    C.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">foo</span> = <span class="keyword">function</span> (<span class="params">n</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> n * <span class="number">2</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="title function_">__decorate</span>([</span><br><span class="line">        log,</span><br><span class="line">        <span class="title function_">__metadata</span>(<span class="string">&quot;design:type&quot;</span>, <span class="title class_">Function</span>),</span><br><span class="line">        <span class="title function_">__metadata</span>(<span class="string">&quot;design:paramtypes&quot;</span>, [<span class="title class_">Number</span>]),</span><br><span class="line">        <span class="title function_">__metadata</span>(<span class="string">&quot;design:returntype&quot;</span>, <span class="keyword">void</span> <span class="number">0</span>)</span><br><span class="line">    ], C.<span class="property"><span class="keyword">prototype</span></span>, <span class="string">&quot;foo&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">return</span> C;</span><br><span class="line">&#125;());</span><br><span class="line"><span class="keyword">var</span> c = <span class="keyword">new</span> <span class="title function_">C</span>();</span><br><span class="line">c.<span class="title function_">foo</span>(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Function：全局对象， <code>Function</code> 对象没有自己的属性和方法，它本身也是一个函数，会从原型链上继承；</p>
+<p>void 0：**<code>void</code> 运算符**对表达式求值，返回 <code>undefined</code>；</p>
+</blockquote>
+<p>代码清晰明了，在类定义时，通过<code>__decorate</code>函数将四个装饰器添加到了类中，第一个是我们自己的<code>log</code>装饰器，另外三个是用于类型反射的元数据装饰器；</p>
+<p>先来看看<code>__decorate</code>函数究竟是怎么回事：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> __decorate = (<span class="variable language_">this</span> &amp;&amp; <span class="variable language_">this</span>.<span class="property">__decorate</span>) || <span class="keyword">function</span> (<span class="params">decorators, target, key, desc</span>)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这行代码使用了或操作符（<code>||</code>），以确保若函数<code>__decorate</code>已被创建，其将不会被重写；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> c = <span class="variable language_">arguments</span>.<span class="property">length</span>, </span><br><span class="line">        r = c &lt; <span class="number">3</span> ? target : desc === <span class="literal">null</span> ? desc = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(target, key) : desc, d;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="title class_">Reflect</span> === <span class="string">&quot;object&quot;</span> &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Reflect</span>.<span class="property">decorate</span> === <span class="string">&quot;function&quot;</span>) </span><br><span class="line">        r = <span class="title class_">Reflect</span>.<span class="title function_">decorate</span>(decorators, target, key, desc);</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = decorators.<span class="property">length</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) </span><br><span class="line">            <span class="keyword">if</span> (d = decorators[i]) </span><br><span class="line">                r = (c &lt; <span class="number">3</span> ? <span class="title function_">d</span>(r) : c &gt; <span class="number">3</span> ? <span class="title function_">d</span>(target, key, r) : <span class="title function_">d</span>(target, key)) || r;</span><br><span class="line">    <span class="keyword">return</span> c &gt; <span class="number">3</span> &amp;&amp; r &amp;&amp; <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(target, key, r), r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先，把参数数量赋值给了<code>c</code>，根据参数数量 <code>c</code>的值，决定什么值赋给<code>r</code>，在例子中，函数<code>__decorate</code>传入了 4 个参数，先判断 <code>c &lt; 3</code>，接着判断<code>desc === null</code>，即把<code>Object.getOwnPropertyDescriptor(target, key)</code>的值同时赋给了<code>r</code>和<code>desc</code> ，<code>d</code>变量暂时没用到，做一个声明；</p>
+<p>接下来，先判断了 <code>Reflect</code>相关的内容是否存在，我们先假设没有引入相关内容，看一下代码：</p>
+<ul>
+<li>对<code>decorators</code>数组内的装饰器做一个遍历；</li>
+<li>判断<code>d = decorators[i]</code>的值，做下一步操作，而由<code>__metadata</code>函数，做没有引入<code>Reflect</code>相关的内容，会直接不执行<code>if</code>内的<code>return</code>，无返回值，而返回的实际上是<code>undefined</code>，所以会忽略执行；</li>
+<li>只有<code>log</code>装饰器赋值给<code>d</code>，之后同样是做一些判断，最后执行<code>r = d(target, key, r)</code>；</li>
+<li>最后做判断，并执行<code>Object.defineProperty(target, key, r)</code>，最后返回<code>r</code>；</li>
+</ul>
+<p>如果我们对<code>Object.getOwnPropertyDescriptor</code>和<code>Object.defineProperty</code>方法不陌生，那么这个过程具体完成了什么事情，应该是有个大体了解的，即通过更改描述符的形式对装饰器的内容进行了注入；</p>
+<p>当引入了 <code>Reflect</code>相关内容时，会执行<code>r = Reflect.decorate(decorators, target, key, desc);</code>首先应该先搞清楚另外三个装饰器是如何产生的，对应代码<code>Reflect.metadata(k, v)</code>，我们一起来看看源代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">metadata</span>(<span class="params">metadataKey, metadataValue</span>) &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">decorator</span>(<span class="params">target, propertyKey</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsObject</span>(target))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsUndefined</span>(propertyKey) &amp;&amp; !<span class="title class_">IsPropertyKey</span>(propertyKey))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="title class_">OrdinaryDefineOwnMetadata</span>(metadataKey, metadataValue, target, propertyKey);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> decorator;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，三个元数据装饰器本质上也是函数即<code>decorator(target, propertyKey)</code>，这是必然的，因为装饰器本身就是函数；接着回到<code>__decorate</code>函数内：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">decorate</span>(<span class="params">decorators, target, propertyKey, attributes</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="title class_">IsUndefined</span>(propertyKey)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsArray</span>(decorators))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsObject</span>(target))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsObject</span>(attributes) &amp;&amp; !<span class="title class_">IsUndefined</span>(attributes) &amp;&amp; !<span class="title class_">IsNull</span>(attributes))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (<span class="title class_">IsNull</span>(attributes))</span><br><span class="line">            attributes = <span class="literal">undefined</span>;</span><br><span class="line">        propertyKey = <span class="title class_">ToPropertyKey</span>(propertyKey);</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">DecorateProperty</span>(decorators, target, propertyKey, attributes);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsArray</span>(decorators))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsConstructor</span>(target))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">DecorateConstructor</span>(decorators, target);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先，做了一些基本的类型判断，之后对传入的<code>key</code>做了一个 <code>ToPropertyKey</code>合法化处理，转换成字符串；之后进入<code>DecorateProperty</code>函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">DecorateProperty</span>(<span class="params">decorators, target, propertyKey, descriptor</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = decorators.<span class="property">length</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">        <span class="keyword">var</span> decorator = decorators[i];</span><br><span class="line">        <span class="keyword">var</span> decorated = <span class="title function_">decorator</span>(target, propertyKey, descriptor);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsUndefined</span>(decorated) &amp;&amp; !<span class="title class_">IsNull</span>(decorated)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="title class_">IsObject</span>(decorated))</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">            descriptor = decorated;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> descriptor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在其中，对所有的装饰器进行了遍历执行，特别的，对于元数据的装饰器<code>decorator(target, propertyKey)</code>是只有两个形参的，回顾上面的源代码，进行参数校验后调用了函数<code>OrdinaryDefineOwnMetadata(metadataKey, metadataValue, target, propertyKey)</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">OrdinaryDefineOwnMetadata</span>(<span class="params">MetadataKey, MetadataValue, O, P</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> metadataMap = <span class="title class_">GetOrCreateMetadataMap</span>(O, P, <span class="comment">/*Create*/</span> <span class="literal">true</span>);</span><br><span class="line">    metadataMap.<span class="title function_">set</span>(<span class="title class_">MetadataKey</span>, <span class="title class_">MetadataValue</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述函数内，调用<code>GetOrCreateMetadataMap()</code>获取了<code>metadataMap</code>继而<code>get()</code>设置了元数据，我们继续深挖：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">GetOrCreateMetadataMap</span>(<span class="params">O, P, Create</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> targetMetadata = <span class="title class_">Metadata</span>.<span class="title function_">get</span>(O);</span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">IsUndefined</span>(targetMetadata)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">Create</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">undefined</span>;</span><br><span class="line">        targetMetadata = <span class="keyword">new</span> <span class="title function_">_Map</span>();</span><br><span class="line">        <span class="title class_">Metadata</span>.<span class="title function_">set</span>(O, targetMetadata);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> metadataMap = targetMetadata.<span class="title function_">get</span>(P);</span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">IsUndefined</span>(metadataMap)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">Create</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">undefined</span>;</span><br><span class="line">        metadataMap = <span class="keyword">new</span> <span class="title function_">_Map</span>();</span><br><span class="line">        targetMetadata.<span class="title function_">set</span>(P, metadataMap);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> metadataMap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的函数内，将装饰器的目标对象作为键，从<code>Metadata</code>获取到了其对应的元数据<code>targetMetadata</code>，并做了校验，若为 undefined 则重新创建；类似的，将参数<code>P</code>（propertyKey：’foo’）作为键获取到了对应的元数据<code>metadataMap</code>；可以查看源代码，查看类型的定义，这里做了一些兼容性适配；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> functionPrototype = <span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(<span class="title class_">Function</span>);</span><br><span class="line"><span class="keyword">var</span> usePolyfill = <span class="keyword">typeof</span> process === <span class="string">&quot;object&quot;</span> &amp;&amp; process.<span class="property">env</span> &amp;&amp; process.<span class="property">env</span>[<span class="string">&quot;REFLECT_METADATA_USE_MAP_POLYFILL&quot;</span>] === <span class="string">&quot;true&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> _Map = !usePolyfill &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Map</span> === <span class="string">&quot;function&quot;</span> &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Map</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">entries</span> === <span class="string">&quot;function&quot;</span> ? <span class="title class_">Map</span> : <span class="title class_">CreateMapPolyfill</span>();</span><br><span class="line"><span class="keyword">var</span> _WeakMap = !usePolyfill &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">WeakMap</span> === <span class="string">&quot;function&quot;</span> ? <span class="title class_">WeakMap</span> : <span class="title class_">CreateWeakMapPolyfill</span>();</span><br><span class="line"><span class="keyword">var</span> <span class="title class_">Metadata</span> = <span class="keyword">new</span> <span class="title function_">_WeakMap</span>();</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>关于这些类型定义和一些概念，可以查看MDN文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Keyed_collections#weakmap%E5%AF%B9%E8%B1%A1">带键的集合 - JavaScript | MDN (mozilla.org)</a>；</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Glossary/Polyfill">Polyfill - 术语表 | MDN (mozilla.org)</a>；</li>
+</ul>
+</blockquote>
+<p>经过上述的分析，装饰器的实现的分析，应该大致有个了解了，当然我们只是那方法的装饰器做了例子，其他的装饰器也是大同小异；</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/11/23/typescript-2/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2021-11-26 16:52:45
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/TypeScript/" title="TypeScript">
+                        #TypeScript
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/11/27/typescript-4/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE"><span class="toc-text">枚举</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E6%A0%87%E5%BF%97"><span class="toc-text">数字类型作为标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E6%88%90%E5%91%98%E7%B1%BB%E5%9E%8B"><span class="toc-text">枚举成员类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E6%9E%9A%E4%B8%BE"><span class="toc-text">有静态方法的枚举</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B"><span class="toc-text">泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E7%BA%A6%E6%9D%9F"><span class="toc-text">泛型约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%B3%9B%E5%9E%8B%E9%87%8C%E4%BD%BF%E7%94%A8%E7%B1%BB%E7%B1%BB%E5%9E%8B"><span class="toc-text">在泛型里使用类类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F"><span class="toc-text">类型系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%B1%BB%E5%9E%8B"><span class="toc-text">索引类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%A0%E5%B0%84%E7%B1%BB%E5%9E%8B"><span class="toc-text">映射类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="toc-text">条件类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-text">命名空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">装饰器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%8E%82"><span class="toc-text">装饰器工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">类装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">方法装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">属性装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">参数装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E6%95%B0%E6%8D%AE%E5%8F%8D%E5%B0%84"><span class="toc-text">元数据反射</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + TypeScript%E5%AD%A6%E4%B9%A0-03-%E8%AF%AD%E6%B3%95%E8%BF%9B%E9%98%B6 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2021%2F11%2F26%2Ftypescript-3%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2021/11/26/typescript-3/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

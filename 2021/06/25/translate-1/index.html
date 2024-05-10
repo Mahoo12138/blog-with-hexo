@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      【文章翻译】使用文本编辑器手工制作电子书 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">【文章翻译】使用文本编辑器手工制作电子书</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2021-06-25 23:45:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E7%BF%BB%E8%AF%91/" title="翻译">
+                    #翻译
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>没有什么比装订好的 EPUB 格式的电子书更能抚慰人的心灵了。</p>
+<p>接下来是我的夜晚的旅程，是为了搞清楚为什么使用 pandoc 生成的 epub 文件无法上传到 Google Books。内容是一篇维基百科的文章。</p>
+<p>我联系了谷歌支持（我对任何存在的支持都印象深刻），他们提供了愉快的帮助。默认情况下，我被定向到了“合作伙伴计划”支持。推测可能是，因为我注册只是为了看它，甚至不是使用它，这意味着他们可能得到优先级，这也就能解释我的良好体验了！</p>
+<p>Barish 引导我至<a target="_blank" rel="noopener" href="https://github.com/w3c/epubcheck">EPUB 验证器</a>接着告诉我，我有任何东西需要报告的话可以与其他团队联系。</p>
+<p>所以我查阅了“EPUB 规范”，并决定最好的起点是这个容器的格式。结果显示，EPUB 仅仅只是 zip 归档格式。 此时，我开始在其它三个文件中搜索关键词“require”，很快我就了解了最低的要求。令人印象深刻的是，使用这个关键词搜索产生了大量信息，我开始手工制作。</p>
+<h2 id="手工制作-EPUB"><a href="#手工制作-EPUB" class="headerlink" title="手工制作 EPUB"></a>手工制作 EPUB</h2><p>定义一个 EPUB 文件仅需要4个文件即可。</p>
+<p>以下是文件内容的副本，用于直观地展示一个最小的，严格有效的EPUB文件，能让读者看到 ids 和文件是如何联系在一起的。</p>
+<p>mimetype：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">application/epub+zip</span><br></pre></td></tr></table></figure>
+
+<p>META-INF&#x2F;container.xml：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">container</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;urn:oasis:names:tc:opendocument:xmlns:container&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">rootfiles</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">rootfile</span> <span class="attr">full-path</span>=<span class="string">&quot;content.opf&quot;</span> <span class="attr">media-type</span>=<span class="string">&quot;application/oebps-package+xml&quot;</span>/&gt;</span></span><br><span class="line">      </span><br><span class="line">   <span class="tag">&lt;/<span class="name">rootfiles</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">container</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>EPUB&#x2F;index.opf：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">package</span> <span class="attr">version</span>=<span class="string">&quot;3.0&quot;</span> <span class="attr">unique-identifier</span>=<span class="string">&quot;myId&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.idpf.org/2007/opf&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">metadata</span> <span class="attr">xmlns:dc</span>=<span class="string">&quot;http://purl.org/dc/elements/1.1/&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dc:identifier</span> <span class="attr">id</span>=<span class="string">&quot;myId&quot;</span>&gt;</span>urn:uuid:A1B0D67E-2E81-4DF5-9E67-A64CBE366809<span class="tag">&lt;/<span class="name">dc:identifier</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dc:title</span>&gt;</span>Handmade<span class="tag">&lt;/<span class="name">dc:title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dc:language</span>&gt;</span>en<span class="tag">&lt;/<span class="name">dc:language</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">property</span>=<span class="string">&quot;dcterms:modified&quot;</span>&gt;</span>2011-01-01T12:00:00Z<span class="tag">&lt;/<span class="name">meta</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">metadata</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">id</span>=<span class="string">&quot;nav&quot;</span> <span class="attr">href</span>=<span class="string">&quot;nav.xhtml&quot;</span> <span class="attr">media-type</span>=<span class="string">&quot;application/xhtml+xml&quot;</span> <span class="attr">properties</span>=<span class="string">&quot;nav&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">spine</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">itemref</span> <span class="attr">idref</span>=<span class="string">&quot;nav&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">spine</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">package</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>EPUB&#x2F;nav.xhtml：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/1999/xhtml&quot;</span> <span class="attr">xmlns:epub</span>=<span class="string">&quot;http://www.idpf.org/2007/ops&quot;</span> <span class="attr">xml:lang</span>=<span class="string">&quot;en-CA&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">title</span>&gt;</span>0<span class="tag">&lt;/<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">nav</span> <span class="attr">epub:type</span>=<span class="string">&quot;toc&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ol</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&quot;</span>&gt;</span>Must be text<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">ol</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>对于这个新的最小的EPUB文件，我将其上传到 Google Books，没有问题，它被接受了！拥有我自己的控制的EPUB，我现在能开始进一步缩减它的大小了。这涉及到近一小时的移除构件和许多许多次的重载；我不打算将这些编辑包含进去，仅是因为它们会随时间而改变，很快变得没用。Google Books 是确定没有使用最严格的 epubcheck  规则的，或是根本没有使用 epubcheck 。他们作为 epubcheck  的大赞助商，所以这也是需要考虑的。</p>
+<p>这些文件现在能作为基础，以简单地创建书籍，并上传或在设备上阅读。</p>
+<h2 id="编译书籍"><a href="#编译书籍" class="headerlink" title="编译书籍"></a>编译书籍</h2><p>mimetype 文件必须是归档文件中地第一个，特别的是不要带上“压缩额外字段”，所以你的压缩命令将看起来像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zip -X -r Handmade.epub mimetype *</span><br><span class="line"><span class="comment"># -X 即是不带额外字段</span></span><br></pre></td></tr></table></figure>
+
+<p>当压缩时，要确保没有 “前缀 “目录（原来存放文件的目录名称）。</p>
+<h2 id="向书籍添加内容"><a href="#向书籍添加内容" class="headerlink" title="向书籍添加内容"></a>向书籍添加内容</h2><p>书籍的内容必须是XML格式。维基百科有许多精彩的内容，但是维基文本需要被转换。下载 php，composer，并下载 parsoid 项目。使用<code>composer install</code>安装 parsoid 项目依赖，我们使用它将维基文本转换为 XML 格式。</p>
+<p>现在你能使用这个转换器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;test&quot;</span> | php bin/parser.php</span><br></pre></td></tr></table></figure>
+
+<p>之后，你将得到 HTML&#x2F;XML 格式的输出。</p>
+<p><code>https://en.wikipedia.org/wiki/MYPAGE?action=raw</code>使用这个链接可以获取到任何的维基百科页面的维基文本。将其与一个小脚本结合起来，用合适的标记来包装它，任何文章都可以很容易地变成一本书：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PAGE=&quot;Hedonism&quot;</span><br><span class="line">echo &#x27;&lt;html&gt;&lt;head&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&#x27; &gt; out.xml \</span><br><span class="line">&amp;&amp; curl &quot;https://en.wikipedia.org/wiki/$PAGE?action=raw&quot;  \</span><br><span class="line">|  php bin/parser.php &gt;&gt; out.xhtml                        \</span><br><span class="line">&amp;&amp; echo &#x27;&lt;/body&gt;&lt;/html&gt;&#x27; &gt;&gt; out.xhtml</span><br></pre></td></tr></table></figure>
+
+<p>不幸的是，这并不能纠正引用不存在的问题。无论是自动还是手动，所有图片和外部资源的链接都将需要被删除。使用 <code>sed </code>命令可以完成这大部分的工作，但应该使用合适的 HTML&#x2F;XML<br>解析器来删除有问题的数据。</p>
+<p>在打开 <em>EPUB&#x2F;index.opf</em>后，将新条目添加到 <strong>manifest</strong> 和 <strong>spine</strong> 元素中。运行<code>zip</code>来创建EPUB并上传。</p>
+<p>你现在可以阅读维基百科的文章，并在任何运行 Google Books 的设备上继续阅读你离开的地方。</p>
+<h2 id="最后的感想"><a href="#最后的感想" class="headerlink" title="最后的感想"></a>最后的感想</h2><ol>
+<li>如果能有一个插件能自动完成这个过程那就太棒了。</li>
+<li>我想知道 Google Books 的引擎在查看外部参考资料时做了什么。潜在的安全漏洞？</li>
+<li>编写一个基本的程序来获取维基百科的 URL 并输出 EPUB，对任何想真正使用它的人（比如我）来说，应该是微不足道的。</li>
+<li>EPUB实际上是一个相当不错的格式，如果你忽略了它的所有XML。</li>
+</ol>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/04/12/python-3/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2021-06-25 23:45:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E7%BF%BB%E8%AF%91/" title="翻译">
+                        #翻译
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/11/21/typescript-1/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E5%88%B6%E4%BD%9C-EPUB"><span class="toc-text">手工制作 EPUB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E4%B9%A6%E7%B1%8D"><span class="toc-text">编译书籍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%91%E4%B9%A6%E7%B1%8D%E6%B7%BB%E5%8A%A0%E5%86%85%E5%AE%B9"><span class="toc-text">向书籍添加内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E6%84%9F%E6%83%B3"><span class="toc-text">最后的感想</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E3%80%90%E6%96%87%E7%AB%A0%E7%BF%BB%E8%AF%91%E3%80%91%E4%BD%BF%E7%94%A8%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%E6%89%8B%E5%B7%A5%E5%88%B6%E4%BD%9C%E7%94%B5%E5%AD%90%E4%B9%A6 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2021%2F06%2F25%2Ftranslate-1%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2021/06/25/translate-1/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

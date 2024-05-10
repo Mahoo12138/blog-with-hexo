@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      前端学习之React项目实战Ⅰ 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">前端学习之React项目实战Ⅰ</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-01-18 15:32:51
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                    #前端
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/React/" title="React">
+                    #React
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="项目创建"><a href="#项目创建" class="headerlink" title="项目创建"></a>项目创建</h2><p>使用 <code>react-create-app</code>初始化项目后：</p>
+<ul>
+<li><p><code>react-app-env.d</code>用于引入预先定义好的类型</p>
+</li>
+<li><p><code>reportWebVitals.ts</code>用于埋点上报；</p>
+</li>
+<li><p><code>setupTests.ts</code>用于配置单元测试，默认使用 <code>testing-library</code>进行测试；</p>
+</li>
+</ul>
+<h3 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h3><ul>
+<li><p>在<code>tsconfig.json</code>里，在<code>compilerOptions</code>下添加配置：<code>baseUrl: &quot;./src&quot;</code>；将引入模块的绝对路径设置为 <strong>.&#x2F;scr</strong>；</p>
+</li>
+<li><p>添加插件包：<a target="_blank" rel="noopener" href="https://prettier.io/">Prettier</a>，配置参考官方文档：</p>
+<ul>
+<li><code>npm install --save-dev --save-exact prettier</code></li>
+<li>创建配置文件<code>.prettierrc.json</code>和忽略文件<code>.prettierignore</code></li>
+<li>手动格式化命令：<code>npx prettier --write .</code>；</li>
+<li>配置 Commit 时自动格式化：<code>Pre-commit Hook</code>，使用命令：<code>npx mrm@2 lint-staged</code>，然后会在<code>package.json</code>中配置对各种后缀名文件的支持；</li>
+<li>因使用 <code>react-create-app</code>初始化项目自带 ESLint ，需要安装<a target="_blank" rel="noopener" href="https://github.com/prettier/eslint-config-prettier#installation">eslint-config-prettier</a>才能让它们更和谐地工作，之后在<code>package.json --&gt; eslintConfig --&gt; extends</code>添加**”prettier”**，以覆盖原来的规则；</li>
+</ul>
+</li>
+<li><p>安装工具，确保每次提交的 Commit comment 符合一定的规范，否则提交失败：</p>
+<ul>
+<li><code>npm install --save-dev @commitlint/config-conventional @commitlint/cli</code></li>
+<li><code>echo &quot;module.exports = &#123;extends: [&#39;@commitlint/config-conventional&#39;]&#125;&quot; &gt; commitlint.config.js</code></li>
+<li><code>npx husky add .husky/commit-msg \&quot;npx --no -- commitlint --edit &#39;$1&#39;\&quot;</code></li>
+<li>查看对应提交规则：<a target="_blank" rel="noopener" href="https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional">conventional-changelog&#x2F;commitlint</a></li>
+</ul>
+</li>
+<li><p>Mock 数据的配置：使用 <a target="_blank" rel="noopener" href="https://github.com/typicode/json-server">json-server</a>，快速地创建 REST API：</p>
+<ul>
+<li>安装：<code>npm install -g json-server</code></li>
+<li>配置：新建文件夹<code>__json_server_mock__</code>，创建数据文件<code>db.json</code>，填充数据；</li>
+<li>使用：<code>json-server --watch __json_server_mock__/db.json</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li><code>--save-dev/-D</code>：安装到开发环境依赖；</li>
+<li><code>--save-optional/-O</code>：安装到可选环境依赖；</li>
+<li><code>--save-exact/-E</code>：精确安装</li>
+</ul>
+</blockquote>
+<h2 id="工程列表"><a href="#工程列表" class="headerlink" title="工程列表"></a>工程列表</h2><p>主页面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">export const ProjectListPage = () =&gt; &#123;</span><br><span class="line">  const [param, setParam] = useState(&#123;</span><br><span class="line">    name: &quot;&quot;,</span><br><span class="line">    personID: &quot;&quot;</span><br><span class="line">  &#125;)</span><br><span class="line">  const [list, setList] = useState([])</span><br><span class="line">  const [users, setUsers] = useState([])</span><br><span class="line"></span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    fetch(`$&#123;apiUrl&#125;/users`).then(async response =&gt; &#123;</span><br><span class="line">      if(response.ok)&#123;</span><br><span class="line">        setUsers(await response.json())</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;, [])  // 只触发一次</span><br><span class="line">  return (&lt;div&gt;</span><br><span class="line">    &lt;SearchPanel param=&#123;param&#125; setParam=&#123;setParam&#125; users=&#123;users&#125; setUsers=&#123;setUsers&#125;/&gt;</span><br><span class="line">    &lt;List list=&#123;list&#125; users=&#123;users&#125;/&gt;</span><br><span class="line">  &lt;/div&gt;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>搜索框和下拉选择框：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const SearchPanel = (&#123;param,setParam,users,setUsers&#125;) =&gt; &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;input type=&quot;text&quot; value=&#123;param.name&#125; onChange=&#123;e =&gt; setParam(&#123;...param, name:e.target.value&#125;)&#125;&gt;&lt;/input&gt;</span><br><span class="line">      &lt;select value=&#123;param.personID&#125; onChange=&#123;e =&gt; setParam(&#123;...param,personId: e.target.value&#125;)&#125;&gt;</span><br><span class="line">        &lt;option value=&#123;&#x27;&#x27;&#125;&gt;负责人&lt;/option&gt;</span><br><span class="line">        &#123;</span><br><span class="line">          users.map(user =&gt; &lt;option key=&#123;user.id&#125; value=&#123;user.id&#125;&gt;&#123;user.name&#125;&lt;/option&gt;)</span><br><span class="line">        &#125;</span><br><span class="line">      &lt;/select&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>工程列表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">const List = (&#123;list,users&#125;) =&gt; &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;table&gt;</span><br><span class="line">      &lt;thead&gt;</span><br><span class="line">        &lt;tr&gt;&lt;th&gt;名称&lt;/th&gt;&lt;th&gt;负责人&lt;/th&gt;&lt;/tr&gt;</span><br><span class="line">      &lt;/thead&gt;</span><br><span class="line">      &lt;tbody&gt;</span><br><span class="line">        &#123;</span><br><span class="line">          list.map(project =&gt; (&lt;tr key=&#123;project.id&#125;&gt;</span><br><span class="line">            &lt;td&gt;&#123;project.name&#125;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;&#123;users.find(user =&gt; user.id === project.personId)?.name || &#x27;未知&#x27;&#125;&lt;/td&gt;</span><br><span class="line">          &lt;/tr&gt;))</span><br><span class="line">        &#125;</span><br><span class="line">      &lt;/tbody&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="接口配置"><a href="#接口配置" class="headerlink" title="接口配置"></a>接口配置</h3><ul>
+<li>在<code>src</code>下，创建两个文件<code>.env</code>，<code>.env.development</code>，对应生产和开发环境；</li>
+<li>开发环境下，添加内容：<code>REACT_APP_API_URL=http://localhost:3001</code>；</li>
+<li>使用：<code>const apiUrl = process.env.REACT_APP_API_URL</code>；</li>
+</ul>
+<h3 id="工具函数"><a href="#工具函数" class="headerlink" title="工具函数"></a>工具函数</h3><p>在请求数据时，如搜索框和下拉框当有一处为空时，会给后端造成疑惑，是请求该字段为空的数据还是忽略该数据，这样的情况最好在前端避免，需要写一些工具代码进行处理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">export const isFalsy = (value) =&gt; value === 0 ? false : !value</span><br><span class="line"></span><br><span class="line">export const cleanObject = (obj) =&gt; &#123;</span><br><span class="line">  const result = &#123; ...obj &#125;</span><br><span class="line">  Object.keys(result).forEach(key =&gt; &#123;</span><br><span class="line">    const value = result[key]</span><br><span class="line">    if (isFalsy(value)) &#123;</span><br><span class="line">      delete result[key]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="参数查询"><a href="#参数查询" class="headerlink" title="参数查询"></a>参数查询</h3><p>安装参数拼接处理的外部库：<code>qs</code>；使用工具函数处理查询的数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() =&gt; &#123;</span><br><span class="line">    fetch(`$&#123;apiUrl&#125;/projects?$&#123;qs.stringify(cleanObject(param))&#125;`)</span><br><span class="line">        .then(async response =&gt; &#123;</span><br><span class="line">            if(response.ok)&#123;</span><br><span class="line">                setList(await response.json())</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, [param])</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义-Hook"><a href="#自定义-Hook" class="headerlink" title="自定义 Hook"></a>自定义 Hook</h2><h3 id="useMount"><a href="#useMount" class="headerlink" title="useMount"></a>useMount</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export const useMount = (callback) =&gt; &#123;</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    callback()</span><br><span class="line">    // eslint-disable-next-line react-hooks/exhaustive-deps</span><br><span class="line">  &#125;, [])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们需要一个<code>useEffect</code>只在组件挂载时执行一次时，需要在其第二个参数中传入空数组，但这样语义性并不强，所以可以封装一个<code>useMount</code>，传入需要执行的回调函数即可；</p>
+<h3 id="useDebounce"><a href="#useDebounce" class="headerlink" title="useDebounce"></a>useDebounce</h3><p>Debounce 也就是防抖动，是处理一些需要短暂延时后再进行的操作，例如搜索框的内容提示等；以下是类似的案例，对搜索框发送请求进行 debounce：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">export const useDebounce = (value, delay) =&gt; &#123;</span><br><span class="line">  const [debouncedValue, setDebouncedValue] = useState(value)</span><br><span class="line"></span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    const timeout = setTimeout(() =&gt; &#123;</span><br><span class="line">      setDebouncedValue(value)</span><br><span class="line">    &#125;, delay)</span><br><span class="line">    return () =&gt; &#123;</span><br><span class="line">      clearTimeout(timeout)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, [value, delay])</span><br><span class="line"></span><br><span class="line">  return debouncedValue</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="登录页面"><a href="#登录页面" class="headerlink" title="登录页面"></a>登录页面</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; FormEvent &#125; from &quot;react&quot;;</span><br><span class="line"></span><br><span class="line">export const LoginPage = () =&gt; &#123;</span><br><span class="line">  const handleSubmit = (e: FormEvent&lt;HTMLFormElement&gt;) =&gt; &#123;</span><br><span class="line">    const login = (param: &#123; username: string; password: string &#125;) =&gt; &#123;</span><br><span class="line">      fetch(`$&#123;apiUrl&#125;/login`, &#123;</span><br><span class="line">        method: &quot;POST&quot;,</span><br><span class="line">        headers: &#123; &quot;Content-Type&quot;: &quot;application/json&quot; &#125;,</span><br><span class="line">        body: JSON.stringify(param),</span><br><span class="line">      &#125;).then(async (response) =&gt; &#123;</span><br><span class="line">        if (response.ok) &#123;&#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line">    e.preventDefault();</span><br><span class="line">    const username = (e.currentTarget.elements[0] as HTMLInputElement).value;</span><br><span class="line">    const password = (e.currentTarget.elements[1] as HTMLInputElement).value;</span><br><span class="line">    login(&#123; username, password &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;form onSubmit=&#123;handleSubmit&#125;&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;label htmlFor=&quot;username&quot;&gt;用户名&lt;/label&gt;</span><br><span class="line">        &lt;input type=&quot;text&quot; id=&#123;&quot;username&quot;&#125;&gt;&lt;/input&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;label htmlFor=&quot;password&quot;&gt;密码&lt;/label&gt;</span><br><span class="line">        &lt;input type=&quot;password&quot; id=&#123;&quot;password&quot;&#125;&gt;&lt;/input&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;button type=&quot;submit&quot;&gt;登录&lt;/button&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里我们再继续使用 <code>json server</code>作为后端，之后会使用另外的插件，由于 <code>json server</code>仅支持 RestAPI 风格，对登录验证这样的业务，需要进行中间件注入；</p>
+<h3 id="json-server-中间件"><a href="#json-server-中间件" class="headerlink" title="json server 中间件"></a>json server 中间件</h3><p>创建文件<code>__json_server_mock__/middleware.js</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (req.<span class="property">method</span> === <span class="string">&#x27;POST&#x27;</span> &amp;&amp; req.<span class="property">path</span> === <span class="string">&#x27;/login&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">body</span>.<span class="property">username</span> === <span class="string">&#x27;mahoo12138&#x27;</span> &amp;&amp; req.<span class="property">body</span>.<span class="property">password</span> === <span class="string">&#x27;xm12345678&#x27;</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">200</span>).<span class="title function_">json</span>(&#123;</span><br><span class="line">        <span class="attr">user</span>: &#123;</span><br><span class="line">          <span class="attr">token</span>: <span class="string">&#x27;12345&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">400</span>).<span class="title function_">json</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;用户名或密码错误&#x27;</span> &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">next</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注入中间件，在启动代码中修改为如下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json-server --watch __json_server_mock__/db.json --port 3001 --middlewares ./__json_server_mock__/middleware.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="context-存储全局状态"><a href="#context-存储全局状态" class="headerlink" title="context 存储全局状态"></a>context 存储全局状态</h3><p>首先，为了更好地专注地进行学习，将使用另一个专用的插件 <strong>jira-dev-tool</strong> 作为后端，使用<code>npx imooc-jira-tool</code>进行安装，使用方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import &#123; loadDevTools &#125; from &quot;jira-dev-tool&quot;;</span><br><span class="line"></span><br><span class="line">loadDevTools(() =&gt; &#123;</span><br><span class="line">  ReactDOM.render(</span><br><span class="line">    &lt;React.StrictMode&gt;</span><br><span class="line">        &lt;App /&gt;</span><br><span class="line">    &lt;/React.StrictMode&gt;,</span><br><span class="line">    document.getElementById(&quot;root&quot;)</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>jira-dev-tool</strong>使用本地的 localStorage 作为存储，需要与之建立联系并操作 Token；真实开发过程中往往会使用第三方或自研的SDK，往往不需要下列代码：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> localStorageKey = <span class="string">&quot;__auth_provider_token__&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">getToken</span> = (<span class="params"></span>) =&gt; <span class="variable language_">window</span>.<span class="property">localStorage</span>.<span class="title function_">getItem</span>(localStorageKey);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">handleUserResponse</span> = (<span class="params">&#123; user &#125;: &#123; user: User &#125;</span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="property">localStorage</span>.<span class="title function_">setItem</span>(localStorageKey, user.<span class="property">token</span> || <span class="string">&quot;&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> user;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">login</span> = (<span class="params">param: &#123; username: string; password: string &#125;</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">fetch</span>(<span class="string">`<span class="subst">$&#123;apiUrl&#125;</span>/login`</span>, &#123;</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">    <span class="attr">headers</span>: &#123; <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span> &#125;,</span><br><span class="line">    <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(param),</span><br><span class="line">  &#125;).<span class="title function_">then</span>(<span class="keyword">async</span> (response) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (response.<span class="property">ok</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">handleUserResponse</span>(<span class="keyword">await</span> response.<span class="title function_">json</span>());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(param);		<span class="comment">// throw new Error() 类似于</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">logout</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="property">localStorage</span>.<span class="title function_">removeItem</span>(localStorageKey);</span><br></pre></td></tr></table></figure>
+
+<p>之后，利用上述的代码，封装一个提供登录注册数据持久化的 ContextProvider ，且通过自定义的 useAuth 还能在任意子组件获取到该 Context ：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> auth <span class="keyword">from</span> <span class="string">&quot;auth-provider&quot;</span>;</span><br><span class="line"></span><br><span class="line">interface <span class="title class_">AuthForm</span> &#123;</span><br><span class="line">  <span class="attr">username</span>: string;</span><br><span class="line">  <span class="attr">password</span>: string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">AuthContext</span> = <span class="title class_">React</span>.<span class="property">createContext</span>&lt;</span><br><span class="line">  | &#123;</span><br><span class="line">      <span class="attr">user</span>: <span class="title class_">User</span> | <span class="literal">null</span>;</span><br><span class="line">      <span class="attr">login</span>: <span class="function">(<span class="params">form: AuthForm</span>) =&gt;</span> <span class="title class_">Promise</span>&lt;<span class="keyword">void</span>&gt;;</span><br><span class="line">      <span class="attr">register</span>: <span class="function">(<span class="params">form: AuthForm</span>) =&gt;</span> <span class="title class_">Promise</span>&lt;<span class="keyword">void</span>&gt;;</span><br><span class="line">      <span class="attr">logout</span>: <span class="function">() =&gt;</span> <span class="title class_">Promise</span>&lt;<span class="keyword">void</span>&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">  | <span class="literal">undefined</span></span><br><span class="line">&gt;(<span class="literal">undefined</span>);</span><br><span class="line"></span><br><span class="line"><span class="title class_">AuthContext</span>.<span class="property">displayName</span> = <span class="string">&quot;AuthContext&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">AuthProvider</span> = (<span class="params">&#123; children &#125;: &#123; children: ReactNode &#125;</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> [user, setUser] = useState&lt;<span class="title class_">User</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">login</span> = (<span class="params">form: AuthForm</span>) =&gt; auth.<span class="title function_">login</span>(form).<span class="title function_">then</span>(<span class="function">(<span class="params">u</span>) =&gt;</span> <span class="title function_">setUser</span>(u));</span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">register</span> = (<span class="params">form: AuthForm</span>) =&gt; auth.<span class="title function_">register</span>(form).<span class="title function_">then</span>(setUser); <span class="comment">// point free</span></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">logout</span> = (<span class="params"></span>) =&gt; auth.<span class="title function_">logout</span>().<span class="title function_">then</span>(<span class="function">() =&gt;</span> <span class="title function_">setUser</span>(<span class="literal">null</span>));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">AuthContext.Provider</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">children</span>=<span class="string">&#123;children&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">value</span>=<span class="string">&#123;&#123;</span> <span class="attr">user</span>, <span class="attr">login</span>, <span class="attr">register</span>, <span class="attr">logout</span> &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    /&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">useAuth</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> context = <span class="title class_">React</span>.<span class="title function_">useContext</span>(<span class="title class_">AuthContext</span>);</span><br><span class="line">  <span class="keyword">if</span> (!context) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;useAuth 必须在 AuthProvider 中使用&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> context;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="项目结构优化"><a href="#项目结构优化" class="headerlink" title="项目结构优化"></a>项目结构优化</h3><figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; user &#125; = <span class="title function_">useAuth</span>();</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;App&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;/* <span class="tag">&lt;<span class="name">ProjectListPage</span> /&gt;</span> */&#125;</span></span><br><span class="line"><span class="language-xml">      &#123;user ? <span class="tag">&lt;<span class="name">AuthenticateApp</span> /&gt;</span> : <span class="tag">&lt;<span class="name">UnAuthenticateApp</span> /&gt;</span>&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将页面分为登录和未登录后两个部分，登录后即是项目列表页面，未登录包括注册登录页面：</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">UnAuthenticateApp</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> [isLogin, setIsLogin] = <span class="title function_">useState</span>(<span class="literal">false</span>);</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;isLogin ? <span class="tag">&lt;<span class="name">LoginPage</span> /&gt;</span> : <span class="tag">&lt;<span class="name">RegisterPage</span> /&gt;</span>&#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;(e)</span> =&gt;</span> setIsLogin(!isLogin)&#125;&gt;切换<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="页面样式"><a href="#页面样式" class="headerlink" title="页面样式"></a>页面样式</h2><h3 id="引入-Ant-Design"><a href="#引入-Ant-Design" class="headerlink" title="引入 Ant Design"></a>引入 Ant Design</h3><ul>
+<li><p>安装：<code>npm i antd</code></p>
+</li>
+<li><p>引入样式文件：<code>import &quot;antd/dist/antd.less&quot;;</code></p>
+</li>
+<li><p>主题配置：需要修改<code>create-react-app</code> 的默认配置，使用 <a target="_blank" rel="noopener" href="https://github.com/gsoft-inc/craco">craco</a> （一个对 create-react-app 进行自定义配置的社区解决方案）</p>
+<ul>
+<li><p>安装：<code>npm i @craco/craco craco-less</code> ，定义主题需要用到 <a target="_blank" rel="noopener" href="https://github.com/webpack-contrib/less-loader/">less-loader </a>提供的 less 变量覆盖功能</p>
+</li>
+<li><p>修改启动脚本命令为：<code>&quot;start&quot;: &quot;craco start&quot;</code>，替代<code>react-scripts</code>；</p>
+</li>
+<li><p>创建一个 <code>craco.config.js</code> 用于修改默认配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">CracoLessPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;craco-less&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">plugin</span>: <span class="title class_">CracoLessPlugin</span>,</span><br><span class="line">      <span class="attr">options</span>: &#123;</span><br><span class="line">        <span class="attr">lessLoaderOptions</span>: &#123;</span><br><span class="line">          <span class="attr">lessOptions</span>: &#123;</span><br><span class="line">            <span class="attr">modifyVars</span>: &#123; <span class="string">&#x27;@primary-color&#x27;</span>: <span class="string">&#x27;#1DA57A&#x27;</span> &#125;,</span><br><span class="line">            <span class="attr">javascriptEnabled</span>: <span class="literal">true</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用 <a target="_blank" rel="noopener" href="https://github.com/webpack/less-loader#less-options">less-loader</a> 的 <code>modifyVars</code> 来进行主题配置，可参考 <a target="_blank" rel="noopener" href="https://ant.design/docs/react/customize-theme-cn">配置主题</a> 文档，</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用-Emotion-模块"><a href="#使用-Emotion-模块" class="headerlink" title="使用 Emotion 模块"></a>使用 Emotion 模块</h3><p>安装：<code>npm i @emotion/react @emotion/styled</code></p>
+<h4 id="新增普通css组件"><a href="#新增普通css组件" class="headerlink" title="新增普通css组件"></a>新增普通css组件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 引入emotion</span><br><span class="line">import styled from &quot;@emotion/styled”;</span><br><span class="line">// 使用emotion 创建css组件</span><br><span class="line">const Container = styled.div`</span><br><span class="line">    display: flex;</span><br><span class="line">    flex-direction: column;</span><br><span class="line">    align-items: center;</span><br><span class="line">    min-height: 100vh;</span><br><span class="line">`;</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用行内样式"><a href="#使用行内样式" class="headerlink" title="使用行内样式"></a>使用行内样式</h4><p>首先，需要在代码文件顶端添加：<code>/* @jsxImportSource @emotion/react */</code>，标识当前组件用了emotion行内样式；使用如下：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Form</span> css=&#123;&#123; <span class="attr">marginBottom</span>: <span class="string">&quot;2rem&quot;</span>, <span class="string">&quot;&gt;*&quot;</span>: <span class="string">&quot;&quot;</span> &#125;&#125; layout=&#123;<span class="string">&quot;inline&quot;</span>&#125;&gt;</span><br><span class="line">	&#123;<span class="comment">/*...*/</span>&#125;</span><br><span class="line">&lt;/<span class="title class_">Form</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="给已存在组件加样式"><a href="#给已存在组件加样式" class="headerlink" title="给已存在组件加样式"></a>给已存在组件加样式</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// Card 是antd已存在的组件</span><br><span class="line">const ShadowCard = styled(Card)`</span><br><span class="line">    width: 40rem;</span><br><span class="line">    min-height: 56rem;</span><br><span class="line">    padding: 3.2rem 4rem;</span><br><span class="line">    border-radius: 0.3rem;</span><br><span class="line">    box-sizing: border-box;</span><br><span class="line">    box-shadow: rgba(0, 0, 0, 0.1) 0 0 10px;</span><br><span class="line">    text-align: center;</span><br><span class="line">`;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置基础全局样式"><a href="#配置基础全局样式" class="headerlink" title="配置基础全局样式"></a>配置基础全局样式</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">62.5%</span>;</span><br><span class="line">  <span class="comment">/* 默认字体大小是16px */</span></span><br><span class="line">  <span class="comment">/* 16 * 62.5% = 10px，即 1rem = 10px */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">html</span> <span class="selector-tag">body</span> <span class="selector-id">#root</span> <span class="selector-class">.App</span> &#123;</span><br><span class="line">  <span class="comment">/* 将页面的高度限制在整个视口的高度 */</span></span><br><span class="line">  <span class="attribute">min-height</span>: <span class="number">100vh</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/12/28/tutorial-4/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-01-18 15:32:51
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                        #前端
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/React/" title="React">
+                        #React
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/01/20/linux-termux/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA"><span class="toc-text">项目创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-text">基础配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E5%88%97%E8%A1%A8"><span class="toc-text">工程列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E9%85%8D%E7%BD%AE"><span class="toc-text">接口配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0"><span class="toc-text">工具函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E6%9F%A5%E8%AF%A2"><span class="toc-text">参数查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-Hook"><span class="toc-text">自定义 Hook</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#useMount"><span class="toc-text">useMount</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#useDebounce"><span class="toc-text">useDebounce</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2"><span class="toc-text">登录页面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#json-server-%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="toc-text">json server 中间件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#context-%E5%AD%98%E5%82%A8%E5%85%A8%E5%B1%80%E7%8A%B6%E6%80%81"><span class="toc-text">context 存储全局状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E4%BC%98%E5%8C%96"><span class="toc-text">项目结构优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E6%A0%B7%E5%BC%8F"><span class="toc-text">页面样式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E5%85%A5-Ant-Design"><span class="toc-text">引入 Ant Design</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Emotion-%E6%A8%A1%E5%9D%97"><span class="toc-text">使用 Emotion 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B0%E5%A2%9E%E6%99%AE%E9%80%9Acss%E7%BB%84%E4%BB%B6"><span class="toc-text">新增普通css组件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%A1%8C%E5%86%85%E6%A0%B7%E5%BC%8F"><span class="toc-text">使用行内样式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%99%E5%B7%B2%E5%AD%98%E5%9C%A8%E7%BB%84%E4%BB%B6%E5%8A%A0%E6%A0%B7%E5%BC%8F"><span class="toc-text">给已存在组件加样式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%A1%80%E5%85%A8%E5%B1%80%E6%A0%B7%E5%BC%8F"><span class="toc-text">配置基础全局样式</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E4%B9%8BReact%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E2%85%A0 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2022%2F01%2F18%2Freact-13%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2022/01/18/react-13/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

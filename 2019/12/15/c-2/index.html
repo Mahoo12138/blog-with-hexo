@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      C语言再学习之基础深挖 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">C语言再学习之基础深挖</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2019-12-15 16:28:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/C/" title="C">
+                    #C
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="内联函数-C-中关键字-inline"><a href="#内联函数-C-中关键字-inline" class="headerlink" title="内联函数 C 中关键字 inline"></a>内联函数 C 中关键字 inline</h2><p>调用函数时，一般会由于建立调用、传递参数、跳转到函数代码并返回等花费掉一些时间，而且一些函数被频繁调用，不断地有函数入栈，即<strong>函数栈</strong>，会造成栈空间或<strong>栈内存</strong>的大量消耗。</p>
+<p>为了解决这个问题，在C99中特别地引入了<strong>inline修饰符</strong>，即内联函数。</p>
+<p>关键字 inline 告诉编译器，任何地方只要调用内联函数，就直接把该函数的机器码插入到调用它的地方，类似于带参宏。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="type">int</span> <span class="title function_">max</span> <span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (a &gt; b)</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a = max (x, y); <span class="comment">// 等价于 &quot;a = (x &gt; y ? x : y);&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="结构体-struct-——-构造数据类型"><a href="#结构体-struct-——-构造数据类型" class="headerlink" title="结构体 struct —— 构造数据类型"></a>结构体 struct —— 构造数据类型</h2><p>结构体（struct）就是一种把一些数据项组合在一起的数据结构类型，定义一个个人信息的结构体如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Info</span>&#123;</span></span><br><span class="line">	<span class="type">char</span> name[<span class="number">10</span>];</span><br><span class="line">	<span class="type">double</span> height;</span><br><span class="line">	<span class="type">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//定义一个 Info 类型的结构体变量</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Info</span> <span class="title">Mahoo</span>;</span></span><br><span class="line"><span class="comment">//还可以用 typedef </span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Info</span> <span class="title">sInfo</span>;</span></span><br><span class="line">sInfo Mahoo;</span><br></pre></td></tr></table></figure>
+
+<p>将上述代码融合一下，常用来定义结构体的代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Info</span>&#123;</span></span><br><span class="line">	<span class="type">char</span> name[<span class="number">10</span>];</span><br><span class="line">	<span class="type">double</span> height;</span><br><span class="line">	<span class="type">int</span> age;</span><br><span class="line">&#125;sInfo;</span><br><span class="line">sInfo Mahoo;</span><br></pre></td></tr></table></figure>
+
+<h3 id="结构体的对齐问题"><a href="#结构体的对齐问题" class="headerlink" title="结构体的对齐问题"></a>结构体的对齐问题</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Info1</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> name[<span class="number">3</span>];</span><br><span class="line">    <span class="type">double</span> id;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Info2</span>&#123;</span></span><br><span class="line">    <span class="type">double</span> id;</span><br><span class="line">    <span class="type">char</span> name[<span class="number">3</span>];</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义一个 Info 类型的结构体变量</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Info1</span> <span class="title">Mahoo1</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Info2</span> <span class="title">Mahoo2</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Mahoo1:%d,Mahoo2:%d&quot;</span>,<span class="keyword">sizeof</span>(Mahoo1),<span class="keyword">sizeof</span>(Mahoo2));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码输出为：<code>Mahoo1:24,Mahoo2:16</code>，可见同样的结构体内容，所占的字节大小是不一样的，而且在64位的编译器中，char ：1 个字节，int： 4 个字节，double:  8 个字节，按理来说都应该是 15 个字节才对，因为涉及到<strong>字节对齐</strong>的缘故，在特定类型变量存储的时候，各种类型数据是按照一定的规则在空间上排列，而不是顺序的一个接一个的存放。</p>
+<p>首先要明确编译器的对齐原则和一些基本概念：</p>
+<ul>
+<li><p>对齐：假定从零地址开始，每成员的起始地址编号，必须是它本身字节数的整数倍。其次，结构体本身也要根据自身的有效对齐值圆整（就是结构体成员变量占用总长度需要是对结构体有效对齐值的整数倍）；</p>
+</li>
+<li><p>数据类型自身的对齐值：char 型为 1，short 为 2，int，float 为 4，double类型为 8，单位字节。在Linux系统下计算时超过4字节按4字节计算；</p>
+</li>
+<li><p>结构体的自身的对齐值：取决于其成员中自身对齐值最大的那个值；</p>
+</li>
+<li><p>指定对齐值：通过<code>#pragma pack (value)</code>时动态地确定指定对齐值 value；</p>
+</li>
+<li><p>数据成员和结构体的有效对齐值：自身对齐值和指定对齐值中较小的那个值，且结构体数据起始地址%有效对齐值 &#x3D; 0 ；</p>
+</li>
+</ul>
+<p>好的，现在就拿上面的两个结构体例子说，首先<strong>假定地址是从零开始的</strong>，在 Info1 中，第一个成员<code>char name[3]</code>，其对齐值为 1，占三个字节；所以第二个成员<code>double id</code>是从 3 开始，由于对齐的原则，该成员的有效对齐值为 8（无指定对齐值默认为 8），即<code>double id</code>真正的地址应该满足 %8 &#x3D; 0，也就是对齐到 8 这个地址；第三个成员变量<code>int age</code>起始地址为 16，有效对齐值为自身对齐值 4，所以存储在 16~19 地址。</p>
+<p>到这里结构体 Info1 变量的<code>sizeof()</code>应该为地址 0~19 共 20 个字节，但还要考虑到结构体的有效对齐值（自身对齐值为 <code>double id</code>的自身对齐值 8 ，指定对齐值未定）为 8 ，保证圆整，所以向上取整到 24 % 8 &#x3D; 0。</p>
+<p>Info2 也是按一样规则的对齐， <code>double id</code>地址为 0~7，<code>char name[3]</code>为 8~11，<code>int age</code>为 12~16，所以 Info2 变量的<code>sizeof()</code>为 16。</p>
+<h3 id="pragma-pack-n"><a href="#pragma-pack-n" class="headerlink" title="#pragma pack(n)"></a>#pragma pack(n)</h3><p>可以通过<code>#pragma pack(n)</code>设定结构体以 n 字节方式对齐，不仅仅是结构体，还可以是联合体，还有C++中类成员变量的对齐。n 可以取（<code>1</code>， <code>2</code>， <code>4</code>， <code>8</code>， <code>16</code>） 中任意一值。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> pack(push)  <span class="comment">// 保存对齐状态</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> pack(4)     <span class="comment">// 设定为 4 字节对齐</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Info1</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> name[<span class="number">3</span>];</span><br><span class="line">    <span class="type">double</span> id;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> pack(pop)  </span></span><br></pre></td></tr></table></figure>
+
+<p>这样一编译，结构体 Info1 的大小也是 16 字节了。</p>
+<h4 id="对齐问题的启发"><a href="#对齐问题的启发" class="headerlink" title="对齐问题的启发"></a>对齐问题的启发</h4><p>由上面的例子可以看出，不同的成员变量声明顺序有时决定了结构体不同的大小，如果想要节约空间的话，则可以把结构体中的变量按照类型大小<strong>从小到大声明</strong>（很容易得出），尽量减少中间的填补空间，当然可以采取强制措施解决。</p>
+<h2 id="常量-const-——-一个不能被改变的普通变量"><a href="#常量-const-——-一个不能被改变的普通变量" class="headerlink" title="常量 const —— 一个不能被改变的普通变量"></a>常量 const —— 一个不能被改变的普通变量</h2><p>const 一般用于定义常量或常量指针，所谓常量也就是不可更改的意思，但部分情况可以通过指针修改；当 const 修饰指针时，有两种情况：</p>
+<ul>
+<li>修饰一个指向常量的指针，则指针是可变的，常量不可变，const 在  *  的左侧；</li>
+<li>修饰指针为常量，即常量指针，指向的对象是可变的，const 位于 * 的右侧；</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修饰常量</span></span><br><span class="line"><span class="type">int</span> <span class="type">const</span> num;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> num;</span><br><span class="line"><span class="comment">// 修饰指向常量的指针</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *p;</span><br><span class="line"><span class="type">int</span> <span class="type">const</span> *p;</span><br><span class="line"><span class="comment">// 修饰指针常量</span></span><br><span class="line"><span class="type">int</span> * <span class="type">const</span> p;</span><br><span class="line"><span class="comment">// 都为常量</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> * <span class="type">const</span> p;</span><br></pre></td></tr></table></figure>
+
+<p>另一种情况是修饰函数的形参，说明形参在函数内部不会被改变。例如修饰传递的指针形参时，不会修改实参指针所指向的数据：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">int</span> * <span class="type">const</span> p)</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="char-数组与指针的恩恩怨怨"><a href="#char-数组与指针的恩恩怨怨" class="headerlink" title="char ** 数组与指针的恩恩怨怨"></a>char ** 数组与指针的恩恩怨怨</h2><p>在探讨<code>char **</code>这个东西前，我们首先要明白：</p>
+<ul>
+<li><p>字符串常量的本质是一个地址：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *s;</span><br><span class="line">s = <span class="string">&quot;hello&quot;</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数组名在表达式中表示指向首元素的<strong>指针常量</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> a[] = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">a = s;	<span class="comment">// error</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><code>char **</code>为二级指针，此类型定义的变量是指向一级指针<code>char *</code>的指针，常用于在函数传值时使用，如传递一级指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">fun</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="type">char</span>* s;</span><br><span class="line">    init(&amp;buf);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">init</span><span class="params">(<span class="type">int</span> **tmp_s)</span>&#123;</span><br><span class="line">    *tmp_s = <span class="built_in">malloc</span>(<span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的时一个<strong>野指针</strong>的问题：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>** s;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,s);		<span class="comment">// 0</span></span><br><span class="line">*s = <span class="string">&quot;hello&quot;</span>;		<span class="comment">// Variable &#x27;s&#x27; is uninitialized when used here</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,*s);	<span class="comment">// error and crash</span></span><br></pre></td></tr></table></figure>
+
+<p>定义 <code>s</code> 变量并为初始化，变量中默认存储的是 <strong>NULL</strong> 空指针 0，不指向任何内容；</p>
+<p>所以在<code>printf(&quot;%s&quot;,*s);</code>时，程序会崩溃，无法继续执行；</p>
+<p>因此使用<code>char** s;</code>时，需要对此进行初始化操作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = (<span class="type">char</span>**)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">char</span>**));</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2019/12/12/front-end-1/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2019-12-15 16:28:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/C/" title="C">
+                        #C
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2019/12/16/front-end-2/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0-C-%E4%B8%AD%E5%85%B3%E9%94%AE%E5%AD%97-inline"><span class="toc-text">内联函数 C 中关键字 inline</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93-struct-%E2%80%94%E2%80%94-%E6%9E%84%E9%80%A0%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">结构体 struct —— 构造数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%AF%B9%E9%BD%90%E9%97%AE%E9%A2%98"><span class="toc-text">结构体的对齐问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pragma-pack-n"><span class="toc-text">#pragma pack(n)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E9%BD%90%E9%97%AE%E9%A2%98%E7%9A%84%E5%90%AF%E5%8F%91"><span class="toc-text">对齐问题的启发</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F-const-%E2%80%94%E2%80%94-%E4%B8%80%E4%B8%AA%E4%B8%8D%E8%83%BD%E8%A2%AB%E6%94%B9%E5%8F%98%E7%9A%84%E6%99%AE%E9%80%9A%E5%8F%98%E9%87%8F"><span class="toc-text">常量 const —— 一个不能被改变的普通变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#char-%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88%E7%9A%84%E6%81%A9%E6%81%A9%E6%80%A8%E6%80%A8"><span class="toc-text">char ** 数组与指针的恩恩怨怨</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + C%E8%AF%AD%E8%A8%80%E5%86%8D%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%9F%BA%E7%A1%80%E6%B7%B1%E6%8C%96 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2019%2F12%2F15%2Fc-2%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2019/12/15/c-2/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      利用Cloud Studio为博客搭建免费图床 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">利用Cloud Studio为博客搭建免费图床</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2019-10-21 16:00:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E5%85%8D%E8%B4%B9%E5%9B%BE%E5%BA%8A/" title="免费图床">
+                    #免费图床
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>Cloud Studio 已更新，教程失效</p>
+<p>搭建的静态博客利用Markdown码字，必然少不了图片，所以需要另外的图床作为辅助，网上有很多优秀的图床程序，不过大多都功能复杂，而且图片放在别人那，让我总感觉不是很放心（万一哪天就跑路了呢？），而自己来搭建图床程序的话，需要自备服务器或者是虚拟主机，这个可是要付费的，毕竟自己的博客都是利用免费的Pages服务搭建的，而再为了托管图片去付费就有些得不偿失了，所以我想了半天，折腾了半天，可以利用腾讯云旗下的Cloud Studio的WebIDE及代码托管平台来搭建图床，步骤如下：</p>
+<h2 id="使用Git创建本地存储库"><a href="#使用Git创建本地存储库" class="headerlink" title="使用Git创建本地存储库"></a>使用Git创建本地存储库</h2><p>搭建的图床是利用Git及远程存储库的模式进行传输和存储的，我主要是在Windows平台上使用，而Win10是没有预装Git的，所以首先需要安装<a target="_blank" rel="noopener" href="https://git-scm.com/">Git</a>；</p>
+<ul>
+<li><p>在你想要存储图片的路径，创建一个文件夹，例如我的<code>D:\Mahoo\Pictures\Blog</code>;</p>
+</li>
+<li><p>创建本地存储库（以<code>Blog</code>目录为例）</p>
+<p>在<code>Blog</code>目录下，右击选择<code>Git Bash</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>在此文件夹内，可创建多个文件夹存储你的不同图片。</p>
+<h2 id="使用Cloud-Studio创建远程存储库"><a href="#使用Cloud-Studio创建远程存储库" class="headerlink" title="使用Cloud Studio创建远程存储库"></a>使用Cloud Studio创建远程存储库</h2><ul>
+<li><p>创建账号</p>
+<p>腾讯云开发者平台：<a target="_blank" rel="noopener" href="https://dev.tencent.com/"> https://dev.tencent.com/ </a></p>
+</li>
+<li><p>新建一个项目</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/Tutorials/pic_cs/new.png" alt="新建项目"></p>
+<p>项目名称，地址自定义，是否公开勾选。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/Tutorials/pic_cs/new1.png" alt="新建项目"></p>
+</li>
+</ul>
+<p>进入新建项目界面，打开右侧<code>代码 -&gt;代码浏览 </code>，复制该项目的HTTPS地址。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/Tutorials/pic_cs/new2.png" alt="项目界面"></p>
+<h2 id="连接本地存储库和远程存储库"><a href="#连接本地存储库和远程存储库" class="headerlink" title="连接本地存储库和远程存储库"></a>连接本地存储库和远程存储库</h2><p>当你往本地存储库添加图片后，使用指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m &quot;自定义内容&quot;</span><br><span class="line">git remote add origin 刚才复制的的HTTPS地址</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>这样的话，图片已经同步到远程存储库了，当然你对<code>git</code>相当熟悉的话，以上全是废话，此教程仅针对刚搭建博客的小白。</p>
+<h2 id="开启Pages服务绑定域名"><a href="#开启Pages服务绑定域名" class="headerlink" title="开启Pages服务绑定域名"></a>开启Pages服务绑定域名</h2><p>打开此界面，按提示绑定域名即可</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/Tutorials/pic_cs/pages.png"></p>
+<h2 id="通过直链引用图片"><a href="#通过直链引用图片" class="headerlink" title="通过直链引用图片"></a>通过直链引用图片</h2><p>这里我举例来说明比较好懂，在写博客的过程中，当你引入一张图片时，例如是这样的：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D:\Mahoo\Pictures\Blog\test.png</span><br></pre></td></tr></table></figure>
+
+<p>这时该图片的本地地址，在已经开启Pages服务并且绑定域名的情况下，你绑定的域名直接指向了git本地存储库的根目录，也就是<code>Blog</code>，所以则可以将本地地址改成网络直链：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://你的域名/test.png</span><br></pre></td></tr></table></figure>
+
+<p>你可以通过文本编辑器的替换功能，也可以用代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;D:/Mahoo/BLog/source/_posts/Cloud_studio.md&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">string = f.read()</span><br><span class="line">f.close()</span><br><span class="line">key = <span class="string">r&#x27;D:\\Mahoo\\Pictures\\Blog\\hexo_images\\Tutorials\\pic_cs\\&#x27;</span></span><br><span class="line">new = <span class="string">&#x27;https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/Tutorials/pic_cs/&#x27;</span></span><br><span class="line"><span class="comment"># result = re.compile(key).findall(string)</span></span><br><span class="line"><span class="comment"># print(result)</span></span><br><span class="line">string = re.sub(key, new, string)</span><br><span class="line"><span class="comment"># print(string)</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;D:/Mahoo/BLog/source/_posts/Cloud_studio.md&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">f.write(string)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+
+<p>一个文件的链接替换当然是编辑器的替换方便的多，但如果需要替换域名，对所有博客文章进行替换时，文本编辑器就显得有些力不从心了，这里也贴出来我的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> files <span class="keyword">in</span> os.walk(<span class="string">&#x27;D:/Mahoo/BLog/source/_posts/&#x27;</span>):</span><br><span class="line">    <span class="built_in">print</span>(files[<span class="number">2</span>][<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(files[<span class="number">2</span>])):</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&#x27;D:/Mahoo/BLog/source/_posts/&#x27;</span> + files[<span class="number">2</span>][i], <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    string = f.read()</span><br><span class="line">    f.close()</span><br><span class="line">    key = <span class="string">&#x27;http://airlife.club/&#x27;</span>		<span class="comment">#旧域名</span></span><br><span class="line">    new = <span class="string">&#x27;https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/&#x27;</span>		<span class="comment">#新域名</span></span><br><span class="line">    string = re.sub(key, new, string)</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&#x27;D:/Mahoo/BLog/source/_posts/&#x27;</span> + files[<span class="number">2</span>][i], <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    f.write(string)</span><br><span class="line">    f.close()</span><br></pre></td></tr></table></figure>
+
+
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2019/10/16/data-structure-and-algorithm-2/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2019-10-21 16:00:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E5%85%8D%E8%B4%B9%E5%9B%BE%E5%BA%8A/" title="免费图床">
+                        #免费图床
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2019/10/24/data-structure-and-algorithm-5/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Git%E5%88%9B%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E5%BA%93"><span class="toc-text">使用Git创建本地存储库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Cloud-Studio%E5%88%9B%E5%BB%BA%E8%BF%9C%E7%A8%8B%E5%AD%98%E5%82%A8%E5%BA%93"><span class="toc-text">使用Cloud Studio创建远程存储库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E5%BA%93%E5%92%8C%E8%BF%9C%E7%A8%8B%E5%AD%98%E5%82%A8%E5%BA%93"><span class="toc-text">连接本地存储库和远程存储库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%90%AFPages%E6%9C%8D%E5%8A%A1%E7%BB%91%E5%AE%9A%E5%9F%9F%E5%90%8D"><span class="toc-text">开启Pages服务绑定域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E7%9B%B4%E9%93%BE%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87"><span class="toc-text">通过直链引用图片</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%88%A9%E7%94%A8Cloud%20Studio%E4%B8%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E5%9B%BE%E5%BA%8A + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2019%2F10%2F21%2Ftutorial-2%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2019/10/21/tutorial-2/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

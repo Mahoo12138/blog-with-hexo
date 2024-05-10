@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      前端学习之React中的Redux使用 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">前端学习之React中的Redux使用</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2020-09-27 22:52:12
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                    #前端
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/React/" title="React">
+                    #React
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Redux/" title="Redux">
+                    #Redux
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="Redux-简介"><a href="#Redux-简介" class="headerlink" title="Redux 简介"></a>Redux 简介</h2><p>React 是一个 UI 视图层框架，并不是 Web 应用的完整解决方案。有两个方面没涉及：</p>
+<ul>
+<li><p>代码结构</p>
+</li>
+<li><p>组件之间的通信</p>
+</li>
+</ul>
+<p>正因如此，仅靠 React 很难写大型应用，2014年 Facebook 提出了 Flux 架构（一种思想，专门解决软件的结构问题，跟MVC 架构是同一类）的概念，引发了很多的实现。2015年，更优雅的 Redux 出现；</p>
+<h3 id="三大原则"><a href="#三大原则" class="headerlink" title="三大原则"></a>三大原则</h3><ul>
+<li>单一数据源，即整个应用的 <code>state</code> 保存在唯一的一棵对象树中，使得同构应用变得容易且易于保存对象状态（持久化）；</li>
+<li>状态只读，即 <code>state</code> 不能被修改；</li>
+<li>通过 <code>纯函数</code> 来返回新状态以完成修改。</li>
+</ul>
+<blockquote>
+<p>纯函数，指的是，只要是同样的输入，必定得到同样的输出；</p>
+<p>纯函数是函数式编程的概念，必须遵守以下一些约束。</p>
+<ul>
+<li>不得改写参数</li>
+<li>不能调用系统 I&#x2F;O 的API</li>
+<li>不能调用<code>Date.now()</code>或者<code>Math.random()</code>等不纯的方法，因为每次会得到不一样的结果</li>
+</ul>
+</blockquote>
+<h2 id="Redux-使用"><a href="#Redux-使用" class="headerlink" title="Redux 使用"></a>Redux 使用</h2><p>在学习使用 Redux 时，我们以一个具体的例子来学习，如一个 Todo 待办事项的页面；</p>
+<h3 id="构建基本结构"><a href="#构建基本结构" class="headerlink" title="构建基本结构"></a>构建基本结构</h3><p>① 安装 Ant design UI库：<code>npm install antd</code>；</p>
+<p>② 在页面 .css 文件中引入 antd 的样式文件<code>@import &#39;~antd/dist/antd.css&#39;;</code></p>
+<p>③ 引入 antd 组件，编写页面结构：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; <span class="title class_">Component</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Input</span>, <span class="title class_">Button</span>, <span class="title class_">List</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;antd&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Component</span> &#123;</span><br><span class="line">  state = &#123;</span><br><span class="line">    <span class="attr">data</span>: [<span class="string">&#x27;React&#x27;</span>, <span class="string">&#x27;Vue&#x27;</span>, <span class="string">&#x27;Angular&#x27;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;App&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Input</span> </span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">placeholder</span>=<span class="string">&quot;Input your TodoList&quot;</span> </span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">width:</span> &quot;<span class="attr">80</span>%&quot;, <span class="attr">marginRight:</span> &quot;<span class="attr">5px</span>&quot; &#125;&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">Input</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">width:</span> &quot;<span class="attr">19</span>%&quot;&#125;&#125;&gt;</span>OK<span class="tag">&lt;/<span class="name">Button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">List</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">bordered</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">style</span>=<span class="string">&#123;&#123;marginTop:</span>&quot;<span class="attr">15px</span>&quot;&#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">dataSource</span>=<span class="string">&#123;this.state.data&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">renderItem</span>=<span class="string">&#123;item</span> =&gt;</span> (</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">List.Item</span>&gt;</span> &#123;item&#125; <span class="tag">&lt;/<span class="name">List.Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          )&#125;</span></span><br><span class="line"><span class="language-xml">        /&gt;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">App</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Store-的创建"><a href="#Store-的创建" class="headerlink" title="Store 的创建"></a>Store 的创建</h3><ul>
+<li><p>Store 就是保存数据的地方，正如其名，可以把它看成一个仓库，整个应用只能有一个 Store；</p>
+</li>
+<li><p>Reducer 是一个函数，它接受 Action 和当前 State 作为参数，返回一个新的 State；</p>
+</li>
+<li><p>Store 对象包含所有数据，某个时点的数据则为 State，当前时刻的 State，可以通过<code>store.getState()</code>拿到</p>
+</li>
+<li><p>Action 是一个对象，其<code>type</code>属性是必须的，表示 Action 的名称。其他属性可以自由设置；Action 就是表示 State 需要改动的通知；</p>
+<blockquote>
+<p>Action 属性设置社区有一个规范可以参考：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/redux-utilities/flux-standard-action">redux-utilities&#x2F;flux-standard-action: A human-friendly standard for Flux action objects.</a></p>
+</blockquote>
+</li>
+</ul>
+<p>① 在项目<em>src</em>目录下，创建文件夹 <strong>store</strong>，并新建文件 index.js 和 reducer.js；</p>
+<p>② 编写如下代码：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">import</span> createStore <span class="keyword">from</span> <span class="string">&#x27;redux&#x27;</span></span><br><span class="line"><span class="keyword">import</span> reducer <span class="keyword">from</span> <span class="string">&#x27;./reducer&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">createStore</span>(reducer)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br><span class="line"></span><br><span class="line"><span class="comment">// reducer.js</span></span><br><span class="line"><span class="keyword">const</span> initialData = &#123;</span><br><span class="line">    <span class="attr">inputValue</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    <span class="attr">list</span>: [],</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">reducer</span> = (<span class="params">state = initialData, action</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> state;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> reducer;</span><br></pre></td></tr></table></figure>
+
+<p>整个应用的初始状态，可以作为 State 的默认值，如上述例子中的 <strong>initialData</strong>；</p>
+<h3 id="Action-和-Reducer-的编写"><a href="#Action-和-Reducer-的编写" class="headerlink" title="Action 和 Reducer 的编写"></a>Action 和 Reducer 的编写</h3><ul>
+<li><code>store.dispatch()</code>是 View 发出 Action 的唯一方法，接受一个 Action 对象作为参数；</li>
+<li><code>store.subscribe()</code>设置监听函数，一旦 store 中的 State 发生变化，就自动执行这个函数；</li>
+</ul>
+<p>上述代码的输入框，还没有正常输入的功能，当前的需求是，将输入框的值绑定到 store 内的 inputValue 上；</p>
+<p>① 在输入框上，绑定值和函数：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Input</span> value=&#123;<span class="variable language_">this</span>.<span class="property">state</span>.<span class="property">inputValue</span>&#125; onChange=&#123;<span class="variable language_">this</span>.<span class="property">handleInputChange</span>&#125;&gt;&lt;/<span class="title class_">Input</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>② 编写函数，并绑定到 this：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">handleInputChange</span>(<span class="params">e</span>)&#123;</span><br><span class="line">  <span class="keyword">const</span> action = &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;change_input_value&quot;</span>,</span><br><span class="line">    <span class="attr">payload</span>: e.<span class="property">target</span>.<span class="property">value</span></span><br><span class="line">  &#125;</span><br><span class="line">  store.<span class="title function_">dispatch</span>(action)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>③ <code>store.dispatch</code>发送过来一个新的 Action，就会自动调用 Reducer，重新编写 reducer.js：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">reducer</span> = (<span class="params">state = initialData, action</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (action.<span class="property">type</span> === <span class="string">&quot;change_input_value&quot;</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">inputValue</span>: action.<span class="property">payload</span>,</span><br><span class="line">            <span class="attr">list</span>: state.<span class="property">list</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>④ 虽然 store 中的数据已经改变，但是页面还没有更新， 在监听函数中更新 View 即可：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">  store.<span class="title function_">subscribe</span>(<span class="variable language_">this</span>.<span class="property">handleStoreChange</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">handleStoreChange</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="title function_">setState</span>(store.<span class="title function_">getState</span>())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>store.subscribe</code>方法返回一个函数，调用这个函数就可以解除监听。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> unsubscribe = store.<span class="title function_">subscribe</span>();</span><br><span class="line"><span class="title function_">unsubscribe</span>();</span><br></pre></td></tr></table></figure>
+
+<h3 id="ActionTypes-actionCreator"><a href="#ActionTypes-actionCreator" class="headerlink" title="ActionTypes &amp; actionCreator"></a>ActionTypes &amp; actionCreator</h3><p>继续完善小项目功能，添加和删除列表：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (action.<span class="property">type</span> === <span class="string">&quot;add_todo_item&quot;</span>)&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">inputValue</span>: state.<span class="property">inputValue</span>,</span><br><span class="line">    <span class="attr">list</span>: [...state.<span class="property">list</span>, state.<span class="property">inputValue</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (action.<span class="property">type</span> === <span class="string">&quot;del_todo_item&quot;</span>)&#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(state.<span class="property">list</span>)</span><br><span class="line">  <span class="keyword">const</span> newState = <span class="title class_">Object</span>.<span class="title function_">assign</span>(&#123;&#125;,state)</span><br><span class="line">  newState.<span class="property">list</span>.<span class="title function_">splice</span>(action.<span class="property">payload</span>,<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">return</span> newState</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当业务变得复杂，Action 类型会非常多，且 type 还容易出现拼写错误，可以拆分 Action 到一个单独的文件：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// actionTypes.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">CHANGE_INPUT_VALUE</span> = <span class="string">&#x27;change_input_value&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">ADD_TODO_ITEM</span> = <span class="string">&#x27;add_todo_item&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">DEL_TODO_ITEM</span> = <span class="string">&#x27;del_todo_item&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p> 此外，还可进一步封装一个 actionCreator 对 Action 进行统一管理：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// actionCreator.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> aTypes <span class="keyword">from</span> <span class="string">&#x27;./actionTypes&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">getInputChangeAction</span> = (<span class="params">value</span>) =&gt; (&#123;</span><br><span class="line">    <span class="attr">type</span>: aTypes.<span class="property">CHANGE_INPUT_VALUE</span>,</span><br><span class="line">    <span class="attr">payload</span>: value</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">getAddItemAction</span> = (<span class="params"></span>) =&gt; (&#123;</span><br><span class="line">    <span class="attr">type</span>: aTypes.<span class="property">ADD_TODO_ITEM</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">getDelItemAction</span> = (<span class="params">value</span>) =&gt; (&#123;</span><br><span class="line">    <span class="attr">type</span>: aTypes.<span class="property">DEL_TODO_ITEM</span>,</span><br><span class="line">    <span class="attr">payload</span>: value</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>那么发送 Action 和 Reducer 处理则变为：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> action = <span class="title function_">getDelItemAction</span>(index)</span><br><span class="line">store.<span class="title function_">dispatch</span>(action)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (action.<span class="property">type</span> === aTypes.<span class="property">DEL_TODO_ITEM</span>)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Redux-浏览器插件"><a href="#Redux-浏览器插件" class="headerlink" title="Redux 浏览器插件"></a>Redux 浏览器插件</h3><p>① 进入 Chrome 或者 Edge 浏览器扩展商店，搜索 <strong>Redux devtools</strong>，安装即可；</p>
+<p>② 在 src&#x2F;index.js 修改代码：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> store = <span class="title function_">createStore</span>(</span><br><span class="line">  reducer,</span><br><span class="line">  <span class="variable language_">window</span>.<span class="property">__REDUX_DEVTOOLS_EXTENSION__</span> &amp;&amp; <span class="variable language_">window</span>.<span class="title function_">__REDUX_DEVTOOLS_EXTENSION__</span>()</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Redux-中间件"><a href="#Redux-中间件" class="headerlink" title="Redux 中间件"></a>Redux 中间件</h2><blockquote>
+<p><strong>中间件</strong>（Middleware）是介于应用系统和系统软件之间的一类软件，它使用系统软件所提供的基础服务（功能），衔接网络上应用系统的各个部分或不同的应用，能够达到资源共享、功能共享的目的；</p>
+</blockquote>
+<p>前文已经了解了<code>Redux</code>整个工作流程，当<code>action</code>发出之后，<code>reducer</code>立即算出<code>state</code>，整个过程是一个同步的操作，那么如果需要支持异步操作，或者支持错误处理、日志监控，这个过程就可以用上中间件；</p>
+<p><code>Redux</code>中，中间件就是放在就是在<code>dispatch</code>过程，在分发<code>action</code>进行拦截处理；</p>
+<h3 id="Redux-thunk-实现异步操作"><a href="#Redux-thunk-实现异步操作" class="headerlink" title="Redux-thunk 实现异步操作"></a>Redux-thunk 实现异步操作</h3><p>在 React 的 Web 应用中，想要发送 AjaX 请求获取数据，常见的做法是在生命周期函数发起请求：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">componentDidMount</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="comment">// list.json: [&quot;vue&quot;,&quot;react&quot;,&quot;angular&quot;]</span></span><br><span class="line">  axios.<span class="title function_">get</span>(<span class="string">&#x27;/list.json&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> action = <span class="title function_">getInitListAction</span>(res.<span class="property">data</span>)</span><br><span class="line">    store.<span class="title function_">dispatch</span>(action)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当业务过于复杂，<code>componentDidMount</code>生命周期函数中代码过多时，会影响组件的性能，可见部分代码抽离出组件，Redux-thunk 则可以帮助完成这个需求；</p>
+<p>Redux-thunk 可以在编写 Action Creator 时返回一个函数而非 Action 对象，该函数接受 <strong>store</strong> 的 <code>dispatch</code> and <code>getState</code> 方法作为参数；中间件能够延缓 Action 的 dispatch 或可以在特定的条件才 dispatch，这样即可在该函数中完成耗时的异步操作了：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">getInitList</span> = (<span class="params"></span>) =&gt; (</span><br><span class="line">  <span class="function">(<span class="params">dispatch, getState</span>) =&gt;</span> &#123;</span><br><span class="line">    axios.<span class="title function_">get</span>(<span class="string">&#x27;/list.json&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> action = <span class="title function_">getInitListAction</span>(res.<span class="property">data</span>)</span><br><span class="line">      <span class="title function_">dispatch</span>(action)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>返回类型为函数的 Action 同样可以被 dispatch ，这完全得益于中间件 thunk，所以在组件中我们如下处理即可：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">componentDidMount</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">const</span> action = <span class="title function_">getInitList</span>()</span><br><span class="line">  store.<span class="title function_">dispatch</span>(action)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 Redux-Thunk 2.1.0 之后还支持在使用中间件时使用<code>withExtraArgument</code>注入一个自定义参数：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> store = <span class="title function_">createStore</span>(</span><br><span class="line">  reducer,</span><br><span class="line">  <span class="title function_">applyMiddleware</span>(thunk.<span class="title function_">withExtraArgument</span>(api)),</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">getInitList</span> = (<span class="params"></span>) =&gt; (</span><br><span class="line">  <span class="function">(<span class="params">dispatch, getState, api</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(api)</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="中间件与浏览器扩展"><a href="#中间件与浏览器扩展" class="headerlink" title="中间件与浏览器扩展"></a>中间件与浏览器扩展</h3><p>当我们在使用 Thunk 中间件时，就可以发现，代码将 Redux Devtools （这也是一个中间件）的内容去掉了，这肯定不是因为不支持多个中间件同时使用，而是需要特定的方式进行组合：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> composeEnhancers = <span class="variable language_">window</span>.<span class="property">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span> || compose;</span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">createStore</span>(</span><br><span class="line">  reducer,</span><br><span class="line">  <span class="title function_">composeEnhancers</span>(<span class="title function_">applyMiddleware</span>(thunk))</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可参考：<a target="_blank" rel="noopener" href="https://redux.js.org/api/compose">compose | Redux</a>，<a target="_blank" rel="noopener" href="https://github.com/reduxjs/redux-devtools/tree/main/extension">reduxjs&#x2F;redux-devtools</a>；</p>
+</blockquote>
+<h3 id="Redux-Saga-的使用"><a href="#Redux-Saga-的使用" class="headerlink" title="Redux-Saga 的使用"></a>Redux-Saga 的使用</h3><p>① 安装，并在*&#x2F;src&#x2F;store&#x2F;index.js*中配置，类似于 Redux-Thunk：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> createSagaMiddleWare <span class="keyword">from</span> <span class="string">&#x27;redux-saga&#x27;</span></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">createStore</span>(</span><br><span class="line">    reducer,</span><br><span class="line">    <span class="title function_">composeEnhancers</span>(<span class="title function_">applyMiddleware</span>(saga))</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>② 新建 <em>.&#x2F;src&#x2F;sagas.js</em>文件：</p>
+ <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>* <span class="title function_">getInitList</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="keyword">yield</span> axios.<span class="title function_">get</span>(<span class="string">&#x27;/list.json&#x27;</span>);</span><br><span class="line">    <span class="keyword">const</span> action = <span class="title function_">getInitListAction</span>(res.<span class="property">data</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="title function_">put</span>(action)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span>* <span class="title function_">todoSaga</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="title function_">takeEvery</span>(<span class="variable constant_">INITIAL_LIST_SAGA</span>, getInitList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>③ 在 <em>store&#x2F;index.js</em> 中导入，运行：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> todoSaga <span class="keyword">from</span> <span class="string">&#x27;./saga&#x27;</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">saga.<span class="title function_">run</span>(todoSaga);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>更多使用，查看<a target="_blank" rel="noopener" href="https://redux-saga.js.org/">Redux-Saga - An intuitive Redux side effect manager. </a></p>
+</blockquote>
+<h2 id="Redux-核心"><a href="#Redux-核心" class="headerlink" title="Redux 核心"></a>Redux 核心</h2><p>React-Redux 将所有组件分成两大类：<strong>UI 组件</strong>（presentational component）和<strong>容器组件</strong>（container component）。</p>
+<p>UI 组件有以下几个特征：</p>
+<ul>
+<li><p>只负责 UI 的呈现，不带有任何业务逻辑</p>
+</li>
+<li><p>没有状态（即不使用<code>this.state</code>这个变量）</p>
+</li>
+<li><p>所有数据都由参数（<code>this.props</code>）提供</p>
+</li>
+<li><p>不使用任何 Redux 的 API</p>
+</li>
+</ul>
+<p>容器组件的特征恰恰相反：</p>
+<ul>
+<li>负责管理数据和业务逻辑，不负责 UI 的呈现</li>
+<li>带有内部状态</li>
+<li>使用 Redux 的 API</li>
+</ul>
+<p>React-Redux 规定，所有的 UI 组件都由用户提供，容器组件则是由 React-Redux 自动生成。也就是说，用户负责视觉层，状态管理则是全部交给它。</p>
+<h3 id="connect-方法"><a href="#connect-方法" class="headerlink" title="connect() 方法"></a>connect() 方法</h3><p>React-Redux 提供<code>connect</code>方法，用于从 UI 组件生成容器组件，为了定义业务逻辑，方法需要传入两个参数：</p>
+<ol>
+<li><code>mapStateToProps</code>： 输入逻辑，外部的数据（即<code>state</code>对象）如何转换为 UI 组件的参数；</li>
+<li><code>mapDispatchToProps</code>：输出逻辑，用户发出的动作如何变为 Action 对象，从 UI 组件传出去；</li>
+</ol>
+<h3 id="Provider-组件"><a href="#Provider-组件" class="headerlink" title="Provider 组件"></a>Provider 组件</h3><p>React-Redux 提供<code>Provider</code>组件，可以让容器组件拿到<code>state</code>，只需要在根组件外面包一层，根组件的所有子组件就默认都可以拿到<code>state</code>了。</p>
+<h3 id="TodoList-完善"><a href="#TodoList-完善" class="headerlink" title="TodoList 完善"></a>TodoList 完善</h3><p>了解了上面的基础，我们就可以将 TodoList 这个小项目利用 Redux 的思想进行改造了；</p>
+<p>① 使用 Provider 可以让容器组件拿到<code>state</code>：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;<span class="title class_">Provider</span>&#125; <span class="keyword">from</span> <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&#x27;./store&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">Provider</span> <span class="attr">store</span>=<span class="string">&#123;store&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">App</span>/&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">Provider</span>&gt;</span></span>,</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>② 将 TodoList 组件 UI 化，将内部 state 和逻辑分离出来，通过 props 获取：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Component</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">      inputValue,list,handleInputChange,</span><br><span class="line">      handleBtnClick,handleListClick&#125; </span><br><span class="line">    = <span class="variable language_">this</span>.<span class="property">props</span></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;App&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Input</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">value</span>=<span class="string">&#123;inputValue&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">placeholder</span>=<span class="string">&quot;Input your TodoList&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">width:</span> &quot;<span class="attr">80</span>%&quot;, <span class="attr">marginRight:</span> &quot;<span class="attr">5px</span>&quot; &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">onChange</span>=<span class="string">&#123;handleInputChange&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        &gt;</span><span class="tag">&lt;/<span class="name">Input</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">width:</span> &quot;<span class="attr">19</span>%&quot; &#125;&#125; <span class="attr">onClick</span>=<span class="string">&#123;handleBtnClick&#125;</span>&gt;</span>OK<span class="tag">&lt;/<span class="name">Button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">List</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">bordered</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">marginTop:</span> &quot;<span class="attr">15px</span>&quot; &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">dataSource</span>=<span class="string">&#123;list&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">renderItem</span>=<span class="string">&#123;(item,index)</span> =&gt;</span> (</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">List.Item</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span>=&gt;</span>&#123;handleListClick(index)&#125;&#125;&gt;</span></span><br><span class="line"><span class="language-xml">              &#123;item&#125;</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;/<span class="name">List.Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          )&#125;</span></span><br><span class="line"><span class="language-xml">        /&gt;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">componentDidMount</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">const</span> action = <span class="title function_">getInitListSaga</span>()</span><br><span class="line">    store.<span class="title function_">dispatch</span>(action)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>③ 编写 state 以及处理逻辑和 props 的映射，且将 Todolist 通过 connect 转换成容器组件：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">mapStateToProps</span> = (<span class="params">state</span>)=&gt;&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">inputValue</span>: state.<span class="property">inputValue</span>,</span><br><span class="line">    <span class="attr">list</span>: state.<span class="property">list</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">mapDispatchToProps</span> = (<span class="params">dispatch</span>)=&gt;&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="title function_">handleInputChange</span>(<span class="params">e</span>)&#123;</span><br><span class="line">      <span class="keyword">const</span> action = <span class="title function_">getInputChangeAction</span>(e.<span class="property">target</span>.<span class="property">value</span>)</span><br><span class="line">      <span class="title function_">dispatch</span>(action)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">handleBtnClick</span>(<span class="params"></span>)&#123;</span><br><span class="line">      <span class="keyword">const</span> action = <span class="title function_">getAddItemAction</span>()</span><br><span class="line">      <span class="title function_">dispatch</span>(action)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">handleListClick</span>(<span class="params">index</span>)&#123;</span><br><span class="line">      <span class="keyword">const</span> action = <span class="title function_">getDelItemAction</span>(index)</span><br><span class="line">      <span class="title function_">dispatch</span>(action)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">connect</span>(mapStateToProps,mapDispatchToProps)(<span class="title class_">App</span>);</span><br></pre></td></tr></table></figure>
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2020/09/27/react-10/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2020-09-27 22:52:12
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E5%89%8D%E7%AB%AF/" title="前端">
+                        #前端
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/React/" title="React">
+                        #React
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Redux/" title="Redux">
+                        #Redux
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2020/09/30/react-8/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redux-%E7%AE%80%E4%BB%8B"><span class="toc-text">Redux 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E5%8E%9F%E5%88%99"><span class="toc-text">三大原则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redux-%E4%BD%BF%E7%94%A8"><span class="toc-text">Redux 使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-text">构建基本结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Store-%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="toc-text">Store 的创建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Action-%E5%92%8C-Reducer-%E7%9A%84%E7%BC%96%E5%86%99"><span class="toc-text">Action 和 Reducer 的编写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ActionTypes-actionCreator"><span class="toc-text">ActionTypes &amp; actionCreator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redux-%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8F%92%E4%BB%B6"><span class="toc-text">Redux 浏览器插件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redux-%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="toc-text">Redux 中间件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Redux-thunk-%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C"><span class="toc-text">Redux-thunk 实现异步操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E6%89%A9%E5%B1%95"><span class="toc-text">中间件与浏览器扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redux-Saga-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">Redux-Saga 的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redux-%E6%A0%B8%E5%BF%83"><span class="toc-text">Redux 核心</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#connect-%E6%96%B9%E6%B3%95"><span class="toc-text">connect() 方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Provider-%E7%BB%84%E4%BB%B6"><span class="toc-text">Provider 组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TodoList-%E5%AE%8C%E5%96%84"><span class="toc-text">TodoList 完善</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E4%B9%8BReact%E4%B8%AD%E7%9A%84Redux%E4%BD%BF%E7%94%A8 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2020%2F09%2F27%2Freact-11%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2020/09/27/react-11/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      折腾青年大学习自动观看截图的小工具 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">折腾青年大学习自动观看截图的小工具</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2021-12-28 16:00:26
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Termux/" title="Termux">
+                    #Termux
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Tasker/" title="Tasker">
+                    #Tasker
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="抓包获取-Cookie"><a href="#抓包获取-Cookie" class="headerlink" title="抓包获取 Cookie"></a>抓包获取 Cookie</h2><p>使用抓包软件 Fiddler 在微信 PC 端进行抓包，在主机名为<code>api.lngqt.shechem.cn</code>的请求中可以找到形如<code>Cookie: BDed_HeaderKey=X2xQAy1bWnsNayB9YxxxxxxCF5%2FW3N%2FNBR5CWxxxxxxUFw%3D</code>的 Cookie，它的时长还挺长的，主要是模拟微信登录过于麻烦；</p>
+<h2 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h2><p>在这里由于是要获取到<strong>积分界面</strong>的截图，我最初是有两个方案：</p>
+<ol>
+<li><p>使用一张固定的手机截屏，将最新的一期的文字和积分抹去，通过爬虫获取到数据之后，对图片做一次处理；这样的话，感觉图片有点假，字体和布局都需要很麻烦去寻找测量，拒绝；</p>
+</li>
+<li><p>把请求的H5界面保存下来，然后通过抓包的方式使用代理，或者自建后端，总之把数据填充进去，也就是一个偷天换日的方法，看起来挺傻X的，但是好用是好用；</p>
+</li>
+</ol>
+<h3 id="静态文件"><a href="#静态文件" class="headerlink" title="静态文件"></a>静态文件</h3><p>在抓包时，找到<code>http://websecond.lngqt.shechem.cn/index</code>对应的返回数据，并将其保存为<code>.html</code> 扩展名文件，且把内部应用的静态文件也一并保存，放入后端中；</p>
+<ul>
+<li>chunk-vendors.js</li>
+<li>integral.js，这个积分。。（除非我们忍不住）</li>
+</ul>
+<p>使用<code>koa</code> 作为后端，配合插件<code>koa-static</code>加载静态文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="title function_">serve</span>(__dirname + <span class="string">&#x27;/../static&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h3><p>请求头中的<code>User-Agent</code>一定要保持一致，否则会导致请求重定向；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> headers = &#123;</span><br><span class="line">  <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;application/json, text/plain, */*&quot;</span>,</span><br><span class="line">  <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36 NetType/WIFI MicroMessenger/7.0.20.1781(0x6700143B) WindowsWechat(0x6304051b)&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Origin&quot;</span>: <span class="string">&quot;http://websecond.lngqt.shechem.cn&quot;</span>,</span><br><span class="line">  <span class="string">&quot;X-Requested-With&quot;</span>: <span class="string">&quot;com.tencent.mm&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;http://websecond.lngqt.shechem.cn/&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Accept-Encoding&quot;</span>: <span class="string">&quot;gzip, deflate&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Cookie&quot;</span>: <span class="string">&quot;BDed_HeaderKey=X2xQAy1bWnsNayB9YxxxxxxCF5%2FW3N%2FNBR5CWxxxxxxUFw%3D&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="后端路由"><a href="#后端路由" class="headerlink" title="后端路由"></a>后端路由</h3><p>对于实现观看大学习添加记录和拿到截图界面的数据，需要三个API接口，分别对应三个路由：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">router.<span class="title function_">post</span>(<span class="string">&quot;/webapi/learn/learnlog&quot;</span>, <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> res = <span class="keyword">await</span> axios.<span class="title function_">post</span>(url + <span class="string">&#x27;/webapi/learn/learnlog&#x27;</span>, &#123;</span><br><span class="line">    <span class="string">&#x27;page[page]&#x27;</span>: <span class="number">1</span></span><br><span class="line">  &#125;, &#123; headers &#125;)</span><br><span class="line">  ctx.<span class="property">body</span> = res.<span class="property">data</span></span><br><span class="line">&#125;)</span><br><span class="line">router.<span class="title function_">post</span>(<span class="string">&quot;/user/user/find&quot;</span>, <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> res = <span class="keyword">await</span> axios.<span class="title function_">post</span>(url + <span class="string">&#x27;/user/user/find&#x27;</span>, &#123;</span><br><span class="line">    <span class="string">&quot;token&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">  &#125;, &#123; headers &#125;)</span><br><span class="line">  ctx.<span class="property">body</span> = res.<span class="property">data</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>第一个为获取观看记录，其二是获取用户的信息，直接做一层获取转发即可；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">router.<span class="title function_">get</span>(<span class="string">&quot;/webapi/learn/addlearnlog&quot;</span>, <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> &#123; data &#125; = <span class="keyword">await</span> axios.<span class="title function_">post</span>(url + <span class="string">&#x27;/webapi/learn/getnowlearn&#x27;</span>, &#123;</span><br><span class="line">    <span class="string">&quot;token&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">  &#125;, &#123; headers &#125;)</span><br><span class="line">  <span class="keyword">let</span> now = data.<span class="property">data</span>.<span class="property">id</span></span><br><span class="line">  <span class="keyword">let</span> res2 = <span class="keyword">await</span> axios.<span class="title function_">post</span>(url + <span class="string">&#x27;/webapi/learn/addlearnlog&#x27;</span>, &#123;</span><br><span class="line">    <span class="string">&quot;token&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;lid&quot;</span>: now</span><br><span class="line">  &#125;, &#123; headers &#125;)</span><br><span class="line">  ctx.<span class="property">body</span> = &#123;</span><br><span class="line">    <span class="attr">result</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">      <span class="attr">id</span>: now</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>第三个为最重要的添加观看记录的接口，需要获取到最新的待观看的大学习的 id ，然后将其作为参数请求添加记录的接口；</p>
+<p>第四个接口是方便机器人调用的所做的，使用<code>puppeteer</code>库的无头浏览器加载静态的H5文件返回截图的 base64 结构：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">router.<span class="title function_">get</span>(<span class="string">&quot;/webapi/learn/show&quot;</span>, <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; query &#125; = ctx</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.<span class="title function_">launch</span>();</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.<span class="title function_">newPage</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;http://127.0.0.1:3000/&#x27;</span>);</span><br><span class="line">  page.<span class="title function_">setViewport</span>(&#123;</span><br><span class="line">    <span class="attr">width</span>: <span class="number">375</span>,</span><br><span class="line">    <span class="attr">height</span>: <span class="number">667</span>,</span><br><span class="line">    <span class="attr">isMobile</span>: <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> page.<span class="title function_">screenshot</span>(&#123; <span class="attr">path</span>: <span class="string">&#x27;../static/img/pic.png&#x27;</span>&#125;);</span><br><span class="line">  &#125;, <span class="number">2000</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> data = fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;../static/img/pic.png&#x27;</span>);</span><br><span class="line">  data = <span class="title class_">Buffer</span>.<span class="title function_">from</span>(data).<span class="title function_">toString</span>(<span class="string">&#x27;base64&#x27;</span>);</span><br><span class="line">  ctx.<span class="property">body</span> = &#123;</span><br><span class="line">    <span class="attr">img</span>: data</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="安卓端获取图片"><a href="#安卓端获取图片" class="headerlink" title="安卓端获取图片"></a>安卓端获取图片</h2><p>除了在服务器上部署，我还想在旧手机上跑起来，而无头浏览器方案折腾了半天也没搞定，于是乎转变思路，简单粗暴，直接截图；</p>
+<h3 id="服务端代码"><a href="#服务端代码" class="headerlink" title="服务端代码"></a>服务端代码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">router.<span class="title function_">get</span>(<span class="string">&quot;/webapi/learn/show&quot;</span>, <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  shelljs.<span class="title function_">exec</span>(<span class="string">`termux-notification -i 7 -t &#x27;青年大学习&#x27; -c &#x27;最新一期&#x27; --button1 &#x27;按钮&#x27;`</span>)</span><br><span class="line">  shelljs.<span class="title function_">exec</span>(<span class="string">`mv /sdcard/Pictures/pic.png /data/data/com.termux/files/home/big-study/static/img/pic.png`</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> data = fs.<span class="title function_">readFileSync</span>(__dirname + <span class="string">&#x27;/../static/img/pic.png&#x27;</span>);</span><br><span class="line">  data = <span class="title class_">Buffer</span>.<span class="title function_">from</span>(data).<span class="title function_">toString</span>(<span class="string">&#x27;base64&#x27;</span>);</span><br><span class="line">  ctx.<span class="property">body</span> = &#123;</span><br><span class="line">    <span class="attr">img</span>: data,</span><br><span class="line">    <span class="attr">log</span>: <span class="string">&quot;通知已显示&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这边利用 Termux 以及 Termux:API 调用 Android 的通知，以触发Tasker上对应的任务，任务完毕后会留下截图，再把截图移动到指定的位置；</p>
+<h3 id="Tasker-配置"><a href="#Tasker-配置" class="headerlink" title="Tasker 配置"></a>Tasker 配置</h3><ul>
+<li>配置文件中，对事件 -&gt;通知进行监听，设置监听标题为上述代码中的青年大学习，并选择程序为<code>Termux:API</code> ；</li>
+<li>编辑任务，需要安装插件<code>Notification Listener</code>（可选），文字开头着对应Tasker内的操作译名：<ul>
+<li>【插件】：在该插件中删除用于触发的通知，删除的依据可选标题或者应用名；</li>
+<li>【发送意图】：操作选择<code>android.intent.action.VIEW</code>，类别默认即可，<code>Mime</code>选择<code>text/plain</code>，数据填写后端返回的H5页面地址<code>http://127.0.0.1:3000</code>；</li>
+<li>【等待】：酌情延时 2 ~ 4 秒，选择操作 -&gt; 等待；</li>
+<li>【截图】：设置对应的目录为<code>Pictures/pic.png</code>；</li>
+<li>【关闭应用】：关闭默认打开页面的浏览器；</li>
+</ul>
+</li>
+</ul>
+<p>在Tasker进行截图时，会弹出屏幕录制的权限确认框，可以使用操作【取消对话框】，或者使用 ADB 操作，永久授予录屏权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell appops <span class="built_in">set</span> net.dinglisch.android.taskerm PROJECT_MEDIA allow</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>上述提到的软件都可以在我的云盘进行下载，<a target="_blank" rel="noopener" href="https://yun.mahoo12138.cn/%F0%9F%94%A7Apps">Here</a>；</p>
+</blockquote>
+<p>完整的代码可在我的代码仓库进行查看，<a target="_blank" rel="noopener" href="https://github.com/Mahoo12138/dlu-big-stduy">Here</a>；如果对上述蜜汁操作有更好的见地，欢迎留言评论！</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/11/30/typescript-5/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2021-12-28 16:00:26
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Termux/" title="Termux">
+                        #Termux
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Tasker/" title="Tasker">
+                        #Tasker
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/01/18/react-13/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%93%E5%8C%85%E8%8E%B7%E5%8F%96-Cookie"><span class="toc-text">抓包获取 Cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BB%A3%E7%A0%81"><span class="toc-text">编写服务端代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6"><span class="toc-text">静态文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%B4"><span class="toc-text">请求头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E8%B7%AF%E7%94%B1"><span class="toc-text">后端路由</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%8D%93%E7%AB%AF%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87"><span class="toc-text">安卓端获取图片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BB%A3%E7%A0%81"><span class="toc-text">服务端代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tasker-%E9%85%8D%E7%BD%AE"><span class="toc-text">Tasker 配置</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E6%8A%98%E8%85%BE%E9%9D%92%E5%B9%B4%E5%A4%A7%E5%AD%A6%E4%B9%A0%E8%87%AA%E5%8A%A8%E8%A7%82%E7%9C%8B%E6%88%AA%E5%9B%BE%E7%9A%84%E5%B0%8F%E5%B7%A5%E5%85%B7 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2021%2F12%2F28%2Ftutorial-4%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2021/12/28/tutorial-4/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

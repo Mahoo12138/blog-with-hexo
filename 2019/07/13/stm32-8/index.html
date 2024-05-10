@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Mahoo12138" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      STM32F1XX驱动温度检测模块DS18B20 
+      
+      
+      |
+    
+     Mahoo12138
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Mahoo12138</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">STM32F1XX驱动温度检测模块DS18B20</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2019-07-13 22:12:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/STM32/" title="STM32">
+                    #STM32
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/DS18B20/" title="DS18B20">
+                    #DS18B20
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="DS18B20-单线总线的工作方式"><a href="#DS18B20-单线总线的工作方式" class="headerlink" title="DS18B20 单线总线的工作方式"></a>DS18B20 单线总线的工作方式</h2><h3 id="1-DS18B20-简介"><a href="#1-DS18B20-简介" class="headerlink" title="1. DS18B20 简介"></a>1. DS18B20 简介</h3><p>DS18B20单线数字温度传感器，即“一线器件”，其具有如下独特的优点。</p>
+<ul>
+<li><p><strong>采用单线总线的接口方式</strong>。与微处理器连接时，仅需要1条口线即可实现微处理器与 DS18B20 的双向通信。</p>
+</li>
+<li><p><strong>测量温度范围宽，测量精度高</strong>。DS18B20 的测量范围为-55°C~ + 125C;在-10°C ~ +85°C范围内，精度为 ± 0.5 °C。</p>
+</li>
+<li><p><strong>支持多点组网功能</strong>。多个DS18B20可以并联在单线上，实现多点测温。</p>
+</li>
+<li><p><strong>供电方式灵活</strong>。DS18B20可以通过内部寄生电路从数据线上获取电源。因此，当数据线上的时序满足一定的要求时，可以不接外部电源，从而使系统结构更趋简单，可靠性更高。</p>
+</li>
+<li><p><strong>测量参数可配置</strong>。DS18B20的测量分辨率可通过程序设定9- 12位。</p>
+</li>
+<li><p><strong>掉电保护功能</strong> 。DS18B20 内部含有 EEPROM ，在系统掉电以后，它仍可保存分辨率及报警温度的设定值。</p>
+</li>
+</ul>
+<p>单线总线只有一根数据线，引脚说明如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>引脚</strong></th>
+<th align="center">NC</th>
+<th align="center">DQ</th>
+<th align="center">V<del>DD</del></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>说明</strong></td>
+<td align="center">空引脚</td>
+<td align="center">数字输入输出</td>
+<td align="center">可选的 V<del>DD</del></td>
+</tr>
+</tbody></table>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/DS18B20%E5%BC%95%E8%84%9A%E8%AF%B4%E6%98%8E.png" alt="DS18B20 原理图"></p>
+<p>博主使用的开发模块原理图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/image-20201004003026980.png"></p>
+<h3 id="2-DS18B20-内部结构"><a href="#2-DS18B20-内部结构" class="headerlink" title="2. DS18B20 内部结构"></a>2. DS18B20 内部结构</h3><p>DS18B20 的<strong>一线</strong>工作协议流程：<strong>初始化 → ROM 操作指令 → 存储器操作指令 → 数据传输</strong>。</p>
+<p>DS18B20 内部结构包括 64 位光刻 ROM，温度传感器，高速暂存器，温度报警触发器 TH 和 TL 及配置寄存器。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/image-20201004151856395.png"></p>
+<p>光刻 ROM 的 64 位序列号是出厂时光刻好的，可看作 DS18B20 的地址序列码。前 8 位是产品类型标号（地址 28H）；其后的 48 位是 DS18B20 的自身的序列号，每一块产品都不同；最后 8 位是前 56 位的循环冗余校验码（CRC&#x3D;X^8^ + X^5^+ X^4^ + 1）。正因如此，控制器才能通过单线总线对多个 DS18B20 进行寻址，实现单线总线上挂载多个 DS18B20。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/image-20201004151629134.png" alt="高速暂存器"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/image-20201004151117271.png" alt="配置寄存器及与分辨率的关系"></p>
+<p>DS18B20 经转换所得的温度值，以2字节补码形式存放在高速暂存存储器的第 0 和第 1 个字节。所以当只想简单的读取温度值的时候，只用读取暂存器中的第 0 和第 1 个字节就可以了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/image-20201004153822298.png"></p>
+<blockquote>
+<p>符号位 S 表示温度是正的还是负的：对于正数，S &#x3D; 0，对于负数，S &#x3D; 1。</p>
+</blockquote>
+<h3 id="3-DS18B20-的使用"><a href="#3-DS18B20-的使用" class="headerlink" title="3. DS18B20 的使用"></a>3. DS18B20 的使用</h3><h4 id="3-1-使用步骤"><a href="#3-1-使用步骤" class="headerlink" title="3.1 使用步骤"></a>3.1 使用步骤</h4><p>简单的读取温度值的步骤如下：</p>
+<ol>
+<li><p>跳过ROM操作。</p>
+</li>
+<li><p>发送温度转换命令。</p>
+</li>
+<li><p>跳过ROM操作。</p>
+</li>
+<li><p>发送读取温度命令。</p>
+</li>
+<li><p>读取温度值。</p>
+</li>
+</ol>
+<p>正数的补码是正数本身；负数的补码是原码取反，然后再加 1。</p>
+<p>DS18B20存储的温度值是以<strong>补码</strong>的形式存储的，所以读出来的温度值是实际温度值的补码，要把补码转换为原码。</p>
+<p>正温度的原码就是补码本身，所以在 12 位分辨率下，温度的计算公式是为<br>$$<br>温度值 &#x3D; 读取值 \times 0.0625<br>$$<br>负温度的原码是补码减1，再取反，所以在12位分辨率下，计算公式为<br>$$<br>温度值&#x3D;- (读取值减1再取反) \times 0.0625<br>$$</p>
+<h4 id="3-2-复位时序"><a href="#3-2-复位时序" class="headerlink" title="3.2 复位时序"></a>3.2 复位时序</h4><ol>
+<li>控制器首先发出 480μs ~ 960μs 的低电平脉冲，然后释放总线变为高电平，并在随后的 480μs 内对总线做检测，若有低电平出现，说明器件已作应答；否则无应答；</li>
+<li>DS18B20 从接电开始就在等待 480μs ~ 960μs 的低电平脉冲，若有会在总线电平变高后，等待 15μs ~ 60μs 后，将总线电平拉低 60μs ~ 240μs 作为应答响应脉冲若没有检测到，则一直等待。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/image-20201003225149023.png"></p>
+<h4 id="3-3-写时序"><a href="#3-3-写时序" class="headerlink" title="3.3 写时序"></a>3.3 写时序</h4><p>写周期的时间为 60μs ~ 120μs，控制器首先把总线电平拉低 1μs ~15μs，表示写时序开始：</p>
+<ol>
+<li>写 “0”，在写周期开始后，控制器写 “0”，即将总线置为低电平，直接拉低总线电平 60μs ~ 120μs 即可；</li>
+<li>写 “0” 后，至少需要释放总线高电平 1μs，使总线恢复；</li>
+<li>写 “1”，在写周期开始后，控制器写 “1”，即释放总线电平为高电平；</li>
+<li>DS18B20 在总线电平拉低后的 15μs ~ 60μs 内，进行数据采样。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/Snipaste_2020-10-03_23-16-13.png"></p>
+<h4 id="3-4-读时序"><a href="#3-4-读时序" class="headerlink" title="3.4 读时序"></a>3.4 读时序</h4><p>读周期的时间至少需要 60 μs，控制器首先把总线电平拉低 1μs ~15μs，表示读时序开始。在总线电平被拉低后的 15μs 内，控制器需要对总线进行采样，数据有效。采样为低电平，则为“0”；高电平为“1”。读周期的读写恢复时间至少需要 1μs。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/Snipaste_2020-10-04_00-22-42.png"></p>
+<h4 id="3-5-指令合集"><a href="#3-5-指令合集" class="headerlink" title="3.5 指令合集"></a>3.5 指令合集</h4><table>
+<thead>
+<tr>
+<th>指令名称</th>
+<th>指令代码</th>
+<th>指令功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>温度变换</td>
+<td>44H</td>
+<td>进行一次温度转换，将转换的温度值放入暂存器的第1、2字节</td>
+</tr>
+<tr>
+<td>读暂存器</td>
+<td>0BEH</td>
+<td>读取内部暂存器的数据，从字节 0 读到 字节 9（CRC校验位）</td>
+</tr>
+<tr>
+<td>写暂存器</td>
+<td>4EH</td>
+<td>允许控制器写 3 个字节到暂存器的第 3，4，5 个字节处</td>
+</tr>
+<tr>
+<td>复制暂存器</td>
+<td>48H</td>
+<td>将暂存器的第 3，4，5 个字节内容复制到 EEPROM 中</td>
+</tr>
+<tr>
+<td>重调 EEPROM</td>
+<td>0B8H</td>
+<td>将EEPROM内容复制到暂存器的第 3，4，5 个字节中</td>
+</tr>
+<tr>
+<td>读供电模式</td>
+<td>0B4H</td>
+<td>读取供电模式。寄生供电发送“0”，外接电源发送“1”</td>
+</tr>
+<tr>
+<td>搜索 ROM</td>
+<td>0F0H</td>
+<td>总线控制器通过此指令多次循环搜索 ROM 编码，以确认所有从机</td>
+</tr>
+<tr>
+<td>读取 ROM</td>
+<td>33H</td>
+<td>直接读取从机 64 位序列码，总线上只有一片 DS18B20 才使用</td>
+</tr>
+<tr>
+<td>匹配 ROM</td>
+<td>55H</td>
+<td>发出此命令后，接着发出 64 位 ROM 编码，匹配对应的 DS18B20</td>
+</tr>
+<tr>
+<td>警报搜索</td>
+<td>0ECH</td>
+<td>当总线上存在满足报警条件的 DS18B20，该从机会响应该指令</td>
+</tr>
+<tr>
+<td>跳过 ROM</td>
+<td>0CCH</td>
+<td>忽略 64 位 ROM 序列码，直接发出温度转换指令，适用于单片DS18B20</td>
+</tr>
+</tbody></table>
+<h3 id="4-测试代码"><a href="#4-测试代码" class="headerlink" title="4. 测试代码"></a>4. 测试代码</h3><p>代码在博主 STM32F103ZET6 上测试通过，部分代码参考野火 DS18B20 例程。由于代码过多，已托管至 Github 平台：<a target="_blank" rel="noopener" href="https://github.com/The-Road-of-Embedded/Demo_STM32f1xx/tree/main/F103-DS18B20"><strong>F103-DS18B20</strong></a>。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2019/06/29/git/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2019-07-13 22:12:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/STM32/" title="STM32">
+                        #STM32
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/DS18B20/" title="DS18B20">
+                        #DS18B20
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2019/07/14/android-5/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DS18B20-%E5%8D%95%E7%BA%BF%E6%80%BB%E7%BA%BF%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="toc-text">DS18B20 单线总线的工作方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-DS18B20-%E7%AE%80%E4%BB%8B"><span class="toc-text">1. DS18B20 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-DS18B20-%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84"><span class="toc-text">2. DS18B20 内部结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-DS18B20-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">3. DS18B20 的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-text">3.1 使用步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E5%A4%8D%E4%BD%8D%E6%97%B6%E5%BA%8F"><span class="toc-text">3.2 复位时序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-%E5%86%99%E6%97%B6%E5%BA%8F"><span class="toc-text">3.3 写时序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-%E8%AF%BB%E6%97%B6%E5%BA%8F"><span class="toc-text">3.4 读时序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-%E6%8C%87%E4%BB%A4%E5%90%88%E9%9B%86"><span class="toc-text">3.5 指令合集</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="toc-text">4. 测试代码</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + STM32F1XX%E9%A9%B1%E5%8A%A8%E6%B8%A9%E5%BA%A6%E6%A3%80%E6%B5%8B%E6%A8%A1%E5%9D%97DS18B20 + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2019%2F07%2F13%2Fstm32-8%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2019/07/13/stm32-8/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
