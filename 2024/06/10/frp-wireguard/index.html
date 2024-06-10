@@ -11,6 +11,11 @@
   
   <title>
     
+      SakuraFrp + WireGuard 组网实现内网穿透 
+      
+      
+      |
+    
      Mahoo12138
   </title>
 
@@ -101,123 +106,140 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="SakuraFrp + WireGuard 组网实现内网穿透">
-        <div class="time-m-d">2024-06-10</div>
-        <div class="title">
-          <a href="/2024/06/10/frp-wireguard/">
-            
-              
-                <span>SakuraFrp + WireGuard 组网实现内网穿透</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">SakuraFrp + WireGuard 组网实现内网穿透</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-06-10 15:37:30
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" title="内网穿透">
+                    #内网穿透
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
-    
-      <div class="post-item" title="安卓开发学习之 Gradle 摸爬打滚记录">
-        <div class="time-m-d">2024-05-09</div>
-        <div class="title">
-          <a href="/2024/05/09/android-11/">
-            
-              
-                <span>安卓开发学习之 Gradle 摸爬打滚记录</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <p>自从之前买了香橙派 5 pro 搭建了自己的小服务器后，一直是使用之前用来搭建的 Minecraft 服务器的</p>
+<p><a target="_blank" rel="noopener" href="https://www.natfrp.com/">Sakura Frp</a> 进行的公益免费的内网穿透，由于秉持着能不花一分钱就不花一分钱的原则，一直坚守着两条隧道，穿透着六个常用网站，一直挺稳定的，靠着每天签到获得的流量，每个月是完全用不完的，这点非常良心！</p>
+<p>然而随着不断的有新的容器和服务的加入，而穿透的数量是有限的，这就很尴尬了，我不得不围绕着这两条隧道来想办法。</p>
+<p>最开始的思路是，通过 nginx 的子域转发，例如有 A，B，C 三个网站，只有一个 <a target="_blank" rel="noopener" href="https://domain.com/">https://domain.com</a> 这一个 443 端口的一个出口，将多个网站都放到同一个域名下去访问，如：</p>
+<ul>
+<li>A：<a target="_blank" rel="noopener" href="https://domain.com/a">https://domain.com/a</a></li>
+<li>B：<a target="_blank" rel="noopener" href="https://domain.com/b">https://domain.com/b</a></li>
+<li>C：<a target="_blank" rel="noopener" href="https://domain.com/c">https://domain.com/c</a></li>
+</ul>
+<p>这样下来，勉强能够实现，通过一个出口访问多个网站服务，但是操作较为繁琐，要针对不同应用程序去做代理转发，而且存在一些应用，前后端分离导致的需要多重转发，复杂度一下就上去了，需要经常跟 nginx 配置文件斗智斗勇，不能一劳永逸，不符合我的工程哲学，才尝试了一段时间后，都放弃了。</p>
+<p>突然有一天，我想到，没必要所有的服务都要放到公网上啊，私人的服务只需要我能够访问到就可以了，那这样完全可以通过一个隧道，搭建 VPN 进行全链路的转发，说干就干，我迅速定位到了颇受好评的  <a target="_blank" rel="noopener" href="https://www.wireguard.com/">WireGuard</a> ，以及 <a target="_blank" rel="noopener" href="https://github.com/wg-easy/wg-easy">wg-easy</a>  前者是安全且高效的隧道技术，后者是前者 + 管理 UI，可以直接 docker 中运行。</p>
+<p>接下来，是整个过程一个简单的记录。</p>
+<ul>
+<li><code>Sakura Frp</code>：新建一条 UDP 隧道，端口随机都行，然后记下隧道的域名；</li>
+<li><code>wg-easy</code>：<code>WG_HOST</code> 设置为隧道域名，<code>WG_PORT</code>为隧道分配的端口；</li>
+</ul>
+<p>然后，就搞定了，没错，就是这么简单，之后在<code>wg-easy</code> 新建对应端的客户端即可。</p>
+
       </div>
-    
-      <div class="post-item" title="Win10子系统Ubuntu使用经验">
-        <div class="time-m-d">2024-03-24</div>
-        <div class="title">
-          <a href="/2024/03/24/other-1/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>Win10子系统Ubuntu使用经验</span>
-              
+              <a href="/2024/05/09/android-11/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-06-10 15:37:30
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" title="内网穿透">
+                        #内网穿透
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
-      </div>
+      
+    </div>
     
-      <div class="post-item" title="香橙派5P折腾踩坑记录一揽子">
-        <div class="time-m-d">2023-10-07</div>
-        <div class="title">
-          <a href="/2023/10/07/orange-pi-5/">
-            
-              
-                <span>香橙派5P折腾踩坑记录一揽子</span>
-              
-            
-          </a>
-        </div>
-      </div>
+
     
-      <div class="post-item" title="前端性能优化体系学习之前言">
-        <div class="time-m-d">2023-06-26</div>
-        <div class="title">
-          <a href="/2023/06/26/front-end-7/">
-            
-              
-                <span>前端性能优化体系学习之前言</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="二维码的编码相关学习">
-        <div class="time-m-d">2023-06-10</div>
-        <div class="title">
-          <a href="/2023/06/10/qr-code/">
-            
-              
-                <span>二维码的编码相关学习</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="自用前端工程师大厂面试题集">
-        <div class="time-m-d">2023-05-16</div>
-        <div class="title">
-          <a href="/2023/05/16/fronted-interview/">
-            
-              
-                <span>自用前端工程师大厂面试题集</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="前端面试总结之 React Hooks">
-        <div class="time-m-d">2023-03-19</div>
-        <div class="title">
-          <a href="/2023/03/19/front-end-6/">
-            
-              
-                <span>前端面试总结之 React Hooks</span>
-              
-            
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-    <span class="page-num">1 / 14</span>
-    
-      <a href="/page/2/"><i class="iconfont icon-angleright"></i></a>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -472,6 +494,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + SakuraFrp%20%2B%20WireGuard%20%E7%BB%84%E7%BD%91%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F + '&url=' + http%3A%2F%2Fblog.mahoo12138.cn%2F2024%2F06%2F10%2Ffrp-wireguard%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://blog.mahoo12138.cn/2024/06/10/frp-wireguard/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
