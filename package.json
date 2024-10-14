@@ -10,21 +10,25 @@
     "server": "hexo server"
   },
   "hexo": {
-    "version": "7.2.0"
+    "version": "7.3.0"
   },
   "dependencies": {
     "hexo": "^7.3.0",
     "hexo-deployer-git": "^4.0.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
-    "hexo-generator-index": "^3.0.0",
+    "hexo-generator-index": "^4.0.0",
     "hexo-generator-tag": "^2.0.0",
-    "hexo-renderer-ejs": "^2.0.0",
+    "hexo-renderer-less": "^4.0.0",
     "hexo-renderer-marked": "^6.3.0",
+    "hexo-renderer-pug": "^3.0.0",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.7.5"
+    "@types/node": "^22.7.5",
+    "generator-hexo-theme": "^0.7.0",
+    "yo": "^5.0.0"
   }
 }
+
