@@ -19,10 +19,12 @@ html(lang=config.language)
     //-     link(rel='stylesheet', href=url)
   body
     #hexo-container
-      #menu-outer
-        nav#menu-inner
-          each url, label in theme.menu
-            a(href=url)= label
+      //- #menu-outer
+      //-   nav#menu-inner
+      //-     each url, label in theme.menu
+      //-       a(href=url)= label
+      header
+        include ../partials/header.pug
       main#content
         if body
           div!= body

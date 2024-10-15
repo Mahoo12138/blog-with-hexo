@@ -1,6 +1,32 @@
-main {
+header {
+  background: rgb(255, 255, 255);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 3px;
   color: rgb(255, 255, 255);
-  background-color: rgb(23, 23, 23);
+  background-color: rgb(255, 255, 255);
+  position: fixed;
+  top: 0px;
+  z-index: 50;
+  display: grid;
+  height: auto;
+  width: 100%;
+  padding: 6px 3px;
+  line-height: 1.4;
+  transition-duration: 0.3s;
+  @media (min-width: 1024px) {
+    background-color: transparent;
+    padding: 12px 1.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    background-color: transparent;
+    padding: 12px 1.25rem;
+  }
+}
+
+main {
+  color: rgb(115 115 115 / var(--text-opacity));
+  background-color: #f6f7f8;
   margin-left: auto;
   margin-right: auto;
   height: auto;
@@ -8,7 +34,6 @@ main {
   width: 100%;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
-  border: 0px solid rgb(229, 229, 229);
   box-sizing: border-box;
   position: relative;
 
