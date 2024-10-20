@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Win10子系统Ubuntu使用经验 [ Mahoo12138 ]</title><link rel="stylesheet" href="/css/index.css"><meta name="post"><link rel="stylesheet" href="/css/layouts/post.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="hexo-container"><header></header><main id="content"><article id="post"><h1>Win10子系统Ubuntu使用经验</h1><h2 id="Win10-子系统-Ubuntu-安装-Apache2-错误"><a href="#Win10-子系统-Ubuntu-安装-Apache2-错误" class="headerlink" title="Win10 子系统 Ubuntu 安装 Apache2 错误"></a>Win10 子系统 Ubuntu 安装 Apache2 错误</h2><p>安装好 Apache2 后，通过命令<code>service apache2 start </code>启动，报错为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AH00076: Failed to enable APR_TCP_DEFER_ACCEPT</span><br></pre></td></tr></table></figure>
+
+<p>解决办法在 stackoverflow 上有，方法如下：</p>
+<p><code>sudo vi</code> 打开 <code>/etc/apache2/apache2.conf</code>，在文件的最底部加上一行以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AcceptFilter http none</span><br></pre></td></tr></table></figure>
+
+<p>然后重启 Apache2 问题解决。</p>
+<p>常用指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-rc.d apache2 defaults</span><br></pre></td></tr></table></figure>
+
+<p>将apache2服务添加到自动启动程序组。</p>
+<h2 id="通过源代码安装软件"><a href="#通过源代码安装软件" class="headerlink" title="通过源代码安装软件"></a>通过源代码安装软件</h2><ul>
+<li><p>使用压缩包管理工具解压缩软件包</p>
+</li>
+<li><p>进入到解压缩文件所在的目录</p>
+</li>
+<li><p>执行指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">install</span><br></pre></td></tr></table></figure></li>
+</ul>
+</article><div id="paginator"></div></main><footer><div class="icon-wrapper in-left"><button class="icon-button" aria-label="change theme"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" height="100%" width="100%"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg></span></button></div><div class="icon-wrapper in-right"><button class="icon-button" aria-label="change theme"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" height="100%" width="100%"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg></span></button></div><p class="copyright-text"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a><span>·</span><a href="https://github.com/ttttonyhe/ouorz-mono" target="_blank" rel="noreferrer">Open Source Software (OSS)</a></p></footer><script src="/js/ouo.js"></script></div></body></html>
