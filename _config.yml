@@ -102,4 +102,4 @@ theme: ouo
 deploy:
   type: git
   repo: git@github.com:Mahoo12138/blog-with-hexo.git
-  branch: master
+  branch: deploy
