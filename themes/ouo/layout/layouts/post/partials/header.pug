@@ -1,0 +1,28 @@
+div.header-left
+  div.header-logo
+    div.header-logo__avatar
+      img(alt="Tony's NFT avatar" loading="lazy" width="18" height="18" decoding="async" data-nimg="1" src="/avatar.png")
+    div.header-logo__title
+      a(href="/")
+        h3 Mahoo12138
+  div.list-wrapper
+    //- div highlightbar
+    ul(data-cy="nav-list", class='nav-list')
+      li(class="nav-list__item" aria-label="tab")
+        a(href="/posts" rel="noopener noreferrer")
+          button Posts
+div.header-center
+  .title= pageTitle
+div.header-right
+  div.list-wrapper
+    //- div highlightbar
+    ul(data-cy="nav-list", class='nav-list')
+      li(class="nav-list__item" aria-label="tab")
+        a(href="/page/765")
+          button AMA
+      li(class="nav-list__item" aria-label="tab")
+        a(href="/pages")
+          button Pages
+      li(class="nav-list__item" aria-label="tab")
+        a(href="/post/126")
+          button About

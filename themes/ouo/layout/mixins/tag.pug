@@ -1,0 +1,10 @@
+mixin Tag(category, url, className)
+  //- each item, index in categories.data
+    //- i.fas.fa-inbox
+  a(href=url_for(category.path),class=className) #[=category.name]
+    //- if index < article.categories.data.length - 1
+    //-   i.fas.fa-angle-right.article-meta-link
+
+
+mixin Tag(content, path, className)
+  a(href=url_for(path),class=className).ouo-tag #[=content]

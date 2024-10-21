@@ -1,0 +1,17 @@
+include ./tag.pug
+
+mixin BlogCard(post)
+  .post-card
+    .post-card__content
+      .post-card__content-meta
+        .post-card__content-meta-left
+          each category in post.categories.data
+            +Tag(category.name, category.path, "post-meta__category")
+        .post-card__content-meta-right
+          each tag in post.tags.data
+            +Tag(tag.name, tag.path, "post-meta__tag")
+      h2.post-card__content-title
+        a(href=url_for(post.path))= post.title
+      p.post-card__content-excerpt= post.excerpt
+    .post-card__footer= "Posted 2 years ago · ERT 19 min"
+

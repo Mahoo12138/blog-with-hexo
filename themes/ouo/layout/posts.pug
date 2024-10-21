@@ -2,4 +2,4 @@ extends layouts/home.pug
 
 block content
   include partials/recent-posts.pug
-  #paginator!= paginator()
+  #paginator!= paginator(format="/%d/")

@@ -1,1 +1,7 @@
 link(rel="stylesheet" href=`${url_for('css/index.css')}`)
+
+if page.layout
+  meta(name=`${page.layout}`)
+  link(rel="stylesheet" href=`${url_for(`css/layouts/${page.layout}.css`)}`)
+else
+  link(rel="stylesheet" href=`${url_for("css/layouts/home.css")}`)

@@ -1,7 +1,13 @@
-extends layouts/home.pug
+extends layouts/post/layout.pug
+
+include ./mixins/tag.pug
+
 
 block content
   article#post
+    div.post-meta
+      each category in page.categories.data
+        +Tag(category.name, category.path, "post-meta__category")
     h1= page.title
     != page.content
   #paginator!= paginator()

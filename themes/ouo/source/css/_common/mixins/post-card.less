@@ -1,0 +1,91 @@
+.post-card {
+  background-color: rgb(255, 255, 255);
+  margin-bottom: 18px;
+  width: 100%;
+  border-radius: 0.375rem;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  position: relative;
+  &__content {
+    // background-color: rgb(255, 255, 255);
+    padding: 1.25rem;
+    position: relative;
+    @media (min-width: 1024px) {
+      padding: 30px;
+    }
+
+    &-meta {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      @media (min-width: 1024px) {
+        margin-bottom: 18px;
+      }
+      &-left,
+      &-right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        @media (min-width: 1024px) {
+          gap: 12px;
+        }
+      }
+    }
+
+    &-title {
+      margin: 0px;
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: rgb(64, 64, 64);
+    }
+    &-excerpt {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 15px;
+      letter-spacing: 0.025em;
+      color: rgb(115, 115, 115);
+      @media (min-width: 1024px) {
+        line-height: 2rem;
+      }
+    }
+  }
+
+  &__footer {
+    // background-color: rgb(255, 255, 255);
+    height: auto;
+    width: 100%;
+    align-items: center;
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+    padding: 9px 1.25rem;
+    font-size: 12px;
+    white-space: nowrap;
+
+    @media (min-width: 1024px) {
+      padding: 6px 30px;
+      line-height: 2rem;
+      font-size: 14px;
+    }
+  }
+}
+
+.post-meta__category {
+  background-color: rgb(219, 234, 254);
+  color: rgb(59, 130, 246);
+  &:hover {
+    background-color: rgb(191, 219, 254);
+  }
+}
+
+.post-meta__tag {
+  background-color: rgb(255, 237, 213);
+  color: rgb(249, 119, 29);
+  &:hover {
+    background-color: rgb(254, 215, 170);
+  }
+}

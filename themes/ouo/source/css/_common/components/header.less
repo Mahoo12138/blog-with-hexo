@@ -4,6 +4,7 @@ header {
     grid-column-start: 1;
     grid-column-end: 3;
     display: flex;
+    justify-content: flex-start;
   }
   .header-center {
     grid-column-start: 3;
@@ -21,11 +22,18 @@ header {
 
   .header-logo {
     display: flex;
+    color: rgb(115, 115, 115);
+    align-items: center;
+    justify-content: center;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+
     &__title {
       cursor: pointer;
       color: rgb(64, 64, 64);
       letter-spacing: 0.025em;
       font-size: 15px;
+      margin-left: 9px;
     }
   }
 
