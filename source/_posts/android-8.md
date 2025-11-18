@@ -1,11 +1,12 @@
 ---
-title: 安卓开发学习之ResyclerView
+title: 安卓开发学习之 ResyclerView
 date: 2020-05-01 13:09:45
 img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/android.png
 categories: 
 - 技术教程
 tags:
 - Android
+topic: android
 ---
 
 ## 添加依赖

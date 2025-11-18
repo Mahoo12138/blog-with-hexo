@@ -1,5 +1,5 @@
 ---
-title: Android学习之MD设计模式
+title: 安卓开发学习之 Material Design
 date: 2019-08-15 14:42:43
 img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/android.png
 categories: 
@@ -7,6 +7,7 @@ categories:
 tags:
 - Android
 - Material Design
+topic: android
 ---
 
 ## 添加库依赖

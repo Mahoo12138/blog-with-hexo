@@ -1,11 +1,12 @@
 ---
-title: 安卓开发学习之DrawerLayout
+title: 安卓开发学习之 DrawerLayout
 date: 2020-04-29 10:09:45
 img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/android.png
 categories: 
 - 技术教程
 tags:
 - Android
+topic: android
 ---
 
 ## 为什么要使用导航抽屉？

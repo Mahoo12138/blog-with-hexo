@@ -1,5 +1,5 @@
 ---
-title: 利用ADB将安卓投屏到电脑进行调试开发
+title: 利用 ADB 将安卓投屏到电脑进行调试开发
 img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/android.png
 date: 2020-04-27 10:01:25
 categories: 

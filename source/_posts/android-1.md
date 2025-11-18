@@ -1,11 +1,12 @@
 ---
-title: 学习及开发中的 Java 语法及理论学习
+title: 安卓开发学习之 Java 语法及理论学习
 img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/android.png
 date: 2019-08-20 14:48:43
 categories: 
 - 学习笔记
 tags:
 - Java
+topic: android
 ---
 
 ## 理论

@@ -1,11 +1,13 @@
 ---
-title: Android学习之实现启动页面
+title: 安卓开发学习之实现启动页面
 date: 2019-08-13 19:48:43
 img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/android.png
 categories: 
 - 学习笔记
 tags:
 - Android
+topic: android
+
 ---
 
 ## 实现一个启动页面

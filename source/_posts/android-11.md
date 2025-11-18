@@ -7,6 +7,7 @@ categories:
 tags:
 - Android
 - Gradle
+topic: android
 ---
 
 # 安卓开发学习之 Gradle 摸爬打滚记录

@@ -1,0 +1,56 @@
+logo:
+  icon: /assets/icon.svg
+  title: Mahoo Blog
+  subtitle: '每个人的独立博客 | Designed by xaoxuu'
+menubar:
+  columns: 4
+  items:
+    - id: post 
+      theme: '#1BCDFC'
+      icon: solar:documents-bold-duotone
+      title: 博客
+      url: / 
+    - id: wiki
+      theme: '#3DC550'
+      icon: solar:notebook-bookmark-bold-duotone
+      title: 文档
+      url: /wiki/
+    - id: explore
+      theme: '#FA6400'
+      icon: solar:planet-bold-duotone
+      title: 探索
+      url: /explore/
+    - id: social
+      theme: '#F44336'
+      icon: solar:chat-square-like-bold-duotone
+      title: 社交
+      url: /friends/
+
+site_tree:
+  home:
+    sidebar: starter, welcome, recent
+  index_blog:
+    sidebar: starter, welcome, recent
+  index_topic:
+    menu_id: topic
+  topic:
+    menu_id: topic
+
+article:
+  share: [wechat, weibo, email, link]
+
+style:
+  border-radius:
+    bar: 4px
+    card: 4px
+    block: 4px
+
+
+comments:
+  service: artalk
+  artalk:
+    css: https://unpkg.com/artalk@2.7/dist/Artalk.css
+    js: https://unpkg.com/artalk@2.7/dist/Artalk.js 
+    server: https://api.mahoo12138.cn/artalk/
+    placeholder: ''
+    darkMode: auto
