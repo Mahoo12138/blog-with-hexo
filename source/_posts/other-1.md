@@ -1,11 +1,12 @@
 ---
-title: Win10子系统Ubuntu使用经验
+title: Win10 子系统 Ubuntu 使用经验
 img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/ubuntu.png
 categories: 
 - 技术教程
 tags:
 - Ubuntu
 - Win10
+date: 2019-11-06 22:48:43
 ---
 
 ## Win10 子系统 Ubuntu 安装 Apache2 错误
