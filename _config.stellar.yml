@@ -10,11 +10,11 @@ menubar:
       icon: solar:documents-bold-duotone
       title: 博客
       url: / 
-    - id: wiki
+    - id: diary
       theme: '#3DC550'
       icon: solar:notebook-bookmark-bold-duotone
-      title: 文档
-      url: /wiki/
+      title: 每日学习
+      url: /diary/
     - id: explore
       theme: '#FA6400'
       icon: solar:planet-bold-duotone
