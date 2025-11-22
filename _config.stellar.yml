@@ -1,27 +1,27 @@
 logo:
-  icon: /assets/icon.svg
+  icon: /images/avatar.png
   title: Mahoo Blog
-  subtitle: '每个人的独立博客 | Designed by xaoxuu'
+  subtitle: "每个人的独立博客 | Designed by xaoxuu"
 menubar:
   columns: 4
   items:
-    - id: post 
-      theme: '#1BCDFC'
+    - id: post
+      theme: "#1BCDFC"
       icon: solar:documents-bold-duotone
       title: 博客
-      url: / 
-    - id: diary
-      theme: '#3DC550'
+      url: /
+    - id: notebooks
+      theme: "#3DC550"
       icon: solar:notebook-bookmark-bold-duotone
-      title: 每日学习
-      url: /diary/
+      title: 笔记本
+      url: /notebooks/
     - id: explore
-      theme: '#FA6400'
+      theme: "#FA6400"
       icon: solar:planet-bold-duotone
       title: 探索
       url: /explore/
     - id: social
-      theme: '#F44336'
+      theme: "#F44336"
       icon: solar:chat-square-like-bold-duotone
       title: 社交
       url: /friends/
@@ -36,6 +36,11 @@ site_tree:
   topic:
     menu_id: topic
 
+# 自定义首页
+index_generator:
+  custom: index.md # 自定义首页文件路径（相对于 source 目录）
+  list_path: recent # 自定义首页列表路径（相对于 source 目录）
+
 article:
   share: [wechat, weibo, email, link]
 
@@ -44,13 +49,11 @@ style:
     bar: 4px
     card: 4px
     block: 4px
-
-
-comments:
-  service: artalk
-  artalk:
-    css: https://unpkg.com/artalk@2.7/dist/Artalk.css
-    js: https://unpkg.com/artalk@2.7/dist/Artalk.js 
-    server: https://api.mahoo12138.cn/artalk/
-    placeholder: ''
-    darkMode: auto
+# comments:
+#   service: artalk
+#   artalk:
+#     css: https://unpkg.com/artalk@2.7/dist/Artalk.css
+#     js: https://unpkg.com/artalk@2.7/dist/Artalk.js
+#     server: https://api.mahoo12138.cn/artalk/
+#     placeholder: ''
+#     darkMode: auto
