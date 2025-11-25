@@ -10,7 +10,7 @@ keywords:
 author: Mahoo12138
 language: zh-CN
 timezone: ''
-
+favicon: /images/favicon.ico
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: http://blog.mahoo12138.cn
@@ -54,15 +54,6 @@ prismjs:
   preprocess: true
   line_number: true
   tab_replace: ''
-
-# Home page setting
-# path: Root path for your blogs index page. (default = '')
-# per_page: Posts displayed per page. (0 = disable pagination)
-# order_by: Posts order. (Order by date descending by default)
-index_generator:
-  path: ''
-  per_page: 10
-  order_by: -date
 
 # Category & Tag
 default_category: uncategorized

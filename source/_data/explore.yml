@@ -1,0 +1,11 @@
+items:
+  - title: 阅读列表
+    description: 收藏的一些有趣的文章
+    url: /reading-list
+    icon: bookmark
+    color: "#11b076"
+  - title: 碎碎念
+    description: 记录自己的奇思妙想
+    url: https://blog.mahoo12138.cn/
+    icon: bookmark
+    color: "#11b076"
