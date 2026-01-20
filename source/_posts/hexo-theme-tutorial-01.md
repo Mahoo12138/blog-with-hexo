@@ -1,4 +1,13 @@
-# Hexo 主题开发系列教程（一）：核心概念全解析
+---
+title: Hexo 主题开发系列教程（一）：核心概念全解析
+date: 2025-11-20 22:48:43
+author: Mahoo12138
+img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/hexo.png
+tags: 
+- Hexo
+categories:
+- 技术教程
+---
 
 ## 前言
 

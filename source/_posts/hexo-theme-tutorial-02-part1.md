@@ -1,4 +1,14 @@
-# Hexo 主题开发系列教程（二）：扩展系统详解（上篇）
+---
+title: Hexo 主题开发系列教程（二）：扩展系统详解（上篇）
+date: 2025-11-21 21:42:13
+author: Mahoo12138
+img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/hexo.png
+tags: 
+- Hexo
+categories:
+- 技术教程
+---
+
 
 ## 前言
 
@@ -33,6 +43,7 @@ Box/文件处理                →    Processor 处理文件
 ```
 
 **核心区别：**
+
 - 第一章：理解 Hexo **如何工作**（机制）
 - 第二章：学习 Hexo **如何扩展**（实践）
 
@@ -142,6 +153,7 @@ hexo.extend.console.register('theme:init', '初始化主题配置', {
 ```
 
 **使用方法：**
+
 ```bash
 hexo theme:init --dark-mode --comments gitalk --analytics
 ```
@@ -236,6 +248,7 @@ hexo.extend.console.register('stats', '显示博客统计信息', {
 ```
 
 **使用方法：**
+
 ```bash
 hexo stats                           # 基本统计
 hexo stats --detail                  # 详细统计
@@ -491,6 +504,7 @@ hexo.extend.deployer.register('myftp', function(args) {
 ```
 
 **配置文件：**
+
 ```yaml
 # _config.yml
 deploy:
@@ -626,6 +640,7 @@ hexo.extend.deployer.register('cos', function(args) {
 ```
 
 **配置文件：**
+
 ```yaml
 # _config.yml
 deploy:
@@ -708,6 +723,7 @@ hexo.extend.deployer.register('multi', async function(args) {
 ```
 
 **配置文件：**
+
 ```yaml
 # _config.yml
 deploy:
@@ -1211,6 +1227,7 @@ hexo.extend.filter.register('before_post_render', function(data) {
 3. **Filter（过滤器）** - 在数据流的各个节点介入，修改和增强数据
 
 这三个扩展让我们能够：
+
 - 通过 Console 扩展 Hexo 的命令行能力
 - 通过 Deployer 实现灵活的部署方案
 - 通过 Filter 深度定制数据处理流程
@@ -1221,4 +1238,3 @@ hexo.extend.filter.register('before_post_render', function(data) {
 
 - [Hexo 扩展 API 文档](https://hexo.io/zh-cn/api/)
 - [Hexo 插件开发指南](https://hexo.io/zh-cn/docs/plugins)
-
