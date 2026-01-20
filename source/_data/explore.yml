@@ -9,3 +9,8 @@ items:
     url: https://blog.mahoo12138.cn/
     icon: bookmark
     color: "#11b076"
+  - title: 恋爱纪念日
+    description: 记录自己的恋爱纪念日
+    url: /love
+    icon: bookmark
+    color: "#11b076"
