@@ -1,4 +1,4 @@
 [submodule "themes/stellar"]
 	path = themes/stellar
-	url = git@github.com:Mahoo12138/hexo-theme-stellar.git
+	url = https://github.com/Mahoo12138/hexo-theme-stellar.git
 	branch = mahoo
