@@ -1,0 +1,17 @@
+- name: 周末休闲风
+  description: 舒适的周末穿搭，适合逛街或去咖啡店。
+  season: 春秋
+  image: https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800
+  items:
+    - 灰色连帽卫衣
+    - 黑色直筒牛仔裤
+    - 经典帆布鞋
+
+- name: 夏季清爽搭配
+  description: 简单干净的夏日造型，透气凉爽。
+  season: 夏季
+  image: https://images.unsplash.com/photo-1489987707060-efc1e254acb7?auto=format&fit=crop&q=80&w=800
+  items:
+    - 简约白T恤
+    - 卡其色工装裤
+    - 经典帆布鞋

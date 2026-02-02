@@ -1,0 +1,56 @@
+- name: iPhone 15 Pro
+  price: 7999
+  date: 2023-09-22
+  category: 电子设备
+  status: 仍在使用
+  score: 9.0
+  description: 主力机，轻便性能强，拍照效果出色，USB-C 接口非常方便。
+  image: https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=800
+  link: https://www.apple.com/iphone-15-pro/
+
+- name: MacBook Pro 14 M1
+  price: 12999
+  date: 2021-11-01
+  category: 电子设备
+  status: 仍在使用
+  score: 9.5
+  description: 生产力工具，屏幕素质极佳，续航持久，至今依然流畅。
+  image: https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&q=80&w=800
+
+- name: Sony WH-1000XM4
+  price: 1899
+  date: 2022-03-15
+  category: 外设
+  status: 仍在使用
+  score: 8.5
+  description: 降噪效果很好，长时间佩戴略微闷热，音质符合预期。
+  image: https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=800
+
+- name: Keychron K3
+  price: 450
+  date: 2022-06-20
+  end_date: 2023-08-15
+  category: 外设
+  status: 卖出
+  score: 7.0
+  description: 矮轴机械键盘，手感尚可，但续航较差，已出二手。
+  image: https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=800
+
+- name: Kindle Paperwhite 5
+  price: 998
+  date: 2022-01-10
+  end_date: 2023-01-10
+  category: 电子设备
+  status: 已退役
+  score: 8.0
+  description: 屏幕大了一点，反应速度快了，但还是习惯用手机看书，吃灰中。
+  image: https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=800
+
+- name: 米家台灯 1S
+  price: 149
+  date: 2020-05-20
+  category: 生活用品
+  status: 仍在使用
+  score: 9.0
+  description: 性价比极高，接入 HomeKit 很方便，照明效果好。
+  image: https://images.unsplash.com/photo-1533261774026-6a5647504068?auto=format&fit=crop&q=80&w=800

@@ -35,6 +35,9 @@ site_tree:
     menu_id: topic
   topic:
     menu_id: topic
+  my_goods:
+    menu_id: my_goods
+    rightbar: goods_toc
 
 # 自定义首页
 index_generator:

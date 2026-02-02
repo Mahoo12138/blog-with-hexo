@@ -1,0 +1,34 @@
+- name: 简约白T恤
+  category: 上装
+  brand: Uniqlo
+  season: 夏季
+  image: https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800
+  status: 仍在使用
+
+- name: 黑色直筒牛仔裤
+  category: 下装
+  brand: Levi's
+  season: 四季
+  image: https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&q=80&w=800
+  status: 仍在使用
+
+- name: 经典帆布鞋
+  category: 鞋履
+  brand: Converse
+  season: 四季
+  image: https://images.unsplash.com/photo-1607522370275-f14bc3d5d248?auto=format&fit=crop&q=80&w=800
+  status: 仍在使用
+
+- name: 灰色连帽卫衣
+  category: 上装
+  brand: Nike
+  season: 春秋
+  image: https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800
+  status: 仍在使用
+
+- name: 卡其色工装裤
+  category: 下装
+  brand: Carhartt
+  season: 四季
+  image: https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800
+  status: 仍在使用

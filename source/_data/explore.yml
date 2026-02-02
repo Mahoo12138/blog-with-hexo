@@ -12,5 +12,5 @@ items:
   - title: 恋爱纪念日
     description: 记录自己的恋爱纪念日
     url: /love
-    icon: bookmark
+    icon: /images/explore/love.png
     color: "#11b076"
