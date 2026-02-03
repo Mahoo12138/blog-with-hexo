@@ -6,8 +6,8 @@ items:
     color: "#11b076"
   - title: 碎碎念
     description: 记录自己的奇思妙想
-    url: https://blog.mahoo12138.cn/
-    icon: bookmark
+    url: https://memos.mahoo12138.cn/
+    icon: /images/explore/memos.png
     color: "#11b076"
   - title: 恋爱纪念日
     description: 记录自己的恋爱纪念日
