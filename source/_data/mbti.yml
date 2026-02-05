@@ -1,0 +1,35 @@
+type: "逻辑学家 (INTP-A)"
+avatar: "/images/mbti/intp.svg"
+desc: "逻辑学家是富有创造力的发明家，对知识有着不可抑制的渴望。"
+traits:
+  - label: "能量"
+    left: "内向"
+    right: "外向"
+    percentage: 57
+    direction: "left"
+    color: "#4298B4"
+  - label: "心智"
+    left: "天马行空"
+    right: "求真务实"
+    percentage: 71
+    direction: "left"
+    color: "#E4AE3A"
+  - label: "天性"
+    left: "理性思考"
+    right: "情感细腻"
+    percentage: 82
+    direction: "left"
+    color: "#33A474"
+  - label: "应对方式"
+    left: "运筹帷幄"
+    right: "随机应变"
+    percentage: 71
+    direction: "right"
+    color: "#88619A"
+  - label: "身份特征"
+    left: "自信果断"
+    right: "情绪不稳"
+    percentage: 60
+    direction: "left"
+    color: "#F25E62"
+# footer: "已完成测试: 2025年12月7日"

@@ -10,39 +10,48 @@ menu-id: index
 + 一个兴趣广泛，爱好折腾三分钟热度的蛋蛋后🥚
 + 从事 Web 前端开发切图仔，代码力一般，不擅长算法
 + 面向大模型编程，Prompt 微调工程师
-+ 非典型二次元 ，直男，ISTP-A
++ 非典型二次元 ，直男，INTP-A
 + 喜欢看日常番🥰，听音乐🎵、跑步🏃‍、骑行🚲
 + 十二年 Minecraft 火柴盒建造师📦，现在主要玩蛋仔派对
 
 {% endbox %}
 
+
+
+
+
 {% box 我的技能 color:#1f4f5c %}
-{% grid  bg:box c:3%}
+
+{% grid  bg:box c:2 %}
 
 **编程语言**
 
-{% mark  TypeScript color:blue %} {% mark  JavaScript color:yellow %}
+{% mark  TypeScript color:blue padding:2 %} {% mark  JavaScript color:yellow padding:2 %} {% mark  Golang color:green padding:2 %}
 
-{% mark  Golang color:green %} {% mark  Kotlin color:cyan %}
+{% mark  Kotlin color:cyan padding:2 %}
 
 <!-- cell -->
 **开发框架**
 
-{% mark  Vue.js color:green %} {% mark  React.js color:blue %} {% mark  Next.js color:dark %}
+{% mark  Vue.js color:green padding:2 %} {% mark  React.js color:blue padding:2 %} {% mark  Next.js color:dark padding:2 %}
 
-{% mark  Nest.js color:red %} {% mark Tailwind CSS color:purple %}
-
-{% mark  Flutter color:blue %}
+{% mark  Nest.js color:red padding:2 %} {% mark Tailwind CSS color:purple padding:2 %} {% mark  Flutter color:blue padding:2 %}
 
 <!-- cell -->
 
 **生产力工具**
 
-{% mark  Git color:orange %}  {% mark VS Code color:blue %} {% mark  Docker color:blue  %}
+{% mark  Git color:orange padding:2 %}  {% mark VS Code color:blue padding:2 %} {% mark  Docker color:blue padding:2 %}
 
-{% mark  Jenkins color:red %}  {% mark Blender color:orange %}
+{% mark  Jenkins color:red padding:2 %}  {% mark Blender color:orange padding:2 %}
 
 {% endgrid %}
+
+{% endbox %}
+
+{% box MBTI color:#1f4f5c %}
+
+{% mbti %}
 
 {% endbox %}
 
@@ -54,7 +63,3 @@ menu-id: index
 + 可能偶尔会写写游戏、音乐相关的内容
 
 {% endbox %}
-
-# 欢迎来到我的博客
-
-这是自定义的首页内容...
