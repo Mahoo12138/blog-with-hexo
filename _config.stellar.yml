@@ -4,12 +4,18 @@ logo:
   subtitle: "每个人的独立博客 | Designed by xaoxuu"
 menubar:
   columns: 4
+  scroll: true
   items:
+    - id: index
+      theme: "#1BCDFC"
+      icon: solar:home-bold-duotone
+      title: 主页
+      url: /
     - id: post
       theme: "#1BCDFC"
       icon: solar:documents-bold-duotone
       title: 博客
-      url: /
+      url: /recent
     - id: notebooks
       theme: "#3DC550"
       icon: solar:notebook-bookmark-bold-duotone
@@ -25,6 +31,16 @@ menubar:
       icon: solar:chat-square-like-bold-duotone
       title: 社交
       url: /friends/
+    - id: status
+      theme: "#F44336"
+      icon: solar:pulse-bold-duotone
+      title: 状态
+      url: /status/ 
+    - id: tools
+      theme: "#F44336"
+      icon: solar:widget-bold-duotone
+      title: 工具
+      url: /tools/
 
 site_tree:
   home:

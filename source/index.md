@@ -1,5 +1,5 @@
 ---
-menu-id: index
+menu-id: home
 ---
 
 {% banner 👋你好~ 欢迎来到我的博客！ bg:/images/friends.png %}
