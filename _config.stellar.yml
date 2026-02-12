@@ -47,10 +47,6 @@ site_tree:
     sidebar: starter, welcome, recent
   index_blog:
     sidebar: starter, welcome, recent
-  index_topic:
-    menu_id: topic
-  topic:
-    menu_id: topic
   my_goods:
     menu_id: my_goods
     rightbar: goods_toc

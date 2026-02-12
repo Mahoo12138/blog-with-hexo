@@ -2,10 +2,11 @@
 title: Flutter 入门学习之Text文本相关组件
 date: 2021-01-04 15:13:24
 img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/flutter.png
-tags: 
-- Flutter
-categories: 
-- 学习笔记
+tags:
+  - Flutter
+categories:
+  - 学习笔记
+topic: flutter
 ---
 
 上代码即可：
@@ -28,7 +29,7 @@ body: Center(
                 overflow: TextOverflow.ellipsis,
                 // 与 maxLines 和 overflow 互斥（设置此两项，则 softWrap 失效），设置是否换行
                 softWrap: true,
-                // 设置文字对齐方式 
+                // 设置文字对齐方式
                 textAlign: TextAlign.center,
                 // 设置文字绘制方向
                 textDirection: TextDirection.rtl,
@@ -84,4 +85,3 @@ child: Text.rich(
 ```dart
 
 ```
-
