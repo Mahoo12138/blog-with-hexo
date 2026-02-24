@@ -1,15 +1,18 @@
 items:
   - title: 阅读列表
+    sort: 1
     description: 收藏的一些有趣的文章
     url: /reading-list
     icon: bookmark
     color: "#11b076"
   - title: 碎碎念
+    sort: 2
     description: 记录自己的奇思妙想
     url: https://memos.mahoo12138.cn/
     icon: /images/explore/memos.png
     color: "#11b076"
   - title: 恋爱纪念日
+    sort: 3
     description: 记录自己的恋爱纪念日
     url: /love
     icon: /images/explore/love.png
