@@ -1,5 +1,5 @@
 ---
-title: Hexo个人博客SEO优化指南
+title: Hexo 个人博客 SEO 优化指南
 date: 2019-11-06 22:48:43
 author: Mahoo12138
 img: https://cdn.jsdelivr.net/gh/mahoo12138/js-css-cdn/hexo-images/cover/hexo.png
