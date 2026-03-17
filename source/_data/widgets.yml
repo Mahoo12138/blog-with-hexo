@@ -4,3 +4,9 @@ timeline:
   api: https://api.mahoo12138.cn/memos/api/v1/memo?creatorId=0&limit=10
   type: memos
   hide: user,footer
+
+blog_info:
+  layout: blog_info
+
+tech_info:
+  layout: tech_info
