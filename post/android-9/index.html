@@ -1,0 +1,1231 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>安卓开发学习之 Webview - Mahoo12138</title>
+
+  
+    <meta name="description" content="简介WebView是一个基于webkit引擎、展现web页面的控件。 Android的 Webview 在低版本和高版本采用了不同的 webkit 版本内核，4.4后直接使用了 Chrome。 作用 显示和渲染Web页面 直接使用html文件（网络上或本地assets中）作布局 可和JavaScript交互调用  WebView 控件功能强大，除了具有一般 View 的属性和设置外，还可以对 ur">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓开发学习之 Webview">
+<meta property="og:url" content="http://blog.mahoo12138.cn/post/android-9/">
+<meta property="og:site_name" content="Mahoo12138">
+<meta property="og:description" content="简介WebView是一个基于webkit引擎、展现web页面的控件。 Android的 Webview 在低版本和高版本采用了不同的 webkit 版本内核，4.4后直接使用了 Chrome。 作用 显示和渲染Web页面 直接使用html文件（网络上或本地assets中）作布局 可和JavaScript交互调用  WebView 控件功能强大，除了具有一般 View 的属性和设置外，还可以对 ur">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mahoo12138.cn/images/avatar.jpg">
+<meta property="article:published_time" content="2020-07-18T05:09:45.000Z">
+<meta property="article:modified_time" content="2026-01-16T13:46:54.144Z">
+<meta property="article:author" content="Mahoo12138">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mahoo12138.cn/images/avatar.jpg">
+  
+  
+  
+  <meta name="keywords" content="Android">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Mahoo12138","sameAs":[],"image":"http://blog.mahoo12138.cn/images/avatar.jpg"},"dateCreated":"2020-07-18T13:09:45+08:00","dateModified":"2026-01-16T21:46:54+08:00","datePublished":"2020-07-18T13:09:45+08:00","description":"","headline":"安卓开发学习之 Webview","mainEntityOfPage":{"@type":"WebPage","@id":"http://blog.mahoo12138.cn/post/android-9/"},"publisher":{"@type":"Organization","name":"Mahoo12138","sameAs":[],"image":"http://blog.mahoo12138.cn/images/avatar.jpg","logo":{"@type":"ImageObject","url":"http://blog.mahoo12138.cn/images/avatar.jpg"}},"url":"http://blog.mahoo12138.cn/post/android-9/","keywords":"Android","image":[]}</script>
+  
+</head>
+<body><div id="l_cover">
+
+</div><div class="l_body content" id="start" layout="post" type="tech"  ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="/images/avatar.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/"><div class="main">Mahoo Blog</div><div class="sub normal cap">每个人的独立博客</div><div class="sub hover cap" style="opacity:0"> Designed by xaoxuu</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select scroll"><a class="nav-item" title="主页" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M2 12.204c0-2.289 0-3.433.52-4.381c.518-.949 1.467-1.537 3.364-2.715l2-1.241C9.889 2.622 10.892 2 12 2s2.11.622 4.116 1.867l2 1.241c1.897 1.178 2.846 1.766 3.365 2.715S22 9.915 22 12.203v1.522c0 3.9 0 5.851-1.172 7.063S17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.212S2 17.626 2 13.725z" opacity=".5"/><path fill="currentColor" d="M9 17.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="nav-item active" title="博客" href="/recent/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="笔记本" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/explore/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/friends/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a><a class="nav-item" title="状态" href="/status/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".5"/><path fill="currentColor" d="M15.5 9.25a.75.75 0 0 0-1.357-.434l-1.893 3.101l-.96-1.92a.75.75 0 0 0-1.318-.026l-1.286 2.143H8a.75.75 0 0 0 0 1.5h1.25a.75.75 0 0 0 .643-.362l.768-1.28l1.05 2.102a.75.75 0 0 0 1.345.024l1.893-3.1l.408.815a.75.75 0 0 0 .671.412H17a.75.75 0 0 0 0-1.5h-.528z"/></svg></a><a class="nav-item" title="工具" href="/tools/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M2 6.5c0-1.886 0-2.828.586-3.414S4.114 2.5 6 2.5s2.828 0 3.414.586S10 4.614 10 6.5s0 2.828-.586 3.414S7.886 10.5 6 10.5s-2.828 0-3.414-.586S2 8.386 2 6.5m12 0c0-1.886 0-2.828.586-3.414S16.114 2.5 18 2.5s2.828 0 3.414.586S22 4.614 22 6.5s0 2.828-.586 3.414S19.886 10.5 18 10.5s-2.828 0-3.414-.586S14 8.386 14 6.5" opacity=".5"/><path fill="currentColor" d="M2 17.5c0-1.886 0-2.828.586-3.414S4.114 13.5 6 13.5s2.828 0 3.414.586S10 15.614 10 17.5s0 2.828-.586 3.414S7.886 21.5 6 21.5s-2.828 0-3.414-.586S2 19.386 2 17.5m12 0c0-1.886 0-2.828.586-3.414s1.528-.586 3.414-.586s2.828 0 3.414.586S22 15.614 22 17.5s0 2.828-.586 3.414s-1.528.586-3.414.586s-2.828 0-3.414-.586S14 19.386 14 17.5"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<widget class="widget-wrapper related post-list"><div class="widget-header dis-select"><span class="name">专栏：安卓开发学习</span></div><div class="widget-body"><a class="item" href="/post/android-11/"><span class="title">安卓开发学习之 Gradle 摸爬打滚记录</span></a><a class="item active" href="/post/android-9/"><span class="title">安卓开发学习之 Webview</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="item" href="/post/android-8/"><span class="title">安卓开发学习之 ResyclerView</span></a><a class="item" href="/post/android-7/"><span class="title">安卓开发学习之 DrawerLayout</span></a><a class="item" href="/post/android-1/"><span class="title">安卓开发学习之 Java 语法及理论学习</span></a><a class="item" href="/post/android-3/"><span class="title">安卓开发学习之 Material Design</span></a><a class="item" href="/post/android-2/"><span class="title">安卓开发学习之实现启动页面</span></a><a class="item" href="/post/android-4/"><span class="title">安卓开发学习之掉坑记录集合</span></a><a class="item" href="/post/android-5/"><span class="title">安卓开发学习之 Kotlin 语言基础</span></a></div></widget>
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/layered-partner-system/"><span class="title">层级伴侣制度：一个替代婚姻制度的设想</span></a><a class="item title" href="/post/hexo-theme-tutorial-05/"><span class="title">Hexo 主题开发系列教程（五）：插件系统与生态</span></a><a class="item title" href="/post/hexo-theme-tutorial-04/"><span class="title">Hexo 主题开发系列教程（四）：高级功能与优化</span></a><a class="item title" href="/post/hexo-theme-tutorial-03/"><span class="title">Hexo 主题开发系列教程（三）：主题结构与模板系统</span></a><a class="item title" href="/post/hexo-1/"><span class="title">Hexo 使用的不完全填坑指南</span></a><a class="item title" href="/post/cursor-more-than-an-arrow/"><span class="title">从一个小光标说起：藏在网页里的交互语言</span></a><a class="item title" href="/post/react-version-history/"><span class="title">React 16 → 19：六年演进全记录</span></a><a class="item title" href="/post/immich-rk3588-deployment/"><span class="title">在 RK3588 小主机上部署 Immich 开源相册服务</span></a><a class="item title" href="/post/hexo-2/"><span class="title">Hexo 个人博客 SEO 优化指南</span></a><a class="item title" href="/post/flutter-4/"><span class="title">Flutter 入门学习之Text文本相关组件</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/post/android-11/">安卓开发学习</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2020-07-18T05:09:45.000Z">2020-07-18</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-01-16T13:46:54.144Z">2026-01-16</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>安卓开发学习之 Webview</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><code>WebView</code>是一个基于<code>webkit</code>引擎、展现<code>web</code>页面的控件。</p>
+<p>Android的 Webview 在低版本和高版本采用了不同的 webkit 版本内核，4.4后直接使用了 Chrome。</p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>显示和渲染Web页面</li>
+<li>直接使用html文件（网络上或本地assets中）作布局</li>
+<li>可和JavaScript交互调用</li>
+</ul>
+<p>WebView 控件功能强大，除了具有一般 View 的属性和设置外，还可以对 <code>url</code> 请求、页面加载、渲染、页面交互进行强大的处理。</p>
+<h2 id="使用简介"><a href="#使用简介" class="headerlink" title="使用简介"></a>使用简介</h2><p>一般来说Webview可单独使用，可联合其工具类一起使用，所以接下来，我会介绍：</p>
+<ul>
+<li>Webview类自身的常见方法</li>
+<li>Webview的最常用的工具类：WebSettings类、WebViewClient类、WebChromeClient类</li>
+<li>Android 和 Js 的交互</li>
+</ul>
+<h3 id="Webview类常用方法"><a href="#Webview类常用方法" class="headerlink" title="Webview类常用方法"></a>Webview类常用方法</h3><h4 id="加载url"><a href="#加载url" class="headerlink" title="加载url"></a>加载url</h4><p>加载方式根据资源分为三种：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方式1. 加载一个网页：</span></span><br><span class="line">webView.loadUrl(<span class="string">&quot;http://www.google.com/&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//方式2：加载apk包中的html页面</span></span><br><span class="line">webView.loadUrl(<span class="string">&quot;file:///android_asset/test.html&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//方式3：加载手机本地的html页面</span></span><br><span class="line">webView.loadUrl(<span class="string">&quot;content://com.android.htmlfileprovider/sdcard/test.html&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式4： 加载 HTML 页面的一小段内容</span></span><br><span class="line">WebView.loadData(<span class="built_in">String</span> data, <span class="built_in">String</span> mimeType, <span class="built_in">String</span> encoding)</span><br><span class="line">    <span class="comment">// 参数说明：</span></span><br><span class="line">    <span class="comment">// 参数1：需要截取展示的内容</span></span><br><span class="line">    <span class="comment">// 内容里不能出现 ’#’, ‘%’, ‘\’ , ‘?’ 这四个字符，若出现了需用 %23, %25, %27, %3f 对应来替代，否则会出现异常</span></span><br><span class="line">    <span class="comment">// 参数2：展示内容的类型</span></span><br><span class="line">    <span class="comment">// 参数3：字节码</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="WebView的状态"><a href="#WebView的状态" class="headerlink" title="WebView的状态"></a>WebView的状态</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//激活WebView为活跃状态，能正常执行网页的响应</span></span><br><span class="line">webView.<span class="built_in">onResume</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">//当页面被失去焦点被切换到后台不可见状态，需要执行onPause</span></span><br><span class="line"><span class="comment">//通过onPause动作通知内核暂停所有的动作，比如DOM的解析、plugin的执行、JavaScript执行。</span></span><br><span class="line">webView.<span class="built_in">onPause</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//当应用程序(存在webview)被切换到后台时，这个方法不仅仅针对当前的webview而是全局的全应用程序的webview</span></span><br><span class="line"><span class="comment">//它会暂停所有webview的layout，parsing，javascripttimer。降低CPU功耗。</span></span><br><span class="line">webView.<span class="built_in">pauseTimers</span>()</span><br><span class="line"><span class="comment">//恢复pauseTimers状态</span></span><br><span class="line">webView.<span class="built_in">resumeTimers</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//销毁Webview</span></span><br><span class="line"><span class="comment">//在关闭了Activity时，如果Webview的音乐或视频，还在播放。就必须销毁Webview</span></span><br><span class="line"><span class="comment">//但是注意：webview调用destory时,webview仍绑定在Activity上</span></span><br><span class="line"><span class="comment">//这是由于自定义webview构建时传入了该Activity的context对象</span></span><br><span class="line"><span class="comment">//因此需要先从父容器中移除webview,然后再销毁webview:</span></span><br><span class="line">rootLayout.<span class="built_in">removeView</span>(webView); </span><br><span class="line">webView.<span class="built_in">destroy</span>();</span><br></pre></td></tr></table></figure>
+
+<h4 id="关于前进-后退网页"><a href="#关于前进-后退网页" class="headerlink" title="关于前进 &#x2F; 后退网页"></a>关于前进 &#x2F; 后退网页</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//是否可以后退</span></span><br><span class="line">Webview.canGoBack() </span><br><span class="line"><span class="comment">//后退网页</span></span><br><span class="line">Webview.goBack()</span><br><span class="line"></span><br><span class="line"><span class="comment">//是否可以前进                     </span></span><br><span class="line">Webview.canGoForward()</span><br><span class="line"><span class="comment">//前进网页</span></span><br><span class="line">Webview.goForward()</span><br><span class="line"></span><br><span class="line"><span class="comment">//以当前的index为起始点前进或者后退到历史记录中指定的steps</span></span><br><span class="line"><span class="comment">//如果steps为负数则为后退，正数则为前进</span></span><br><span class="line">Webview.goBackOrForward(intsteps) </span><br></pre></td></tr></table></figure>
+
+<p><strong>常见用法：Back键控制网页后退</strong></p>
+<ul>
+<li>问题：在不做任何处理前提下 ，浏览网页时点击系统的“Back”键,整个 Browser 会调用 finish()而结束自身</li>
+<li>目标：点击返回后，是网页回退而不是推出浏览器</li>
+<li>解决方案：在当前Activity中处理并消费掉该 Back 事件</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onKeyDown</span><span class="params">(keyCode: <span class="type">Int</span>, event: <span class="type">KeyEvent</span>?)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (keyCode == KEYCODE_BACK &amp;&amp; mWebView.canGoBack()) &#123;</span><br><span class="line">        mWebView.goBack()</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.onKeyDown(keyCode, event)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="清除缓存数据"><a href="#清除缓存数据" class="headerlink" title="清除缓存数据"></a>清除缓存数据</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//清除网页访问留下的缓存</span></span><br><span class="line"><span class="comment">//由于内核缓存是全局的因此这个方法不仅仅针对webview而是针对整个应用程序.</span></span><br><span class="line">Webview.clearCache(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//清除当前webview访问的历史记录</span></span><br><span class="line"><span class="comment">//只会清除webview访问历史记录里的所有记录，除了当前访问记录</span></span><br><span class="line">Webview.clearHistory();</span><br><span class="line"></span><br><span class="line"><span class="comment">//这个api仅仅清除自动完成填充的表单数据，并不会清除WebView存储到本地的数据</span></span><br><span class="line">Webview.clearFormData();</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用工具类"><a href="#常用工具类" class="headerlink" title="常用工具类"></a>常用工具类</h3><h4 id="WebSettings类"><a href="#WebSettings类" class="headerlink" title="WebSettings类"></a>WebSettings类</h4><ul>
+<li>作用：对WebView进行配置和管理</li>
+<li>配置步骤 &amp; 常见方法：</li>
+</ul>
+<p><strong>配置步骤1：添加访问网络权限</strong>（AndroidManifest.xml）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.INTERNET&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>配置步骤2：生成一个WebView组件（有两种方式）</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方式1：直接在在Activity中生成</span></span><br><span class="line">WebView webView = <span class="keyword">new</span> <span class="built_in">WebView</span>(<span class="keyword">this</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法2：在Activity的layout文件里添加webview控件：</span></span><br><span class="line">WebView webview = (WebView) <span class="built_in">findViewById</span>(R.id.webView1);</span><br></pre></td></tr></table></figure>
+
+<p><strong>配置步骤3：进行配置-利用WebSettings子类</strong>（常见方法）</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明WebSettings子类</span></span><br><span class="line">WebSettings webSettings = webView.getSettings();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript</span></span><br><span class="line">webSettings.setJavaScriptEnabled(<span class="literal">true</span>);  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）</span></span><br><span class="line"><span class="comment">// 在 onStop 和 onResume 里分别把 setJavaScriptEnabled() 给设置成 false 和 true 即可</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//支持插件</span></span><br><span class="line">webSettings.setPluginsEnabled(<span class="literal">true</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">//设置自适应屏幕，两者合用</span></span><br><span class="line">webSettings.setUseWideViewPort(<span class="literal">true</span>); <span class="comment">//将图片调整到适合webview的大小 </span></span><br><span class="line">webSettings.setLoadWithOverviewMode(<span class="literal">true</span>); <span class="comment">// 缩放至屏幕的大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//缩放操作</span></span><br><span class="line">webSettings.setSupportZoom(<span class="literal">true</span>); <span class="comment">//支持缩放，默认为true。是下面那个的前提。</span></span><br><span class="line">webSettings.setBuiltInZoomControls(<span class="literal">true</span>); <span class="comment">//设置内置的缩放控件。若为false，则该WebView不可缩放</span></span><br><span class="line">webSettings.setDisplayZoomControls(<span class="literal">false</span>); <span class="comment">//隐藏原生的缩放控件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//其他细节操作</span></span><br><span class="line">webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); <span class="comment">//关闭webview中缓存 </span></span><br><span class="line">webSettings.setAllowFileAccess(<span class="literal">true</span>); <span class="comment">//设置可以访问文件 </span></span><br><span class="line">webSettings.setJavaScriptCanOpenWindowsAutomatically(<span class="literal">true</span>); <span class="comment">//支持通过JS打开新窗口 </span></span><br><span class="line">webSettings.setLoadsImagesAutomatically(<span class="literal">true</span>); <span class="comment">//支持自动加载图片</span></span><br><span class="line">webSettings.setDefaultTextEncodingName(<span class="string">&quot;utf-8&quot;</span>);<span class="comment">//设置编码格式</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>常见用法：设置WebView缓存</strong></p>
+<ul>
+<li>当加载 html 页面时，WebView会在&#x2F;data&#x2F;data&#x2F;包名目录下生成 database 与 cache 两个文件夹</li>
+<li>请求的 URL记录保存在 WebViewCache.db，而 URL的内容是保存在 WebViewCache 文件夹下</li>
+<li>是否启用缓存：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//优先使用缓存: </span></span><br><span class="line">WebView.<span class="built_in">getSettings</span>().<span class="built_in">setCacheMode</span>(WebSettings.LOAD_CACHE_ELSE_NETWORK); </span><br><span class="line"><span class="comment">//  缓存模式如下：</span></span><br><span class="line"><span class="comment">//  LOAD_CACHE_ONLY: 不使用网络，只读取本地缓存数据</span></span><br><span class="line"><span class="comment">//  LOAD_DEFAULT: （默认）根据cache-control决定是否从网络上取数据。</span></span><br><span class="line"><span class="comment">//  LOAD_NO_CACHE: 不使用缓存，只从网络获取数据.</span></span><br><span class="line"><span class="comment">//  LOAD_CACHE_ELSE_NETWORK，只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//不使用缓存: </span></span><br><span class="line">WebView.<span class="built_in">getSettings</span>().<span class="built_in">setCacheMode</span>(WebSettings.LOAD_NO_CACHE);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结合使用（离线加载）</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (NetStatusUtil.isConnected(getApplicationContext())) &#123;</span><br><span class="line">    webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);<span class="comment">//根据cache-control决定是否从网络上取数据。</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);<span class="comment">//没网，则从本地获取，即离线加载</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">webSettings.setDomStorageEnabled(<span class="literal">true</span>); <span class="comment">// 开启 DOM storage API 功能</span></span><br><span class="line">webSettings.setDatabaseEnabled(<span class="literal">true</span>);   <span class="comment">// 开启 database storage API 功能</span></span><br><span class="line">webSettings.setAppCacheEnabled(<span class="literal">true</span>);   <span class="comment">// 开启 Application Caches 功能</span></span><br><span class="line"></span><br><span class="line">String cacheDirPath = getFilesDir().getAbsolutePath() + APP_CACAHE_DIRNAME;</span><br><span class="line">webSettings.setAppCachePath(cacheDirPath); <span class="comment">//设置  Application Caches 缓存目录</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 每个 Application 只调用一次 WebSettings.setAppCachePath()，WebSettings.setAppCacheMaxSize()</p>
+<h4 id="WebViewClient类"><a href="#WebViewClient类" class="headerlink" title="WebViewClient类"></a>WebViewClient类</h4><ul>
+<li>作用：处理各种通知 &amp; 请求事件</li>
+<li>常见方法：</li>
+</ul>
+<p><strong>常见方法1：shouldOverrideUrlLoading()</strong></p>
+<ul>
+<li>作用：打开网页时不调用系统浏览器， 而是在本WebView中显示；在网页上的所有加载都经过这个方法,这个函数我们可以做很多操作。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//步骤1. 定义Webview组件</span></span><br><span class="line"><span class="type">Webview</span> <span class="variable">webview</span> <span class="operator">=</span> (WebView) findViewById(R.id.webView1);</span><br><span class="line"></span><br><span class="line"><span class="comment">//步骤2. 选择加载方式</span></span><br><span class="line">  <span class="comment">//方式1. 加载一个网页：</span></span><br><span class="line">  webView.loadUrl(<span class="string">&quot;http://www.google.com/&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//方式2：加载apk包中的html页面</span></span><br><span class="line">  webView.loadUrl(<span class="string">&quot;file:///android_asset/test.html&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//方式3：加载手机本地的html页面</span></span><br><span class="line">   webView.loadUrl(<span class="string">&quot;content://com.android.htmlfileprovider/sdcard/test.html&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//步骤3. 复写shouldOverrideUrlLoading()方法，使得打开网页时不调用系统浏览器， 而是在本WebView中显示</span></span><br><span class="line">webView.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">shouldOverrideUrlLoading</span><span class="params">(WebView view, String url)</span> &#123;</span><br><span class="line">        view.loadUrl(url);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见方法2：onPageStarted()</strong></p>
+<ul>
+<li>作用：开始载入页面调用的，我们可以设定一个loading的页面，告诉用户程序在等待网络响应。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  webView.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span>  <span class="title function_">onPageStarted</span><span class="params">(WebView view, String url, Bitmap favicon)</span> &#123;</span><br><span class="line">       <span class="comment">//设定加载开始的操作</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见方法3：onPageFinished()</strong></p>
+<ul>
+<li>作用：在页面加载结束时调用。我们可以关闭 loading 条，切换程序动作。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  webView.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onPageFinished</span><span class="params">(WebView view, String url)</span> &#123;</span><br><span class="line">       <span class="comment">//设定加载结束的操作</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见方法4：onLoadResource()</strong></p>
+<ul>
+<li>作用：在加载页面资源时会调用，每一个资源（比如图片）的加载都会调用一次。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  webView.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">onLoadResource</span><span class="params">(WebView view, String url)</span> &#123;</span><br><span class="line">       <span class="comment">//设定加载资源的操作</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见方法5：onReceivedError()</strong></p>
+<ul>
+<li>作用：加载页面的服务器出现错误时（如404）调用。</li>
+</ul>
+<blockquote>
+<p>App里面使用webview控件的时候遇到了诸如 404 这类的错误的时候，若也显示浏览器里面的那种错误提示页面就显得很丑陋了，那么这个时候我们的app就需要加载一个本地的错误提示页面，即webview如何加载一个本地的页面</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//步骤1：写一个html文件（error_handle.html），用于出错时展示给用户看的提示页面</span></span><br><span class="line"><span class="comment">//步骤2：将该html文件放置到代码根目录的assets文件夹下</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//步骤3：复写WebViewClient的onRecievedError方法</span></span><br><span class="line"><span class="comment">//该方法传回了错误码，根据错误类型可以进行不同的错误分类处理</span></span><br><span class="line">webView.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onReceivedError</span><span class="params">(WebView view, <span class="type">int</span> errorCode, String description, String failingUrl)</span>&#123;</span><br><span class="line">        <span class="keyword">switch</span>(errorCode)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">case</span> HttpStatus.SC_NOT_FOUND:</span><br><span class="line">                view.loadUrl(<span class="string">&quot;file:///android_assets/error_handle.html&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见方法6：onReceivedSslError()</strong></p>
+<ul>
+<li>作用：处理https请求</li>
+</ul>
+<blockquote>
+<p>webView默认是不处理https请求的，页面显示空白，需要进行如下设置：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">webView.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>() &#123;    </span><br><span class="line">        <span class="meta">@Override</span>    </span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onReceivedSslError</span><span class="params">(WebView view, SslErrorHandler handler, SslError error)</span> &#123;    </span><br><span class="line">            handler.proceed();    <span class="comment">//表示等待证书响应</span></span><br><span class="line">        <span class="comment">// handler.cancel();      //表示挂起连接，为默认方式</span></span><br><span class="line">        <span class="comment">// handler.handleMessage(null);    //可做其他处理</span></span><br><span class="line">        &#125;    </span><br><span class="line">    &#125;);  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 特别注意：5.1以上默认禁止了https和http混用，以下方式是开启</span></span><br><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">	mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="WebChromeClient类"><a href="#WebChromeClient类" class="headerlink" title="WebChromeClient类"></a>WebChromeClient类</h4><ul>
+<li>作用：辅助 WebView 处理 Javascript 的对话框,网站图标,网站标题等等。</li>
+<li>常见使用：</li>
+</ul>
+<p><strong>常见方法1： onProgressChanged（）</strong></p>
+<ul>
+<li>作用：获得网页的加载进度并显示</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">webview.setWebChromeClient(<span class="keyword">new</span> <span class="title class_">WebChromeClient</span>()&#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onProgressChanged</span><span class="params">(WebView view, <span class="type">int</span> newProgress)</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (newProgress &lt; <span class="number">100</span>) &#123;</span><br><span class="line">              <span class="type">String</span> <span class="variable">progress</span> <span class="operator">=</span> newProgress + <span class="string">&quot;%&quot;</span>;</span><br><span class="line">              progress.setText(progress);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见方法2： onReceivedTitle（）</strong></p>
+<ul>
+<li>作用：获取Web页中的标题</li>
+</ul>
+<blockquote>
+<p>每个网页的页面都有一个标题，比如<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://www.baidu.com">www.baidu.com</a>这个页面的标题即“百度一下，你就知道”，那么如何知道当前webview正在加载的页面的title并进行设置呢？</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">webview.setWebChromeClient(<span class="keyword">new</span> <span class="title class_">WebChromeClient</span>()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onReceivedTitle</span><span class="params">(WebView view, String title)</span> &#123;</span><br><span class="line">       titleview.setText(title)；</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见方法3： onJsAlert（）</strong></p>
+<ul>
+<li>作用：支持javascript的警告框</li>
+</ul>
+<blockquote>
+<p>一般情况下在 Android 中为 Toast，在文本里面加入\n就可以换行</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">webview.setWebChromeClient(<span class="keyword">new</span> <span class="title class_">WebChromeClient</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">onJsAlert</span><span class="params">(WebView view, String url, String message, <span class="keyword">final</span> JsResult result)</span>  &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">AlertDialog</span>.Builder(MainActivity.<span class="built_in">this</span>)</span><br><span class="line">            .setTitle(<span class="string">&quot;JsAlert&quot;</span>)</span><br><span class="line">            .setMessage(message)</span><br><span class="line">            .setPositiveButton(<span class="string">&quot;OK&quot;</span>, <span class="keyword">new</span> <span class="title class_">DialogInterface</span>.OnClickListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onClick</span><span class="params">(DialogInterface dialog, <span class="type">int</span> which)</span> &#123;</span><br><span class="line">                    result.confirm();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            .setCancelable(<span class="literal">false</span>)</span><br><span class="line">            .show();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见方法4： onJsConfirm（）</strong></p>
+<ul>
+<li>作用：支持javascript的确认框</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">webview.setWebChromeClient(<span class="keyword">new</span> <span class="title class_">WebChromeClient</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">onJsConfirm</span><span class="params">(WebView view, String url, String message, <span class="keyword">final</span> JsResult result)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">AlertDialog</span>.Builder(MainActivity.<span class="built_in">this</span>)</span><br><span class="line">            .setTitle(<span class="string">&quot;JsConfirm&quot;</span>)</span><br><span class="line">            .setMessage(message)</span><br><span class="line">            .setPositiveButton(<span class="string">&quot;OK&quot;</span>, <span class="keyword">new</span> <span class="title class_">DialogInterface</span>.OnClickListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onClick</span><span class="params">(DialogInterface dialog, <span class="type">int</span> which)</span> &#123;</span><br><span class="line">                    result.confirm();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            .setNegativeButton(<span class="string">&quot;Cancel&quot;</span>, <span class="keyword">new</span> <span class="title class_">DialogInterface</span>.OnClickListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onClick</span><span class="params">(DialogInterface dialog, <span class="type">int</span> which)</span> &#123;</span><br><span class="line">                    result.cancel();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            .setCancelable(<span class="literal">false</span>)</span><br><span class="line">            .show();</span><br><span class="line">        <span class="comment">// 返回布尔值：判断点击时确认还是取消</span></span><br><span class="line">        <span class="comment">// true表示点击了确认；false表示点击了取消；</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;    </span><br></pre></td></tr></table></figure>
+
+<p><strong>常见方法5： onJsPrompt（）</strong></p>
+<ul>
+<li>作用：支持javascript输入框</li>
+</ul>
+<blockquote>
+<p>点击确认返回输入框中的值，点击取消返回 null。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">webview.setWebChromeClient(<span class="keyword">new</span> <span class="title class_">WebChromeClient</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">onJsPrompt</span><span class="params">(WebView view, String url, String message, String defaultValue, <span class="keyword">final</span> JsPromptResult result)</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">EditText</span> <span class="variable">et</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">EditText</span>(MainActivity.<span class="built_in">this</span>);</span><br><span class="line">        et.setText(defaultValue);</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">AlertDialog</span>.Builder(MainActivity.<span class="built_in">this</span>)</span><br><span class="line">            .setTitle(message)</span><br><span class="line">            .setView(et)</span><br><span class="line">            .setPositiveButton(<span class="string">&quot;OK&quot;</span>, <span class="keyword">new</span> <span class="title class_">DialogInterface</span>.OnClickListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onClick</span><span class="params">(DialogInterface dialog, <span class="type">int</span> which)</span> &#123;</span><br><span class="line">                    result.confirm(et.getText().toString());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            .setNegativeButton(<span class="string">&quot;Cancel&quot;</span>, <span class="keyword">new</span> <span class="title class_">DialogInterface</span>.OnClickListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onClick</span><span class="params">(DialogInterface dialog, <span class="type">int</span> which)</span> &#123;</span><br><span class="line">                    result.cancel();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            .setCancelable(<span class="literal">false</span>)</span><br><span class="line">            .show();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">            </span><br></pre></td></tr></table></figure>
+
+<h2 id="WebView与JavaScript的交互"><a href="#WebView与JavaScript的交互" class="headerlink" title="WebView与JavaScript的交互"></a>WebView与JavaScript的交互</h2><h2 id="注意事项：如何避免WebView内存泄露？"><a href="#注意事项：如何避免WebView内存泄露？" class="headerlink" title="注意事项：如何避免WebView内存泄露？"></a>注意事项：如何避免WebView内存泄露？</h2><p><strong>不在xml中定义 Webview ，而是在需要的时候在Activity中创建，并且Context使用 getApplicationgContext()</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LinearLayout.<span class="type">LayoutParams</span> <span class="variable">params</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">LinearLayout</span>.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);</span><br><span class="line">mWebView = <span class="keyword">new</span> <span class="title class_">WebView</span>(getApplicationContext());</span><br><span class="line">mWebView.setLayoutParams(params);</span><br><span class="line">mLayout.addView(mWebView);</span><br></pre></td></tr></table></figure>
+
+<p><strong>在 Activity 销毁（ WebView ）的时候，先让 WebView 加载null内容，然后移除 WebView，再销毁 WebView，最后置空。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onDestroy</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mWebView != <span class="literal">null</span>) &#123;</span><br><span class="line">            mWebView.loadDataWithBaseURL(<span class="literal">null</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;text/html&quot;</span>, <span class="string">&quot;utf-8&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">            mWebView.clearHistory();</span><br><span class="line"></span><br><span class="line">            ((ViewGroup) mWebView.getParent()).removeView(mWebView);</span><br><span class="line">            mWebView.destroy();</span><br><span class="line">            mWebView = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">super</span>.onDestroy();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><ul>
+<li>目标：实现显示“<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://www.baidu.com">www.baidu.com</a>”、获取其标题、提示加载开始 &amp; 结束和获取加载进度</li>
+<li>具体实现：</li>
+</ul>
+<p><strong>步骤1：添加访问网络权限</strong></p>
+<p><em>AndroidManifest.xml</em></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.INTERNET&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤2：主布局</strong><br> <em>activity_main.xml</em></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag"></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingBottom</span>=<span class="string">&quot;@dimen/activity_vertical_margin&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingLeft</span>=<span class="string">&quot;@dimen/activity_horizontal_margin&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingRight</span>=<span class="string">&quot;@dimen/activity_horizontal_margin&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingTop</span>=<span class="string">&quot;@dimen/activity_vertical_margin&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">tools:context</span>=<span class="string">&quot;com.example.carson_ho.webview_demo.MainActivity&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- 获取网站的标题--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/title&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">&quot;&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--开始加载提示--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/text_beginLoading&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_below</span>=<span class="string">&quot;@+id/title&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">&quot;&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--获取加载进度--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_below</span>=<span class="string">&quot;@+id/text_beginLoading&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/text_Loading&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">&quot;&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--结束加载提示--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_below</span>=<span class="string">&quot;@+id/text_Loading&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/text_endLoading&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">&quot;&quot;</span>/&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!--显示网页区域--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">WebView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/webView1&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_below</span>=<span class="string">&quot;@+id/text_endLoading&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;fill_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;fill_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;10dp&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤3：根据需要实现的功能从而使用相应的子类及其方法（注释很清楚了）</strong><br> <em>MainActivity.java</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.carson_ho.webview_demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.graphics.Bitmap;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.support.v7.app.AppCompatActivity;</span><br><span class="line"><span class="keyword">import</span> android.view.KeyEvent;</span><br><span class="line"><span class="keyword">import</span> android.view.ViewGroup;</span><br><span class="line"><span class="keyword">import</span> android.webkit.WebChromeClient;</span><br><span class="line"><span class="keyword">import</span> android.webkit.WebSettings;</span><br><span class="line"><span class="keyword">import</span> android.webkit.WebView;</span><br><span class="line"><span class="keyword">import</span> android.webkit.WebViewClient;</span><br><span class="line"><span class="keyword">import</span> android.widget.TextView;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainActivity</span> <span class="keyword">extends</span> <span class="title class_">AppCompatActivity</span> &#123;</span><br><span class="line">    WebView mWebview;</span><br><span class="line">    WebSettings mWebSettings;</span><br><span class="line">    TextView beginLoading,endLoading,loading,mtitle;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        mWebview = (WebView) findViewById(R.id.webView1);</span><br><span class="line">        beginLoading = (TextView) findViewById(R.id.text_beginLoading);</span><br><span class="line">        endLoading = (TextView) findViewById(R.id.text_endLoading);</span><br><span class="line">        loading = (TextView) findViewById(R.id.text_Loading);</span><br><span class="line">        mtitle = (TextView) findViewById(R.id.title);</span><br><span class="line"></span><br><span class="line">        mWebSettings = mWebview.getSettings();</span><br><span class="line"></span><br><span class="line">        mWebview.loadUrl(<span class="string">&quot;http://www.baidu.com/&quot;</span>);</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//设置不用系统浏览器打开,直接显示在当前Webview</span></span><br><span class="line">        mWebview.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">shouldOverrideUrlLoading</span><span class="params">(WebView view, String url)</span> &#123;</span><br><span class="line">                view.loadUrl(url);</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置WebChromeClient类</span></span><br><span class="line">        mWebview.setWebChromeClient(<span class="keyword">new</span> <span class="title class_">WebChromeClient</span>() &#123;</span><br><span class="line">            <span class="comment">//获取网站标题</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onReceivedTitle</span><span class="params">(WebView view, String title)</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;标题在这里&quot;</span>);</span><br><span class="line">                mtitle.setText(title);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//获取加载进度</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onProgressChanged</span><span class="params">(WebView view, <span class="type">int</span> newProgress)</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (newProgress &lt; <span class="number">100</span>) &#123;</span><br><span class="line">                    <span class="type">String</span> <span class="variable">progress</span> <span class="operator">=</span> newProgress + <span class="string">&quot;%&quot;</span>;</span><br><span class="line">                    loading.setText(progress);</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (newProgress == <span class="number">100</span>) &#123;</span><br><span class="line">                    <span class="type">String</span> <span class="variable">progress</span> <span class="operator">=</span> newProgress + <span class="string">&quot;%&quot;</span>;</span><br><span class="line">                    loading.setText(progress);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置WebViewClient类</span></span><br><span class="line">        mWebview.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>() &#123;</span><br><span class="line">            <span class="comment">//设置加载前的函数</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onPageStarted</span><span class="params">(WebView view, String url, Bitmap favicon)</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;开始加载了&quot;</span>);</span><br><span class="line">                beginLoading.setText(<span class="string">&quot;开始加载了&quot;</span>);</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//设置结束加载函数</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onPageFinished</span><span class="params">(WebView view, String url)</span> &#123;</span><br><span class="line">                endLoading.setText(<span class="string">&quot;结束加载了&quot;</span>);</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//点击返回上一页面而不是退出浏览器</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">onKeyDown</span><span class="params">(<span class="type">int</span> keyCode, KeyEvent event)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (keyCode == KeyEvent.KEYCODE_BACK &amp;&amp; mWebview.canGoBack()) &#123;</span><br><span class="line">            mWebview.goBack();</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.onKeyDown(keyCode, event);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//销毁Webview</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onDestroy</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mWebview != <span class="literal">null</span>) &#123;</span><br><span class="line">            mWebview.loadDataWithBaseURL(<span class="literal">null</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;text/html&quot;</span>, <span class="string">&quot;utf-8&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">            mWebview.clearHistory();</span><br><span class="line"></span><br><span class="line">            ((ViewGroup) mWebview.getParent()).removeView(mWebview);</span><br><span class="line">            mWebview.destroy();</span><br><span class="line">            mWebview = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">super</span>.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>作者：Carson_Ho<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3c94ae673e2a">https://www.jianshu.com/p/3c94ae673e2a</a><br>来源：简书<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://blog.mahoo12138.cn/post/android-9/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=http://blog.mahoo12138.cn/post/android-9/&title=安卓开发学习之 Webview - Mahoo12138&summary=简介WebView是一个基于webkit引擎、展现web页面的控件。
+Android的 Webview 在低版本和高版本采用了不同的 webkit 版本内核，4.4后直接使用了 Chrome。
+作用
+显示和渲染Web页面
+直接使用ht..."><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg" /></a><a class="social share-item email" href="mailto:?subject=安卓开发学习之 Webview - Mahoo12138&amp;body=http://blog.mahoo12138.cn/post/android-9/"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://blog.mahoo12138.cn/post/android-9/"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/android-10/">安卓开发学习之底部导航栏实战</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/android-8/">安卓开发学习之 ResyclerView</a></div></section></div>
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">Mahoo12138</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-text">作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%AE%80%E4%BB%8B"><span class="toc-text">使用简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Webview%E7%B1%BB%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">Webview类常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BDurl"><span class="toc-text">加载url</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WebView%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-text">WebView的状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%89%8D%E8%BF%9B-%E5%90%8E%E9%80%80%E7%BD%91%E9%A1%B5"><span class="toc-text">关于前进 &#x2F; 后退网页</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%85%E9%99%A4%E7%BC%93%E5%AD%98%E6%95%B0%E6%8D%AE"><span class="toc-text">清除缓存数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="toc-text">常用工具类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#WebSettings%E7%B1%BB"><span class="toc-text">WebSettings类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WebViewClient%E7%B1%BB"><span class="toc-text">WebViewClient类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WebChromeClient%E7%B1%BB"><span class="toc-text">WebChromeClient类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebView%E4%B8%8EJavaScript%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="toc-text">WebView与JavaScript的交互</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%EF%BC%9A%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8DWebView%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%EF%BC%9F"><span class="toc-text">注意事项：如何避免WebView内存泄露？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-text">实例</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"closeEnable":true,"closeText":"关闭提示","originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  window.canonical["param"] = {"permalink":"http://blog.mahoo12138.cn/post/android-9/","checklink":"/js/plugins/video.js"};
+  // Fix: Ensure page is at the correct top position on data load
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'auto';
+  }
+  (function() {
+    const scrollHandler = () => {
+      const wikiCover = document.querySelector('#l_cover .l_cover.wiki');
+      const startEl = document.getElementById('start');
+      if (wikiCover && startEl) {
+        window.scrollTo(0, startEl.offsetTop);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+    if (document.readyState !== 'loading') scrollHandler();
+    else document.addEventListener('DOMContentLoaded', scrollHandler);
+  })();
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      // 倒序遍历避免 splice 后的索引问题
+      for (let index = this.list.length - 1; index >= 0; index--) {
+        const e = this.list[index];
+        if (e.name === name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 已加载脚本缓存
+    _loadedScripts: new Set(),
+
+    // 已加载元素缓存 (使用 WeakSet 追踪元素实例,避免 PJAX 导航时的状态混淆)
+    _loadedElements: new WeakSet(),
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      // 如果脚本已加载，直接返回
+      if (utils._loadedScripts.has(src)) {
+        resolve();
+        return;
+      }
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        utils._loadedScripts.add(src);
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // PJAX 事件监听器管理
+    _pjaxListeners: new Set(),
+    
+    jq: (fn, pjax = true) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+      if (pjax && !fn._pjax_registered) {
+        document.addEventListener('pjax:complete', fn);
+        fn._pjax_registered = true;
+        utils._pjaxListeners.add(fn); // 追踪监听器以便清理
+      }
+    },
+    
+    // 清理所有 PJAX 事件监听器
+    cleanupPjaxListeners: () => {
+      utils._pjaxListeners.forEach(fn => {
+        document.removeEventListener('pjax:complete', fn);
+        fn._pjax_registered = false;
+      });
+      utils._pjaxListeners.clear();
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        if ($(el).find('.loading-wrap').length === 0){
+          $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+        }
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      // 检查元素实例是否已加载 (而不是检查属性)
+      if (el && utils._loadedElements.has(el)) {
+        return;
+      }
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            // 标记元素实例为已加载
+            if (el) utils._loadedElements.add(el);
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+
+    // 插件初始化管理器 - 统一处理 DOMContentLoaded 和 pjax:complete 事件
+    _pluginInitializers: [],
+    _pluginCleanups: new Map(), // 存储每个插件的清理函数
+    
+    initPlugin: (initFn, name, options = {}) => {
+      if (!initFn || typeof initFn !== 'function') return;
+      
+      // 避免重复注册
+      const pluginName = name || initFn.name;
+      if (utils._pluginInitializers.some(p => p.name === pluginName)) return;
+      
+      // 包装初始化函数，添加防重复执行的保护
+      const wrappedInit = () => {
+        try {
+          // 在执行前先清理旧的资源
+          if (utils._pluginCleanups.has(pluginName)) {
+            const cleanup = utils._pluginCleanups.get(pluginName);
+            if (typeof cleanup === 'function') {
+              cleanup();
+            }
+          }
+          
+          // 执行初始化，可能返回清理函数
+          const cleanup = initFn();
+          
+          // 如果初始化函数返回了清理函数，保存它
+          if (typeof cleanup === 'function') {
+            utils._pluginCleanups.set(pluginName, cleanup);
+          }
+        } catch (error) {
+          console.error(`[Plugin ${pluginName}] 初始化失败:`, error);
+        }
+      };
+      
+      utils._pluginInitializers.push({ 
+        fn: wrappedInit, 
+        name: pluginName,
+        options: options 
+      });
+      
+      // 如果 DOM 已经加载完成，立即执行
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        wrappedInit();
+      } else {
+        // 否则等待 DOMContentLoaded
+        window.addEventListener('DOMContentLoaded', wrappedInit, { once: true });
+      }
+    },
+
+    // 重新初始化所有插件（用于 PJAX 等场景）
+    reinitPlugins: () => {
+      utils._pluginInitializers.forEach(plugin => {
+        // 跳过标记为不需要重新初始化的插件
+        if (plugin.options.skipReinit) return;
+        
+        try {
+          plugin.fn();
+        } catch (error) {
+          console.error(`[Plugin ${plugin.name}] 重新初始化失败:`, error);
+        }
+      });
+    },
+    
+    // 清理所有插件资源
+    cleanupPlugins: () => {
+      utils._pluginCleanups.forEach((cleanup, name) => {
+        try {
+          cleanup();
+        } catch (error) {
+          console.error(`[Plugin ${name}] 清理失败:`, error);
+        }
+      });
+      utils._pluginCleanups.clear();
+    },
+    
+    // 清理所有资源（用于页面卸载或重置）
+    cleanupAll: () => {
+      utils.cleanupPlugins();
+      utils.cleanupPjaxListeners();
+    },
+  };
+
+  // 自动处理 PJAX 事件
+  document.addEventListener('pjax:before', () => {
+    // 在导航前清理旧的 PJAX 监听器（如果需要重新注册）
+    // 注意：这里不清理，因为监听器应该是持久的
+    // utils.cleanupPjaxListeners();
+  });
+  
+  document.addEventListener('pjax:complete', () => {
+    utils.reinitPlugins();
+  });
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  const initServices = () => {
+    // 用于存储需要清理的资源
+    let timers = [];
+    
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"},"rss":{"js":"/js/services/rss.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        const cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(cardlinks);
+          });
+        }
+      } else if (id == 'ghinfo') {
+        const els = document.querySelectorAll('.ds-ghinfo');
+        if (els.length > 0) {
+          utils.js(js, { defer: true });
+        }
+      } else if (id == 'voice') {
+        const voiceAudios = document.querySelectorAll('.voice>audio');
+        if (voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        const videos = document.querySelectorAll('.video>video');
+        if (videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        const files = document.querySelectorAll('.chat-file');
+        if (files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || id == 'memos' || id == 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          }, false);
+        }
+      }
+    }
+
+    // search
+    if (ctx.search && typeof searchFunc === 'function') {
+      const $inputArea = $("input#search-input");
+      if ($inputArea.length > 0 && !$inputArea[0]._searchInitialized) {
+        const path = ctx.search.path.startsWith('/') ? ctx.root + ctx.search.path.substring(1) : ctx.root + ctx.search.path;
+        const filter = $inputArea.attr('data-filter') || '';
+        searchFunc(path, filter, 'search-wrapper', 'search-input', 'search-result');
+        // 标记为已初始化，防止重复绑定
+        $inputArea[0]._searchInitialized = true;
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+    let firstAdjustInterval = null;
+    let mainInterval = null;
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      const date = new Date();
+      const sec = date.getSeconds();
+      firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+      timers.push(firstAdjustInterval);
+
+      function firstAdjustTime() {
+        NowTime();
+        if (firstAdjustInterval) {
+          clearInterval(firstAdjustInterval);
+          firstAdjustInterval = null;
+        }
+        mainInterval = setInterval(NowTime, 1000 * 60);
+        timers.push(mainInterval);
+      }
+
+      function NowTime() {
+        for (let i = 0; i < phoneTimes.length; ++i) {
+          const timeSpan = phoneTimes[i];
+          const date = new Date();
+          const hour = date.getHours();
+          const min = date.getMinutes();
+          timeSpan.innerHTML = check(hour) + ":" + check(min);
+        }
+      };
+
+      function check(val) {
+        if (val < 10) {
+          return ("0" + val);
+        }
+        return (val);
+      }
+    }
+
+    // chat quote - 存储事件监听器以便清理
+    const quoteClickHandlers = new Map();
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      const handler = function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      };
+      quote.addEventListener('click', handler);
+      quoteClickHandlers.set(quote, handler); // 保存处理器引用
+    });
+
+    // 返回清理函数，用于清理定时器和观察器
+    return () => {
+      // 清理所有定时器（包括可能未完成的 firstAdjustInterval）
+      timers.forEach(timer => {
+        if (timer) clearInterval(timer);
+      });
+      timers = [];
+      if (firstAdjustInterval) {
+        clearInterval(firstAdjustInterval);
+        firstAdjustInterval = null;
+      }
+      if (mainInterval) {
+        clearInterval(mainInterval);
+        mainInterval = null;
+      }
+      
+      // 断开观察器
+      if (chat_quote_obverser) {
+        chat_quote_obverser.disconnect();
+      }
+      
+      // 移除所有 click 事件监听器
+      quoteClickHandlers.forEach((handler, quote) => {
+        quote.removeEventListener('click', handler);
+      });
+      quoteClickHandlers.clear();
+    };
+  };
+
+  utils.initPlugin(initServices, 'services');
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  utils.initPlugin(() => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  }, 'swiper');
+</script>
+<script>
+  utils.initPlugin(() => {
+    const codeElements = document.querySelectorAll('.code');
+    if (codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js', { defer: true }).then(() => {
+        if (typeof createCopyButtons === 'function') {
+          createCopyButtons(codeElements);
+        }
+      });
+    }
+  }, 'copycode');
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
+

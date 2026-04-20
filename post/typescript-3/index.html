@@ -1,0 +1,1228 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>TypeScript学习-03-语法进阶 - Mahoo12138</title>
+
+  
+    <meta name="description" content="枚举枚举是组织收集有关联变量的一种方式，可以清晰地表达意图或创建一组有区别的用例，使用enum定义枚举类型： 123456789enum Day &#123;  SUNDAY,  MONDAY,  TUESDAY,  WEDNESDAY,  THURSDAY,  FRIDAY,  SATURDAY&#125;  默认从 0 开始递增的数字集合，称之为数字枚举； 数字枚举在定义值时，可以使用计算值和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TypeScript学习-03-语法进阶">
+<meta property="og:url" content="http://blog.mahoo12138.cn/post/typescript-3/">
+<meta property="og:site_name" content="Mahoo12138">
+<meta property="og:description" content="枚举枚举是组织收集有关联变量的一种方式，可以清晰地表达意图或创建一组有区别的用例，使用enum定义枚举类型： 123456789enum Day &#123;  SUNDAY,  MONDAY,  TUESDAY,  WEDNESDAY,  THURSDAY,  FRIDAY,  SATURDAY&#125;  默认从 0 开始递增的数字集合，称之为数字枚举； 数字枚举在定义值时，可以使用计算值和">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mahoo12138.cn/images/avatar.jpg">
+<meta property="article:published_time" content="2021-11-26T08:52:45.000Z">
+<meta property="article:modified_time" content="2025-11-18T12:03:44.717Z">
+<meta property="article:author" content="Mahoo12138">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mahoo12138.cn/images/avatar.jpg">
+  
+  
+  
+  <meta name="keywords" content="TypeScript">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Mahoo12138","sameAs":[],"image":"http://blog.mahoo12138.cn/images/avatar.jpg"},"dateCreated":"2021-11-26T16:52:45+08:00","dateModified":"2025-11-18T20:03:44+08:00","datePublished":"2021-11-26T16:52:45+08:00","description":"","headline":"TypeScript学习-03-语法进阶","mainEntityOfPage":{"@type":"WebPage","@id":"http://blog.mahoo12138.cn/post/typescript-3/"},"publisher":{"@type":"Organization","name":"Mahoo12138","sameAs":[],"image":"http://blog.mahoo12138.cn/images/avatar.jpg","logo":{"@type":"ImageObject","url":"http://blog.mahoo12138.cn/images/avatar.jpg"}},"url":"http://blog.mahoo12138.cn/post/typescript-3/","keywords":"TypeScript","image":[]}</script>
+  
+</head>
+<body><div id="l_cover">
+
+</div><div class="l_body content" id="start" layout="post" type="tech"  ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="/images/avatar.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/"><div class="main">Mahoo Blog</div><div class="sub normal cap">每个人的独立博客</div><div class="sub hover cap" style="opacity:0"> Designed by xaoxuu</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select scroll"><a class="nav-item" title="主页" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M2 12.204c0-2.289 0-3.433.52-4.381c.518-.949 1.467-1.537 3.364-2.715l2-1.241C9.889 2.622 10.892 2 12 2s2.11.622 4.116 1.867l2 1.241c1.897 1.178 2.846 1.766 3.365 2.715S22 9.915 22 12.203v1.522c0 3.9 0 5.851-1.172 7.063S17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.212S2 17.626 2 13.725z" opacity=".5"/><path fill="currentColor" d="M9 17.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="nav-item active" title="博客" href="/recent/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="笔记本" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/explore/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/friends/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a><a class="nav-item" title="状态" href="/status/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".5"/><path fill="currentColor" d="M15.5 9.25a.75.75 0 0 0-1.357-.434l-1.893 3.101l-.96-1.92a.75.75 0 0 0-1.318-.026l-1.286 2.143H8a.75.75 0 0 0 0 1.5h1.25a.75.75 0 0 0 .643-.362l.768-1.28l1.05 2.102a.75.75 0 0 0 1.345.024l1.893-3.1l.408.815a.75.75 0 0 0 .671.412H17a.75.75 0 0 0 0-1.5h-.528z"/></svg></a><a class="nav-item" title="工具" href="/tools/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M2 6.5c0-1.886 0-2.828.586-3.414S4.114 2.5 6 2.5s2.828 0 3.414.586S10 4.614 10 6.5s0 2.828-.586 3.414S7.886 10.5 6 10.5s-2.828 0-3.414-.586S2 8.386 2 6.5m12 0c0-1.886 0-2.828.586-3.414S16.114 2.5 18 2.5s2.828 0 3.414.586S22 4.614 22 6.5s0 2.828-.586 3.414S19.886 10.5 18 10.5s-2.828 0-3.414-.586S14 8.386 14 6.5" opacity=".5"/><path fill="currentColor" d="M2 17.5c0-1.886 0-2.828.586-3.414S4.114 13.5 6 13.5s2.828 0 3.414.586S10 15.614 10 17.5s0 2.828-.586 3.414S7.886 21.5 6 21.5s-2.828 0-3.414-.586S2 19.386 2 17.5m12 0c0-1.886 0-2.828.586-3.414s1.528-.586 3.414-.586s2.828 0 3.414.586S22 15.614 22 17.5s0 2.828-.586 3.414s-1.528.586-3.414.586s-2.828 0-3.414-.586S14 19.386 14 17.5"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/layered-partner-system/"><span class="title">层级伴侣制度：一个替代婚姻制度的设想</span></a><a class="item title" href="/post/hexo-theme-tutorial-05/"><span class="title">Hexo 主题开发系列教程（五）：插件系统与生态</span></a><a class="item title" href="/post/hexo-theme-tutorial-04/"><span class="title">Hexo 主题开发系列教程（四）：高级功能与优化</span></a><a class="item title" href="/post/hexo-theme-tutorial-03/"><span class="title">Hexo 主题开发系列教程（三）：主题结构与模板系统</span></a><a class="item title" href="/post/hexo-1/"><span class="title">Hexo 使用的不完全填坑指南</span></a><a class="item title" href="/post/cursor-more-than-an-arrow/"><span class="title">从一个小光标说起：藏在网页里的交互语言</span></a><a class="item title" href="/post/react-version-history/"><span class="title">React 16 → 19：六年演进全记录</span></a><a class="item title" href="/post/immich-rk3588-deployment/"><span class="title">在 RK3588 小主机上部署 Immich 开源相册服务</span></a><a class="item title" href="/post/hexo-2/"><span class="title">Hexo 个人博客 SEO 优化指南</span></a><a class="item title" href="/post/flutter-4/"><span class="title">Flutter 入门学习之Text文本相关组件</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/recent/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2021-11-26T08:52:45.000Z">2021-11-26</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-11-18T12:03:44.717Z">2025-11-18</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>TypeScript学习-03-语法进阶</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><p>枚举是组织收集有关联变量的一种方式，可以清晰地表达意图或创建一组有区别的用例，使用<code>enum</code>定义枚举类型：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Day</span> &#123;</span><br><span class="line">  <span class="variable constant_">SUNDAY</span>,</span><br><span class="line">  <span class="variable constant_">MONDAY</span>,</span><br><span class="line">  <span class="variable constant_">TUESDAY</span>,</span><br><span class="line">  <span class="variable constant_">WEDNESDAY</span>,</span><br><span class="line">  <span class="variable constant_">THURSDAY</span>,</span><br><span class="line">  <span class="variable constant_">FRIDAY</span>,</span><br><span class="line">  <span class="variable constant_">SATURDAY</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认从 0 开始递增的数字集合，称之为<strong>数字枚举</strong>；</p>
+<p>数字枚举在定义值时，可以使用计算值和常量，且该字段后面紧接着的字段必须设置初始值；</p>
+<p>定义值是字符串字面量的枚举称为字符串枚举，字符串枚举值要求**每个字段的值都必须是字符串字面量，或者是该枚举值中另一个字符串枚举成员；**字符串枚举允许提供一个运行时有意义的并且可读的值，独立于枚举成员的名字。</p>
+<p>对于枚举类型的值，可以分开进行声明，编译时会对枚举值进行<strong>合并操作</strong>；在枚举的延续块中，必须重新初始化第一个成员，否则会报错；</p>
+<h3 id="数字类型作为标志"><a href="#数字类型作为标志" class="headerlink" title="数字类型作为标志"></a>数字类型作为标志</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">AnimalFlags</span> &#123;</span><br><span class="line">  <span class="title class_">None</span>        = <span class="number">0</span>,		<span class="comment">// 0000</span></span><br><span class="line">  <span class="title class_">HasClaws</span>    = <span class="number">1</span> &lt;&lt; <span class="number">0</span>,	<span class="comment">// 0001</span></span><br><span class="line">  <span class="title class_">CanFly</span>      = <span class="number">1</span> &lt;&lt; <span class="number">1</span>,	<span class="comment">// 0010</span></span><br><span class="line">  <span class="title class_">EatsFish</span>    = <span class="number">1</span> &lt;&lt; <span class="number">2</span>,	<span class="comment">// 0100</span></span><br><span class="line">  <span class="title class_">Endangered</span>  = <span class="number">1</span> &lt;&lt; <span class="number">3</span>	<span class="comment">// 1000</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>|=</code> 来添加一个标志，组合使用 <code>&amp;=</code> 和 <code>~</code> 来清理一个标志，<code>|</code> 来合并标志：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> animal = &#123; <span class="attr">flags</span>: <span class="title class_">AnimalFlags</span>.<span class="property">None</span> &#125;;					<span class="comment">// 0000</span></span><br><span class="line">animal.<span class="property">flags</span> |= <span class="title class_">AnimalFlags</span>.<span class="property">HasClaws</span>;						<span class="comment">// 0001</span></span><br><span class="line">animal.<span class="property">flags</span> &amp;= ~<span class="title class_">AnimalFlags</span>.<span class="property">HasClaws</span>;						<span class="comment">// 0000</span></span><br><span class="line">animal.<span class="property">flags</span> |= <span class="title class_">AnimalFlags</span>.<span class="property">HasClaws</span> | <span class="title class_">AnimalFlags</span>.<span class="property">CanFly</span>;	<span class="comment">// 0011</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="枚举成员类型"><a href="#枚举成员类型" class="headerlink" title="枚举成员类型"></a>枚举成员类型</h3><p>字面量枚举成员是指不带有初始值的常量枚举成员，或者是值被初始化为</p>
+<ul>
+<li>任何字符串字面量（例如： <code>&quot;foo&quot;</code>， <code>&quot;bar&quot;</code>， <code>&quot;baz&quot;</code>）</li>
+<li>任何数字字面量（例如： <code>1</code>, <code>100</code>）</li>
+<li>应用了一元 <code>-</code>符号的数字字面量（例如： <code>-1</code>, <code>-100</code>）</li>
+</ul>
+<p>当所有枚举成员都拥有字面量枚举值时，枚举成员则成为了类型，而枚举类型本身变成了每个枚举成员的联合；</p>
+<h3 id="有静态方法的枚举"><a href="#有静态方法的枚举" class="headerlink" title="有静态方法的枚举"></a>有静态方法的枚举</h3><p>可以使用 <code>enum</code> + <code>namespace</code> 的声明的方式向枚举类型添加静态方法；</p>
+<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p>设计泛型的关键目的是在成员之间提供有意义的约束，这些成员可以是：</p>
+<ul>
+<li>类的实例成员</li>
+<li>类的方法</li>
+<li>函数参数</li>
+<li>函数返回值</li>
+</ul>
+<h3 id="泛型约束"><a href="#泛型约束" class="headerlink" title="泛型约束"></a>泛型约束</h3> <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Lengthwise</span> &#123;</span><br><span class="line">  <span class="attr">length</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> loggingIdentity&lt;T <span class="keyword">extends</span> <span class="title class_">Lengthwise</span>&gt;(<span class="attr">arg</span>: T): T &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(arg.<span class="property">length</span>);</span><br><span class="line">  <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>泛型被定义了约束后，不再适用于任意类型，传入符合约束类型的值，必须包含特定的属性：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">loggingIdentity</span>(&#123;<span class="attr">length</span>: <span class="number">10</span>, <span class="attr">value</span>: <span class="number">3</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="在泛型里使用类类型"><a href="#在泛型里使用类类型" class="headerlink" title="在泛型里使用类类型"></a>在泛型里使用类类型</h3><p>在TypeScript使用泛型创建<strong>工厂函数</strong>时，需要引用构造函数的类类型。比如，</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> create&lt;T&gt;(<span class="attr">c</span>: &#123;<span class="title function_">new</span>(): T; &#125;): T &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">c</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>create</code>函数需要传入一个对象或者说类，其中的<code>new()</code>表示类的构造函数，且返回的类型是<code>create</code>指定的泛型，<code>create</code>函数内部即实例化了<code>c</code>对象并返回，以此创建了一个工厂函数；</p>
+<h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><p>TypeScript使用 [duck-typing](<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B">鸭子类型 - 维基百科，自由的百科全书 (wikipedia.org)</a>) （也叫做结构类型系统，Structural type system）的方法来比较一个对象和其他对象，方法是检查两个对象是否具有相同的类型匹配名称。与之相反的是标明类型系统 （Nominative type system），表示类型若要相等，就必须具有相同的“名字”；</p>
+<blockquote>
+<p>在这种风格中，一个对象有效的语义，不是由继承自特定的类或实现特定的接口，而是由”当前方法和属性的集合”决定。这个概念的名字来源于由<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E8%A9%B9%E5%A7%86%E6%96%AF%C2%B7%E6%83%A0%E7%89%B9%E7%A7%91%E5%A7%86%C2%B7%E8%8E%B1%E5%88%A9&action=edit&redlink=1">詹姆斯·惠特科姆·莱利</a>提出的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%B8%AD%E5%AD%90%E6%B5%8B%E8%AF%95">鸭子测试</a>，“鸭子测试”可以这样表述：</p>
+<p>“当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称为鸭子。”</p>
+</blockquote>
+<h3 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h3><p><code>keyof</code> 用于<strong>索引类型查询操作符</strong>，它会返回其后参数类型的键值组成的字面量类型(literal types)：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> foo &#123;</span><br><span class="line">  <span class="attr">a</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">b</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">AB</span> = keyof foo; <span class="comment">// &quot;a&quot; | &quot;b&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>字面量类型包括字符串字面量、数字字面量、布尔值字面量。</p>
+</blockquote>
+<h3 id="映射类型"><a href="#映射类型" class="headerlink" title="映射类型"></a>映射类型</h3><h3 id="条件类型"><a href="#条件类型" class="headerlink" title="条件类型"></a>条件类型</h3><p>TS 在 2.8 中引入了条件类型表达式，使用关键词 <code>extends</code>，形如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T <span class="keyword">extends</span> U ? X : Y</span><br></pre></td></tr></table></figure>
+
+<p>简单来说，即 T 类型被U类型所限制住，T 必须为 U 的子集类型；</p>
+<h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h2><p>用<code>namespace</code>关键字创建命名空间，命名空间内的可以定义类，函数和接口等，而想让它们再外部也能访问到需要使用<code>export</code>导出：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Utility</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">error</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// usage</span></span><br><span class="line"><span class="title class_">Utility</span>.<span class="title function_">log</span>(<span class="string">&#x27;Call me&#x27;</span>);</span><br><span class="line"><span class="title class_">Utility</span>.<span class="title function_">error</span>(<span class="string">&#x27;maybe&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>命名空间可以分割在多个文件中，它们是可以合并的，不同文件之间存在依赖关系，需要加入了引用标签来告诉编译器文件之间的关联；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;reference path=&quot;Namespace.ts&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>当操作命名空间中的内容时，可以使用<code>import</code>为其取一个别名：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Shapes</span> &#123;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Triangle</span> &#123; &#125;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Square</span> &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">import</span> triangle = <span class="title class_">Shapes</span>.<span class="property">Triangle</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>目前 typescript 版本 4.1 装饰器仍是一项实验性特性，之后的版本中可能会发生改变；Javascript 规范里的装饰器目前处在 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=4m/XBcfeohg7YXijaq/tfw==.TsI206OuLG3jW69AunLAqgWyWC3Z3ucYNdHBCh/+r47GvbJPWIJpSbgs/xJDRAPC">建议征集的第二阶段</a>，也就意味着不能在原生代码中直接使用，浏览器暂不支持。</p>
+<blockquote>
+<p>装饰者模式（Decorator Pattern）也称为装饰器模式，在不改变对象自身的基础上，动态增加额外的职责。属于结构型模式的一种；</p>
+<p>使用装饰者模式的优点：能够很好的抽象代码，把对象核心职责和要装饰的功能分开了，最适合用来包装可能会多处复用的逻辑</p>
+</blockquote>
+<p>装饰器是一种特殊的表达式声明，可以被附加到类声明、方法、 访问符(getter&#x2F;setter)、属性和参数上，对应着的可分为类装饰器（Class decorators）、属性装饰器（Property decorators）、方法装饰器（Method decorators）、参数装饰器（Parameter decorators）；</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">type</span> <span class="title class_">ClassDecorator</span> = &lt;<span class="title class_">TFunction</span> <span class="keyword">extends</span> <span class="title class_">Function</span>&gt;<span class="function">(<span class="params"><span class="attr">target</span>: <span class="title class_">TFunction</span></span>) =&gt;</span> <span class="title class_">TFunction</span> | <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">type</span> <span class="title class_">PropertyDecorator</span> = <span class="function">(<span class="params"><span class="attr">target</span>: <span class="title class_">Object</span>, <span class="attr">propertyKey</span>: <span class="built_in">string</span> | <span class="built_in">symbol</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">type</span> <span class="title class_">MethodDecorator</span> = &lt;T&gt;<span class="function">(<span class="params"><span class="attr">target</span>: <span class="title class_">Object</span>, <span class="attr">propertyKey</span>: <span class="built_in">string</span> | <span class="built_in">symbol</span>, <span class="attr">descriptor</span>: <span class="title class_">TypedPropertyDescriptor</span>&lt;T&gt;</span>) =&gt;</span> <span class="title class_">TypedPropertyDescriptor</span>&lt;T&gt; | <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">type</span> <span class="title class_">ParameterDecorator</span> = <span class="function">(<span class="params"><span class="attr">target</span>: <span class="title class_">Object</span>, <span class="attr">propertyKey</span>: <span class="built_in">string</span> | <span class="built_in">symbol</span>, <span class="attr">parameterIndex</span>: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure>
+
+<p>装饰器使用时形如<code>@expression</code>，该表达式求值后必须为一个函数，它会在运行时被调用，被装饰的内容作为参数传入；</p>
+<p>若要启用实验性的装饰器特性，必须启用 <code>experimentalDecorators</code> 编译器选项：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ES5&quot;</span><span class="punctuation">,</span></span><br><span class="line">     <span class="attr">&quot;experimentalDecorators&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>装饰器的执行顺序为：首先执行属性装饰器，然后执行方法装饰器，其次是方法参数装饰器，最后是类装饰器；</p>
+<p>多个装饰器组合在一起，在运行时，要注意，调用顺序是 <strong>从下至上</strong> 依次调用，类似于栈，先进后出；</p>
+<h3 id="装饰器工厂"><a href="#装饰器工厂" class="headerlink" title="装饰器工厂"></a>装饰器工厂</h3><p>但需要给装饰器传入参数时，可借助装饰器工厂这种方法，其本质上是一个高阶函数，传参返回的函数才作为装饰器函数；</p>
+<p>当装饰的是装饰器工厂函数时，他们会从上到下依次执行，而内部返回的真正的装饰器函数还是会从下到上执行；</p>
+<h3 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h3><p>顾名思义，作用在类声明上的装饰器，可以用来监视，修改或替换类定义。类装饰器表达式会在运行时当作函数被调用，<strong>类的构造函数作为其唯一的参数</strong>。</p>
+<p>当我们声明一个类时，装饰器就会被调用，而不是等到类实例化的时候；当装饰一个类的时候，装饰器并不会对该类的子类生效；</p>
+<p>如果装饰函数有返回值，该返回值会重新定义这个类，也就是说当装饰函数有返回值时，其实是生成了一个新类，该新类通过返回值来定义；</p>
+<h3 id="方法装饰器"><a href="#方法装饰器" class="headerlink" title="方法装饰器"></a>方法装饰器</h3><p>方法装饰器用于覆写一个方法，改变它的执行流程，以及在它执行前后额外运行一些代码，作用在类的方法上，会被应用到方法的 <em>属性描述符</em>（描述对象）上，可以用来监视，修改或者替换方法定义，有静态方法和原型方法：</p>
+<ul>
+<li><p>作用在静态方法上，装饰器函数接收的是类构造函数；</p>
+</li>
+<li><p>作用在原型方法上，装饰器函数接收的是<strong>原型对象</strong>；</p>
+</li>
+</ul>
+<p>另外传入下列2个参数：</p>
+<ol>
+<li>成员的名字。</li>
+<li>成员的<em>属性描述符</em>（描述对象）。</li>
+</ol>
+<p>如果方法装饰器返回一个值，会作为方法的<em>属性描述符</em>，代码输出目标版本小于<code>ES5</code>返回值会被忽略；</p>
+<h3 id="属性装饰器"><a href="#属性装饰器" class="headerlink" title="属性装饰器"></a>属性装饰器</h3><p>作用在类中定义的属性上，这些属性不是原型上的属性，而是通过类实例化得到的实例对象上的属性，接收两个参数：</p>
+<ul>
+<li>对于静态成员来说是类的构造函数，对于实例成员是类的原型对象；</li>
+<li>该属性成员的名字；</li>
+</ul>
+<p>没有属性描述对象，这与TypeScript是如何初始化属性装饰器的有关；目前没有办法在定义一个原型对象的成员时描述一个实例属性；属性装饰器极其有用，因为它<strong>可以监听对象状态的变化</strong>；</p>
+<h3 id="参数装饰器"><a href="#参数装饰器" class="headerlink" title="参数装饰器"></a>参数装饰器</h3><p>参数装饰器应用于类构造函数或方法声明，以修饰类的构造函数中的参数，以及类中其他普通函数中的参数。该装饰器在类的方法被调用的时候执行，并传入下列3个参数：</p>
+<ol>
+<li>对于静态成员来说是类的构造函数，对于实例成员是类的原型对象；</li>
+<li>该参数所在的函数的函数名；</li>
+<li>参数在函数参数列表中的索引；</li>
+</ol>
+<p>参数装饰器的返回值会被忽略，</p>
+<h3 id="元数据反射"><a href="#元数据反射" class="headerlink" title="元数据反射"></a>元数据反射</h3><p>反射，就是在运行时动态获取一个对象的一切信息如方法、属性等，特点在于动态<strong>类型反推导</strong>。在 TypeScript 中，反射的原理是通过设计阶段对对象注入元数据信息，在运行阶段读取注入的元数据，从而得到对象信息；</p>
+<p>反射可以获取对象的类型，成员&#x2F;静态属性的信息(类型)，方法的参数类型、返回类型；</p>
+<p>TypeScript 结合自身静态类型语言的特点，为使用了装饰器的代码声明注入了 3 组元数据：</p>
+<ul>
+<li><code>design:type</code>: 成员类型；</li>
+<li><code>design:paramtypes</code>: 成员所有参数类型；</li>
+<li><code>design:returntype</code>: 成员返回类型；</li>
+</ul>
+<p>元数据反射也是实验性 API，需要启用这个实验性特性：</p>
+ <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ES5&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;emitDecoratorMetadata&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>还需要安装插件：<code>npm i reflect-metadata --save</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;reflect-metadata&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">log</span>(<span class="params"><span class="attr">target</span>: <span class="title class_">Object</span>, <span class="attr">key</span>: <span class="built_in">string</span>, <span class="attr">descriptor</span>: <span class="built_in">any</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 获取成员类型</span></span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">type</span> = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:type&#x27;</span>, target, key)</span><br><span class="line">  <span class="comment">// 获取成员参数类型</span></span><br><span class="line">  <span class="keyword">let</span> paramtypes = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:paramtypes&#x27;</span>, target, key)</span><br><span class="line">  <span class="comment">// 获取成员返回类型</span></span><br><span class="line">  <span class="keyword">let</span> returntype = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:returntype&#x27;</span>, target, key)</span><br><span class="line">  <span class="comment">// 获取所有元数据 key (由 TypeScript 注入)</span></span><br><span class="line">  <span class="keyword">let</span> keys = <span class="title class_">Reflect</span>.<span class="title function_">getMetadataKeys</span>(target, key)</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(keys) <span class="comment">// [ &#x27;design:returntype&#x27;, &#x27;design:paramtypes&#x27;, &#x27;design:type&#x27; ]</span></span><br><span class="line">  <span class="comment">// 成员类型</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">type</span>) <span class="comment">// Function</span></span><br><span class="line">  <span class="comment">// 参数类型</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(paramtypes) <span class="comment">// [String]</span></span><br><span class="line">  <span class="comment">// 成员返回类型</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(returntype) <span class="comment">// String</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> originalMethod = descriptor.<span class="property">value</span>; </span><br><span class="line"></span><br><span class="line">  descriptor.<span class="property">value</span> =  <span class="keyword">function</span> (<span class="params">...<span class="attr">args</span>: <span class="built_in">any</span>[]</span>) &#123;</span><br><span class="line">      <span class="comment">// 将“foo”函数的参数列表转化为字符串</span></span><br><span class="line">      <span class="keyword">var</span> a = args.<span class="title function_">map</span>(<span class="function"><span class="params">a</span> =&gt;</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(a)).<span class="title function_">join</span>();</span><br><span class="line">      <span class="comment">// 调用 foo() 并获取它的返回值</span></span><br><span class="line">      <span class="keyword">var</span> result = originalMethod.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args);</span><br><span class="line">      <span class="comment">// 将返回的结果转成字符串</span></span><br><span class="line">      <span class="keyword">var</span> r = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(result);</span><br><span class="line">      <span class="comment">// 打印日志</span></span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Call: <span class="subst">$&#123;key&#125;</span>(<span class="subst">$&#123;a&#125;</span>) =&gt; <span class="subst">$&#123;r&#125;</span>`</span>);</span><br><span class="line">      <span class="comment">// 返回调用 foo 的结果</span></span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 返回已编辑的描述符</span></span><br><span class="line">  <span class="keyword">return</span> descriptor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="meta">@log</span></span><br><span class="line">  <span class="title function_">foo</span>(<span class="params"><span class="attr">n</span>: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> n * <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> c = <span class="keyword">new</span> <span class="title function_">C</span>() </span><br><span class="line">c.<span class="title function_">foo</span>(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们通过这个例子，对上述内容做一个彻底的分析，以下是编译生成的 es5 的 JavaScript 代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> __decorate = (<span class="variable language_">this</span> &amp;&amp; <span class="variable language_">this</span>.<span class="property">__decorate</span>) || <span class="keyword">function</span> (<span class="params">decorators, target, key, desc</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> c = <span class="variable language_">arguments</span>.<span class="property">length</span>, r = c &lt; <span class="number">3</span> ? target : desc === <span class="literal">null</span> ? desc = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(target, key) : desc, d;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="title class_">Reflect</span> === <span class="string">&quot;object&quot;</span> &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Reflect</span>.<span class="property">decorate</span> === <span class="string">&quot;function&quot;</span>) r = <span class="title class_">Reflect</span>.<span class="title function_">decorate</span>(decorators, target, key, desc);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">for</span> (<span class="keyword">var</span> i = decorators.<span class="property">length</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) <span class="keyword">if</span> (d = decorators[i]) r = (c &lt; <span class="number">3</span> ? <span class="title function_">d</span>(r) : c &gt; <span class="number">3</span> ? <span class="title function_">d</span>(target, key, r) : <span class="title function_">d</span>(target, key)) || r;</span><br><span class="line">    <span class="keyword">return</span> c &gt; <span class="number">3</span> &amp;&amp; r &amp;&amp; <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(target, key, r), r;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> __metadata = (<span class="variable language_">this</span> &amp;&amp; <span class="variable language_">this</span>.<span class="property">__metadata</span>) || <span class="keyword">function</span> (<span class="params">k, v</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="title class_">Reflect</span> === <span class="string">&quot;object&quot;</span> &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Reflect</span>.<span class="property">metadata</span> === <span class="string">&quot;function&quot;</span>) <span class="keyword">return</span> <span class="title class_">Reflect</span>.<span class="title function_">metadata</span>(k, v);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="built_in">exports</span>, <span class="string">&quot;__esModule&quot;</span>, &#123; <span class="attr">value</span>: <span class="literal">true</span> &#125;);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">&quot;reflect-metadata&quot;</span>);</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">target, key, descriptor</span>) &#123;</span><br><span class="line">    <span class="comment">// 获取成员类型</span></span><br><span class="line">    <span class="keyword">var</span> type = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:type&#x27;</span>, target, key);</span><br><span class="line">    <span class="comment">// 获取成员参数类型</span></span><br><span class="line">    <span class="keyword">var</span> paramtypes = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:paramtypes&#x27;</span>, target, key);</span><br><span class="line">    <span class="comment">// 获取成员返回类型</span></span><br><span class="line">    <span class="keyword">var</span> returntype = <span class="title class_">Reflect</span>.<span class="title function_">getMetadata</span>(<span class="string">&#x27;design:returntype&#x27;</span>, target, key);</span><br><span class="line">    <span class="comment">// 获取所有元数据 key (由 TypeScript 注入)</span></span><br><span class="line">    <span class="keyword">var</span> keys = <span class="title class_">Reflect</span>.<span class="title function_">getMetadataKeys</span>(target, key);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(keys); <span class="comment">// [ &#x27;design:returntype&#x27;, &#x27;design:paramtypes&#x27;, &#x27;design:type&#x27; ]</span></span><br><span class="line">    <span class="comment">// 成员类型</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(type); <span class="comment">// Function</span></span><br><span class="line">    <span class="comment">// 参数类型</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(paramtypes); <span class="comment">// [String]</span></span><br><span class="line">    <span class="comment">// 成员返回类型</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(returntype); <span class="comment">// String</span></span><br><span class="line">    <span class="keyword">var</span> originalMethod = descriptor.<span class="property">value</span>;</span><br><span class="line">    descriptor.<span class="property">value</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> args = [];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> _i = <span class="number">0</span>; _i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; _i++) &#123;</span><br><span class="line">            args[_i] = <span class="variable language_">arguments</span>[_i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 将“foo”函数的参数列表转化为字符串</span></span><br><span class="line">        <span class="keyword">var</span> a = args.<span class="title function_">map</span>(<span class="keyword">function</span> (<span class="params">a</span>) &#123; <span class="keyword">return</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(a); &#125;).<span class="title function_">join</span>();</span><br><span class="line">        <span class="comment">// 调用 foo() 并获取它的返回值</span></span><br><span class="line">        <span class="keyword">var</span> result = originalMethod.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args);</span><br><span class="line">        <span class="comment">// 将返回的结果转成字符串</span></span><br><span class="line">        <span class="keyword">var</span> r = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(result);</span><br><span class="line">        <span class="comment">// 打印日志</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Call: &quot;</span> + key + <span class="string">&quot;(&quot;</span> + a + <span class="string">&quot;) =&gt; &quot;</span> + r);</span><br><span class="line">        <span class="comment">// 返回调用 foo 的结果</span></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// 返回已编辑的描述符</span></span><br><span class="line">    <span class="keyword">return</span> descriptor;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> C = <span class="comment">/** <span class="doctag">@class</span> */</span> (<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">C</span>(<span class="params"></span>) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    C.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">foo</span> = <span class="keyword">function</span> (<span class="params">n</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> n * <span class="number">2</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="title function_">__decorate</span>([</span><br><span class="line">        log,</span><br><span class="line">        <span class="title function_">__metadata</span>(<span class="string">&quot;design:type&quot;</span>, <span class="title class_">Function</span>),</span><br><span class="line">        <span class="title function_">__metadata</span>(<span class="string">&quot;design:paramtypes&quot;</span>, [<span class="title class_">Number</span>]),</span><br><span class="line">        <span class="title function_">__metadata</span>(<span class="string">&quot;design:returntype&quot;</span>, <span class="keyword">void</span> <span class="number">0</span>)</span><br><span class="line">    ], C.<span class="property"><span class="keyword">prototype</span></span>, <span class="string">&quot;foo&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">return</span> C;</span><br><span class="line">&#125;());</span><br><span class="line"><span class="keyword">var</span> c = <span class="keyword">new</span> <span class="title function_">C</span>();</span><br><span class="line">c.<span class="title function_">foo</span>(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Function：全局对象， <code>Function</code> 对象没有自己的属性和方法，它本身也是一个函数，会从原型链上继承；</p>
+<p>void 0：<strong><code>void</code> 运算符</strong>对表达式求值，返回 <code>undefined</code>；</p>
+</blockquote>
+<p>代码清晰明了，在类定义时，通过<code>__decorate</code>函数将四个装饰器添加到了类中，第一个是我们自己的<code>log</code>装饰器，另外三个是用于类型反射的元数据装饰器；</p>
+<p>先来看看<code>__decorate</code>函数究竟是怎么回事：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> __decorate = (<span class="variable language_">this</span> &amp;&amp; <span class="variable language_">this</span>.<span class="property">__decorate</span>) || <span class="keyword">function</span> (<span class="params">decorators, target, key, desc</span>)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这行代码使用了或操作符（<code>||</code>），以确保若函数<code>__decorate</code>已被创建，其将不会被重写；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> c = <span class="variable language_">arguments</span>.<span class="property">length</span>, </span><br><span class="line">        r = c &lt; <span class="number">3</span> ? target : desc === <span class="literal">null</span> ? desc = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(target, key) : desc, d;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="title class_">Reflect</span> === <span class="string">&quot;object&quot;</span> &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Reflect</span>.<span class="property">decorate</span> === <span class="string">&quot;function&quot;</span>) </span><br><span class="line">        r = <span class="title class_">Reflect</span>.<span class="title function_">decorate</span>(decorators, target, key, desc);</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = decorators.<span class="property">length</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) </span><br><span class="line">            <span class="keyword">if</span> (d = decorators[i]) </span><br><span class="line">                r = (c &lt; <span class="number">3</span> ? <span class="title function_">d</span>(r) : c &gt; <span class="number">3</span> ? <span class="title function_">d</span>(target, key, r) : <span class="title function_">d</span>(target, key)) || r;</span><br><span class="line">    <span class="keyword">return</span> c &gt; <span class="number">3</span> &amp;&amp; r &amp;&amp; <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(target, key, r), r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先，把参数数量赋值给了<code>c</code>，根据参数数量 <code>c</code>的值，决定什么值赋给<code>r</code>，在例子中，函数<code>__decorate</code>传入了 4 个参数，先判断 <code>c &lt; 3</code>，接着判断<code>desc === null</code>，即把<code>Object.getOwnPropertyDescriptor(target, key)</code>的值同时赋给了<code>r</code>和<code>desc</code> ，<code>d</code>变量暂时没用到，做一个声明；</p>
+<p>接下来，先判断了 <code>Reflect</code>相关的内容是否存在，我们先假设没有引入相关内容，看一下代码：</p>
+<ul>
+<li>对<code>decorators</code>数组内的装饰器做一个遍历；</li>
+<li>判断<code>d = decorators[i]</code>的值，做下一步操作，而由<code>__metadata</code>函数，做没有引入<code>Reflect</code>相关的内容，会直接不执行<code>if</code>内的<code>return</code>，无返回值，而返回的实际上是<code>undefined</code>，所以会忽略执行；</li>
+<li>只有<code>log</code>装饰器赋值给<code>d</code>，之后同样是做一些判断，最后执行<code>r = d(target, key, r)</code>；</li>
+<li>最后做判断，并执行<code>Object.defineProperty(target, key, r)</code>，最后返回<code>r</code>；</li>
+</ul>
+<p>如果我们对<code>Object.getOwnPropertyDescriptor</code>和<code>Object.defineProperty</code>方法不陌生，那么这个过程具体完成了什么事情，应该是有个大体了解的，即通过更改描述符的形式对装饰器的内容进行了注入；</p>
+<p>当引入了 <code>Reflect</code>相关内容时，会执行<code>r = Reflect.decorate(decorators, target, key, desc);</code>首先应该先搞清楚另外三个装饰器是如何产生的，对应代码<code>Reflect.metadata(k, v)</code>，我们一起来看看源代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">metadata</span>(<span class="params">metadataKey, metadataValue</span>) &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">decorator</span>(<span class="params">target, propertyKey</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsObject</span>(target))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsUndefined</span>(propertyKey) &amp;&amp; !<span class="title class_">IsPropertyKey</span>(propertyKey))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="title class_">OrdinaryDefineOwnMetadata</span>(metadataKey, metadataValue, target, propertyKey);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> decorator;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，三个元数据装饰器本质上也是函数即<code>decorator(target, propertyKey)</code>，这是必然的，因为装饰器本身就是函数；接着回到<code>__decorate</code>函数内：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">decorate</span>(<span class="params">decorators, target, propertyKey, attributes</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="title class_">IsUndefined</span>(propertyKey)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsArray</span>(decorators))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsObject</span>(target))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsObject</span>(attributes) &amp;&amp; !<span class="title class_">IsUndefined</span>(attributes) &amp;&amp; !<span class="title class_">IsNull</span>(attributes))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (<span class="title class_">IsNull</span>(attributes))</span><br><span class="line">            attributes = <span class="literal">undefined</span>;</span><br><span class="line">        propertyKey = <span class="title class_">ToPropertyKey</span>(propertyKey);</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">DecorateProperty</span>(decorators, target, propertyKey, attributes);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsArray</span>(decorators))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsConstructor</span>(target))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">DecorateConstructor</span>(decorators, target);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先，做了一些基本的类型判断，之后对传入的<code>key</code>做了一个 <code>ToPropertyKey</code>合法化处理，转换成字符串；之后进入<code>DecorateProperty</code>函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">DecorateProperty</span>(<span class="params">decorators, target, propertyKey, descriptor</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = decorators.<span class="property">length</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">        <span class="keyword">var</span> decorator = decorators[i];</span><br><span class="line">        <span class="keyword">var</span> decorated = <span class="title function_">decorator</span>(target, propertyKey, descriptor);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">IsUndefined</span>(decorated) &amp;&amp; !<span class="title class_">IsNull</span>(decorated)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="title class_">IsObject</span>(decorated))</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>();</span><br><span class="line">            descriptor = decorated;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> descriptor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在其中，对所有的装饰器进行了遍历执行，特别的，对于元数据的装饰器<code>decorator(target, propertyKey)</code>是只有两个形参的，回顾上面的源代码，进行参数校验后调用了函数<code>OrdinaryDefineOwnMetadata(metadataKey, metadataValue, target, propertyKey)</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">OrdinaryDefineOwnMetadata</span>(<span class="params">MetadataKey, MetadataValue, O, P</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> metadataMap = <span class="title class_">GetOrCreateMetadataMap</span>(O, P, <span class="comment">/*Create*/</span> <span class="literal">true</span>);</span><br><span class="line">    metadataMap.<span class="title function_">set</span>(<span class="title class_">MetadataKey</span>, <span class="title class_">MetadataValue</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述函数内，调用<code>GetOrCreateMetadataMap()</code>获取了<code>metadataMap</code>继而<code>get()</code>设置了元数据，我们继续深挖：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">GetOrCreateMetadataMap</span>(<span class="params">O, P, Create</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> targetMetadata = <span class="title class_">Metadata</span>.<span class="title function_">get</span>(O);</span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">IsUndefined</span>(targetMetadata)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">Create</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">undefined</span>;</span><br><span class="line">        targetMetadata = <span class="keyword">new</span> <span class="title function_">_Map</span>();</span><br><span class="line">        <span class="title class_">Metadata</span>.<span class="title function_">set</span>(O, targetMetadata);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> metadataMap = targetMetadata.<span class="title function_">get</span>(P);</span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">IsUndefined</span>(metadataMap)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title class_">Create</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">undefined</span>;</span><br><span class="line">        metadataMap = <span class="keyword">new</span> <span class="title function_">_Map</span>();</span><br><span class="line">        targetMetadata.<span class="title function_">set</span>(P, metadataMap);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> metadataMap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的函数内，将装饰器的目标对象作为键，从<code>Metadata</code>获取到了其对应的元数据<code>targetMetadata</code>，并做了校验，若为 undefined 则重新创建；类似的，将参数<code>P</code>（propertyKey：’foo’）作为键获取到了对应的元数据<code>metadataMap</code>；可以查看源代码，查看类型的定义，这里做了一些兼容性适配；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> functionPrototype = <span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(<span class="title class_">Function</span>);</span><br><span class="line"><span class="keyword">var</span> usePolyfill = <span class="keyword">typeof</span> process === <span class="string">&quot;object&quot;</span> &amp;&amp; process.<span class="property">env</span> &amp;&amp; process.<span class="property">env</span>[<span class="string">&quot;REFLECT_METADATA_USE_MAP_POLYFILL&quot;</span>] === <span class="string">&quot;true&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> _Map = !usePolyfill &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Map</span> === <span class="string">&quot;function&quot;</span> &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Map</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">entries</span> === <span class="string">&quot;function&quot;</span> ? <span class="title class_">Map</span> : <span class="title class_">CreateMapPolyfill</span>();</span><br><span class="line"><span class="keyword">var</span> _WeakMap = !usePolyfill &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">WeakMap</span> === <span class="string">&quot;function&quot;</span> ? <span class="title class_">WeakMap</span> : <span class="title class_">CreateWeakMapPolyfill</span>();</span><br><span class="line"><span class="keyword">var</span> <span class="title class_">Metadata</span> = <span class="keyword">new</span> <span class="title function_">_WeakMap</span>();</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>关于这些类型定义和一些概念，可以查看MDN文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Keyed_collections#weakmap%E5%AF%B9%E8%B1%A1">带键的集合 - JavaScript | MDN (mozilla.org)</a>；</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Glossary/Polyfill">Polyfill - 术语表 | MDN (mozilla.org)</a>；</li>
+</ul>
+</blockquote>
+<p>经过上述的分析，装饰器的实现的分析，应该大致有个了解了，当然我们只是那方法的装饰器做了例子，其他的装饰器也是大同小异；</p>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://blog.mahoo12138.cn/post/typescript-3/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=http://blog.mahoo12138.cn/post/typescript-3/&title=TypeScript学习-03-语法进阶 - Mahoo12138&summary=枚举枚举是组织收集有关联变量的一种方式，可以清晰地表达意图或创建一组有区别的用例，使用enum定义枚举类型：
+123456789enum Day &#123;  SUNDAY,  MONDAY,  TUESDAY,  WEDNESDA..."><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg" /></a><a class="social share-item email" href="mailto:?subject=TypeScript学习-03-语法进阶 - Mahoo12138&amp;body=http://blog.mahoo12138.cn/post/typescript-3/"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://blog.mahoo12138.cn/post/typescript-3/"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/typescript-4/">TypeScript学习-04-项目接口开发</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/typescript-2/">TypeScript学习-02-实战爬虫开发</a></div></section></div>
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">Mahoo12138</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE"><span class="toc-text">枚举</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E6%A0%87%E5%BF%97"><span class="toc-text">数字类型作为标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E6%88%90%E5%91%98%E7%B1%BB%E5%9E%8B"><span class="toc-text">枚举成员类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E7%9A%84%E6%9E%9A%E4%B8%BE"><span class="toc-text">有静态方法的枚举</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B"><span class="toc-text">泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E7%BA%A6%E6%9D%9F"><span class="toc-text">泛型约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%B3%9B%E5%9E%8B%E9%87%8C%E4%BD%BF%E7%94%A8%E7%B1%BB%E7%B1%BB%E5%9E%8B"><span class="toc-text">在泛型里使用类类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F"><span class="toc-text">类型系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%B1%BB%E5%9E%8B"><span class="toc-text">索引类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%A0%E5%B0%84%E7%B1%BB%E5%9E%8B"><span class="toc-text">映射类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="toc-text">条件类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-text">命名空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">装饰器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%8E%82"><span class="toc-text">装饰器工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">类装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">方法装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">属性装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">参数装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E6%95%B0%E6%8D%AE%E5%8F%8D%E5%B0%84"><span class="toc-text">元数据反射</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"closeEnable":true,"closeText":"关闭提示","originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  window.canonical["param"] = {"permalink":"http://blog.mahoo12138.cn/post/typescript-3/","checklink":"/js/plugins/video.js"};
+  // Fix: Ensure page is at the correct top position on data load
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'auto';
+  }
+  (function() {
+    const scrollHandler = () => {
+      const wikiCover = document.querySelector('#l_cover .l_cover.wiki');
+      const startEl = document.getElementById('start');
+      if (wikiCover && startEl) {
+        window.scrollTo(0, startEl.offsetTop);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+    if (document.readyState !== 'loading') scrollHandler();
+    else document.addEventListener('DOMContentLoaded', scrollHandler);
+  })();
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      // 倒序遍历避免 splice 后的索引问题
+      for (let index = this.list.length - 1; index >= 0; index--) {
+        const e = this.list[index];
+        if (e.name === name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 已加载脚本缓存
+    _loadedScripts: new Set(),
+
+    // 已加载元素缓存 (使用 WeakSet 追踪元素实例,避免 PJAX 导航时的状态混淆)
+    _loadedElements: new WeakSet(),
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      // 如果脚本已加载，直接返回
+      if (utils._loadedScripts.has(src)) {
+        resolve();
+        return;
+      }
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        utils._loadedScripts.add(src);
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // PJAX 事件监听器管理
+    _pjaxListeners: new Set(),
+    
+    jq: (fn, pjax = true) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+      if (pjax && !fn._pjax_registered) {
+        document.addEventListener('pjax:complete', fn);
+        fn._pjax_registered = true;
+        utils._pjaxListeners.add(fn); // 追踪监听器以便清理
+      }
+    },
+    
+    // 清理所有 PJAX 事件监听器
+    cleanupPjaxListeners: () => {
+      utils._pjaxListeners.forEach(fn => {
+        document.removeEventListener('pjax:complete', fn);
+        fn._pjax_registered = false;
+      });
+      utils._pjaxListeners.clear();
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        if ($(el).find('.loading-wrap').length === 0){
+          $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+        }
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      // 检查元素实例是否已加载 (而不是检查属性)
+      if (el && utils._loadedElements.has(el)) {
+        return;
+      }
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            // 标记元素实例为已加载
+            if (el) utils._loadedElements.add(el);
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+
+    // 插件初始化管理器 - 统一处理 DOMContentLoaded 和 pjax:complete 事件
+    _pluginInitializers: [],
+    _pluginCleanups: new Map(), // 存储每个插件的清理函数
+    
+    initPlugin: (initFn, name, options = {}) => {
+      if (!initFn || typeof initFn !== 'function') return;
+      
+      // 避免重复注册
+      const pluginName = name || initFn.name;
+      if (utils._pluginInitializers.some(p => p.name === pluginName)) return;
+      
+      // 包装初始化函数，添加防重复执行的保护
+      const wrappedInit = () => {
+        try {
+          // 在执行前先清理旧的资源
+          if (utils._pluginCleanups.has(pluginName)) {
+            const cleanup = utils._pluginCleanups.get(pluginName);
+            if (typeof cleanup === 'function') {
+              cleanup();
+            }
+          }
+          
+          // 执行初始化，可能返回清理函数
+          const cleanup = initFn();
+          
+          // 如果初始化函数返回了清理函数，保存它
+          if (typeof cleanup === 'function') {
+            utils._pluginCleanups.set(pluginName, cleanup);
+          }
+        } catch (error) {
+          console.error(`[Plugin ${pluginName}] 初始化失败:`, error);
+        }
+      };
+      
+      utils._pluginInitializers.push({ 
+        fn: wrappedInit, 
+        name: pluginName,
+        options: options 
+      });
+      
+      // 如果 DOM 已经加载完成，立即执行
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        wrappedInit();
+      } else {
+        // 否则等待 DOMContentLoaded
+        window.addEventListener('DOMContentLoaded', wrappedInit, { once: true });
+      }
+    },
+
+    // 重新初始化所有插件（用于 PJAX 等场景）
+    reinitPlugins: () => {
+      utils._pluginInitializers.forEach(plugin => {
+        // 跳过标记为不需要重新初始化的插件
+        if (plugin.options.skipReinit) return;
+        
+        try {
+          plugin.fn();
+        } catch (error) {
+          console.error(`[Plugin ${plugin.name}] 重新初始化失败:`, error);
+        }
+      });
+    },
+    
+    // 清理所有插件资源
+    cleanupPlugins: () => {
+      utils._pluginCleanups.forEach((cleanup, name) => {
+        try {
+          cleanup();
+        } catch (error) {
+          console.error(`[Plugin ${name}] 清理失败:`, error);
+        }
+      });
+      utils._pluginCleanups.clear();
+    },
+    
+    // 清理所有资源（用于页面卸载或重置）
+    cleanupAll: () => {
+      utils.cleanupPlugins();
+      utils.cleanupPjaxListeners();
+    },
+  };
+
+  // 自动处理 PJAX 事件
+  document.addEventListener('pjax:before', () => {
+    // 在导航前清理旧的 PJAX 监听器（如果需要重新注册）
+    // 注意：这里不清理，因为监听器应该是持久的
+    // utils.cleanupPjaxListeners();
+  });
+  
+  document.addEventListener('pjax:complete', () => {
+    utils.reinitPlugins();
+  });
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  const initServices = () => {
+    // 用于存储需要清理的资源
+    let timers = [];
+    
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"},"rss":{"js":"/js/services/rss.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        const cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(cardlinks);
+          });
+        }
+      } else if (id == 'ghinfo') {
+        const els = document.querySelectorAll('.ds-ghinfo');
+        if (els.length > 0) {
+          utils.js(js, { defer: true });
+        }
+      } else if (id == 'voice') {
+        const voiceAudios = document.querySelectorAll('.voice>audio');
+        if (voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        const videos = document.querySelectorAll('.video>video');
+        if (videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        const files = document.querySelectorAll('.chat-file');
+        if (files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || id == 'memos' || id == 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          }, false);
+        }
+      }
+    }
+
+    // search
+    if (ctx.search && typeof searchFunc === 'function') {
+      const $inputArea = $("input#search-input");
+      if ($inputArea.length > 0 && !$inputArea[0]._searchInitialized) {
+        const path = ctx.search.path.startsWith('/') ? ctx.root + ctx.search.path.substring(1) : ctx.root + ctx.search.path;
+        const filter = $inputArea.attr('data-filter') || '';
+        searchFunc(path, filter, 'search-wrapper', 'search-input', 'search-result');
+        // 标记为已初始化，防止重复绑定
+        $inputArea[0]._searchInitialized = true;
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+    let firstAdjustInterval = null;
+    let mainInterval = null;
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      const date = new Date();
+      const sec = date.getSeconds();
+      firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+      timers.push(firstAdjustInterval);
+
+      function firstAdjustTime() {
+        NowTime();
+        if (firstAdjustInterval) {
+          clearInterval(firstAdjustInterval);
+          firstAdjustInterval = null;
+        }
+        mainInterval = setInterval(NowTime, 1000 * 60);
+        timers.push(mainInterval);
+      }
+
+      function NowTime() {
+        for (let i = 0; i < phoneTimes.length; ++i) {
+          const timeSpan = phoneTimes[i];
+          const date = new Date();
+          const hour = date.getHours();
+          const min = date.getMinutes();
+          timeSpan.innerHTML = check(hour) + ":" + check(min);
+        }
+      };
+
+      function check(val) {
+        if (val < 10) {
+          return ("0" + val);
+        }
+        return (val);
+      }
+    }
+
+    // chat quote - 存储事件监听器以便清理
+    const quoteClickHandlers = new Map();
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      const handler = function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      };
+      quote.addEventListener('click', handler);
+      quoteClickHandlers.set(quote, handler); // 保存处理器引用
+    });
+
+    // 返回清理函数，用于清理定时器和观察器
+    return () => {
+      // 清理所有定时器（包括可能未完成的 firstAdjustInterval）
+      timers.forEach(timer => {
+        if (timer) clearInterval(timer);
+      });
+      timers = [];
+      if (firstAdjustInterval) {
+        clearInterval(firstAdjustInterval);
+        firstAdjustInterval = null;
+      }
+      if (mainInterval) {
+        clearInterval(mainInterval);
+        mainInterval = null;
+      }
+      
+      // 断开观察器
+      if (chat_quote_obverser) {
+        chat_quote_obverser.disconnect();
+      }
+      
+      // 移除所有 click 事件监听器
+      quoteClickHandlers.forEach((handler, quote) => {
+        quote.removeEventListener('click', handler);
+      });
+      quoteClickHandlers.clear();
+    };
+  };
+
+  utils.initPlugin(initServices, 'services');
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  utils.initPlugin(() => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  }, 'swiper');
+</script>
+<script>
+  utils.initPlugin(() => {
+    const codeElements = document.querySelectorAll('.code');
+    if (codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js', { defer: true }).then(() => {
+        if (typeof createCopyButtons === 'function') {
+          createCopyButtons(codeElements);
+        }
+      });
+    }
+  }, 'copycode');
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
+

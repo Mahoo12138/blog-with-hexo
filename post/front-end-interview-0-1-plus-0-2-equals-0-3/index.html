@@ -1,0 +1,1279 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>一道前端面试题：如何判断 0.1 + 0.2 与 0.3 相等？ - Mahoo12138</title>
+
+  
+    <meta name="description" content="前言在 JavaScript 中，有一个经典的前端面试题：为什么 0.1 + 0.2 不等于 0.3？ 如果你尝试在控制台中输入以下代码： 12console.log(0.1 + 0.2 &#x3D;&#x3D;&#x3D; 0.3); &#x2F;&#x2F; falseconsole.log(0.1 + 0.2); &#x2F;&#x2F; 0.30000000000000004  你会惊讶地发现结果是false！这个看似简单的计算却揭示了计算机科学中一个深层次">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一道前端面试题：如何判断 0.1 + 0.2 与 0.3 相等？">
+<meta property="og:url" content="http://blog.mahoo12138.cn/post/front-end-interview-0-1-plus-0-2-equals-0-3/">
+<meta property="og:site_name" content="Mahoo12138">
+<meta property="og:description" content="前言在 JavaScript 中，有一个经典的前端面试题：为什么 0.1 + 0.2 不等于 0.3？ 如果你尝试在控制台中输入以下代码： 12console.log(0.1 + 0.2 &#x3D;&#x3D;&#x3D; 0.3); &#x2F;&#x2F; falseconsole.log(0.1 + 0.2); &#x2F;&#x2F; 0.30000000000000004  你会惊讶地发现结果是false！这个看似简单的计算却揭示了计算机科学中一个深层次">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mahoo12138.cn/images/avatar.jpg">
+<meta property="article:published_time" content="2025-06-28T15:12:32.000Z">
+<meta property="article:modified_time" content="2026-01-16T13:46:54.145Z">
+<meta property="article:author" content="Mahoo12138">
+<meta property="article:tag" content="IEEE754">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mahoo12138.cn/images/avatar.jpg">
+  
+  
+  
+  <meta name="keywords" content="JavaScript,IEEE754">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Mahoo12138","sameAs":[],"image":"http://blog.mahoo12138.cn/images/avatar.jpg"},"dateCreated":"2025-06-28T23:12:32+08:00","dateModified":"2026-01-16T21:46:54+08:00","datePublished":"2025-06-28T23:12:32+08:00","description":"","headline":"一道前端面试题：如何判断 0.1 + 0.2 与 0.3 相等？","mainEntityOfPage":{"@type":"WebPage","@id":"http://blog.mahoo12138.cn/post/front-end-interview-0-1-plus-0-2-equals-0-3/"},"publisher":{"@type":"Organization","name":"Mahoo12138","sameAs":[],"image":"http://blog.mahoo12138.cn/images/avatar.jpg","logo":{"@type":"ImageObject","url":"http://blog.mahoo12138.cn/images/avatar.jpg"}},"url":"http://blog.mahoo12138.cn/post/front-end-interview-0-1-plus-0-2-equals-0-3/","keywords":"JavaScript, IEEE754","image":[]}</script>
+  
+</head>
+<body><div id="l_cover">
+
+</div><div class="l_body content" id="start" layout="post" type="tech"  ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="/images/avatar.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/"><div class="main">Mahoo Blog</div><div class="sub normal cap">每个人的独立博客</div><div class="sub hover cap" style="opacity:0"> Designed by xaoxuu</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select scroll"><a class="nav-item" title="主页" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M2 12.204c0-2.289 0-3.433.52-4.381c.518-.949 1.467-1.537 3.364-2.715l2-1.241C9.889 2.622 10.892 2 12 2s2.11.622 4.116 1.867l2 1.241c1.897 1.178 2.846 1.766 3.365 2.715S22 9.915 22 12.203v1.522c0 3.9 0 5.851-1.172 7.063S17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.212S2 17.626 2 13.725z" opacity=".5"/><path fill="currentColor" d="M9 17.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="nav-item active" title="博客" href="/recent/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="笔记本" href="/notebooks/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/explore/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/friends/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a><a class="nav-item" title="状态" href="/status/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".5"/><path fill="currentColor" d="M15.5 9.25a.75.75 0 0 0-1.357-.434l-1.893 3.101l-.96-1.92a.75.75 0 0 0-1.318-.026l-1.286 2.143H8a.75.75 0 0 0 0 1.5h1.25a.75.75 0 0 0 .643-.362l.768-1.28l1.05 2.102a.75.75 0 0 0 1.345.024l1.893-3.1l.408.815a.75.75 0 0 0 .671.412H17a.75.75 0 0 0 0-1.5h-.528z"/></svg></a><a class="nav-item" title="工具" href="/tools/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M2 6.5c0-1.886 0-2.828.586-3.414S4.114 2.5 6 2.5s2.828 0 3.414.586S10 4.614 10 6.5s0 2.828-.586 3.414S7.886 10.5 6 10.5s-2.828 0-3.414-.586S2 8.386 2 6.5m12 0c0-1.886 0-2.828.586-3.414S16.114 2.5 18 2.5s2.828 0 3.414.586S22 4.614 22 6.5s0 2.828-.586 3.414S19.886 10.5 18 10.5s-2.828 0-3.414-.586S14 8.386 14 6.5" opacity=".5"/><path fill="currentColor" d="M2 17.5c0-1.886 0-2.828.586-3.414S4.114 13.5 6 13.5s2.828 0 3.414.586S10 15.614 10 17.5s0 2.828-.586 3.414S7.886 21.5 6 21.5s-2.828 0-3.414-.586S2 19.386 2 17.5m12 0c0-1.886 0-2.828.586-3.414s1.528-.586 3.414-.586s2.828 0 3.414.586S22 15.614 22 17.5s0 2.828-.586 3.414s-1.528.586-3.414.586s-2.828 0-3.414-.586S14 19.386 14 17.5"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/layered-partner-system/"><span class="title">层级伴侣制度：一个替代婚姻制度的设想</span></a><a class="item title" href="/post/hexo-theme-tutorial-05/"><span class="title">Hexo 主题开发系列教程（五）：插件系统与生态</span></a><a class="item title" href="/post/hexo-theme-tutorial-04/"><span class="title">Hexo 主题开发系列教程（四）：高级功能与优化</span></a><a class="item title" href="/post/hexo-theme-tutorial-03/"><span class="title">Hexo 主题开发系列教程（三）：主题结构与模板系统</span></a><a class="item title" href="/post/hexo-1/"><span class="title">Hexo 使用的不完全填坑指南</span></a><a class="item title" href="/post/cursor-more-than-an-arrow/"><span class="title">从一个小光标说起：藏在网页里的交互语言</span></a><a class="item title" href="/post/react-version-history/"><span class="title">React 16 → 19：六年演进全记录</span></a><a class="item title" href="/post/immich-rk3588-deployment/"><span class="title">在 RK3588 小主机上部署 Immich 开源相册服务</span></a><a class="item title" href="/post/hexo-2/"><span class="title">Hexo 个人博客 SEO 优化指南</span></a><a class="item title" href="/post/flutter-4/"><span class="title">Flutter 入门学习之Text文本相关组件</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/recent/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-06-28T15:12:32.000Z">2025-06-28</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-01-16T13:46:54.145Z">2026-01-16</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>一道前端面试题：如何判断 0.1 + 0.2 与 0.3 相等？</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 JavaScript 中，有一个经典的前端面试题：<strong>为什么 0.1 + 0.2 不等于 0.3？</strong> 如果你尝试在控制台中输入以下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">0.1</span> + <span class="number">0.2</span> === <span class="number">0.3</span>); <span class="comment">// false</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">0.1</span> + <span class="number">0.2</span>); <span class="comment">// 0.30000000000000004</span></span><br></pre></td></tr></table></figure>
+
+<p>你会惊讶地发现结果是<code>false</code>！这个看似简单的计算却揭示了计算机科学中一个深层次的问题——<strong>浮点数精度问题</strong>。</p>
+<p>这个问题不仅存在于 JavaScript 中，几乎所有使用 IEEE 754 浮点数标准的编程语言都会遇到：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JavaScript</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">0.1</span> + <span class="number">0.2</span>); <span class="comment">// 0.30000000000000004</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Python</span></span><br><span class="line"># <span class="number">0.1</span> + <span class="number">0.2</span> = <span class="number">0.30000000000000004</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Java</span></span><br><span class="line"><span class="comment">// 0.1 + 0.2 = 0.30000000000000004</span></span><br></pre></td></tr></table></figure>
+
+<p>本文将带你深入探讨这个问题的本质，并提供专业级的解决方案。</p>
+<h2 id="问题根源：IEEE-754-浮点数标准"><a href="#问题根源：IEEE-754-浮点数标准" class="headerlink" title="问题根源：IEEE 754 浮点数标准"></a>问题根源：IEEE 754 浮点数标准</h2><p>ECMAScript 中的 Number 类型使用 <strong>IEEE754</strong> 标准来表示整数和浮点数值。所谓 IEEE754 标准，全称 IEEE 二进制浮点数算术标准，这个标准定义了表示浮点数的格式等内容。</p>
+<p>在 IEEE754 中，规定了四种表示浮点数值的方式：单精确度（32 位）、双精确度（64 位）、延伸单精确度、与延伸双精确度。像 ECMAScript 采用的就是双精确度，也就是说，会用 64 位来储存一个浮点数。</p>
+<h3 id="二进制表示基础"><a href="#二进制表示基础" class="headerlink" title="二进制表示基础"></a>二进制表示基础</h3><p>要理解 IEEE 754 浮点数的存储机制，我们首先需要了解十进制数是如何被转换为二进制。IEEE 754 标准的核心就是将数值转换为二进制形式，然后按照特定的格式存储。</p>
+<h4 id="整数转二进制"><a href="#整数转二进制" class="headerlink" title="整数转二进制"></a>整数转二进制</h4><p>首先看一个简单的例子：1020 转二进制</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1020 = 1×2^9 + 1×2^8 + 1×2^7 + 1×2^6 + 1×2^5 + 1×2^4 + 1×2^3 + 1×2^2 + 0×2^1 + 0×2^0</span><br><span class="line">     = 512 + 256 + 128 + 64 + 32 + 16 + 8 + 4 + 0 + 0</span><br><span class="line">     = 1020</span><br></pre></td></tr></table></figure>
+
+<p>所以 1020 的二进制表示为：<code>1111111100</code>。</p>
+<h4 id="小数转二进制：0-75-的精确表示"><a href="#小数转二进制：0-75-的精确表示" class="headerlink" title="小数转二进制：0.75 的精确表示"></a>小数转二进制：0.75 的精确表示</h4><p>0.75 转二进制的推导过程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.75 = a×2^(-1) + b×2^(-2) + c×2^(-3) + d×2^(-4) + ...</span><br></pre></td></tr></table></figure>
+
+<p>其中 a、b、c、d…只能是 0 或 1。</p>
+<p><strong>推导步骤：</strong></p>
+<ol>
+<li><p><strong>第一步：</strong> 0.75 × 2 &#x3D; 1.5</p>
+<ul>
+<li>整数部分：1 → a &#x3D; 1</li>
+<li>小数部分：0.5</li>
+</ul>
+</li>
+<li><p><strong>第二步：</strong> 0.5 × 2 &#x3D; 1.0</p>
+<ul>
+<li>整数部分：1 → b &#x3D; 1</li>
+<li>小数部分：0.0（结束）</li>
+</ul>
+</li>
+</ol>
+<p>所以 0.75 的二进制表示为：<code>0.11</code></p>
+<p><strong>验证：</strong> 0.11₂ &#x3D; 1×2^(-1) + 1×2^(-2) &#x3D; 0.5 + 0.25 &#x3D; 0.75 ✓</p>
+<h4 id="小数转二进制：0-1-的无限循环"><a href="#小数转二进制：0-1-的无限循环" class="headerlink" title="小数转二进制：0.1 的无限循环"></a>小数转二进制：0.1 的无限循环</h4><p>现在来看 0.1 转二进制的推导过程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.1 = a×2^(-1) + b×2^(-2) + c×2^(-3) + d×2^(-4) + ...</span><br></pre></td></tr></table></figure>
+
+<p><strong>详细推导步骤：</strong></p>
+<ol>
+<li><p><strong>第一步：</strong> 0.1 × 2 &#x3D; 0.2</p>
+<ul>
+<li>整数部分：0 → a &#x3D; 0</li>
+<li>小数部分：0.2</li>
+</ul>
+</li>
+<li><p><strong>第二步：</strong> 0.2 × 2 &#x3D; 0.4</p>
+<ul>
+<li>整数部分：0 → b &#x3D; 0</li>
+<li>小数部分：0.4</li>
+</ul>
+</li>
+<li><p><strong>第三步：</strong> 0.4 × 2 &#x3D; 0.8</p>
+<ul>
+<li>整数部分：0 → c &#x3D; 0</li>
+<li>小数部分：0.8</li>
+</ul>
+</li>
+<li><p><strong>第四步：</strong> 0.8 × 2 &#x3D; 1.6</p>
+<ul>
+<li>整数部分：1 → d &#x3D; 1</li>
+<li>小数部分：0.6</li>
+</ul>
+</li>
+<li><p><strong>第五步：</strong> 0.6 × 2 &#x3D; 1.2</p>
+<ul>
+<li>整数部分：1 → e &#x3D; 1</li>
+<li>小数部分：0.2</li>
+</ul>
+</li>
+<li><p><strong>第六步：</strong> 0.2 × 2 &#x3D; 0.4</p>
+<ul>
+<li>整数部分：0 → f &#x3D; 0</li>
+<li>小数部分：0.4</li>
+</ul>
+</li>
+</ol>
+<p><strong>发现问题！</strong> 第六步的小数部分又回到了 0.2，这意味着接下来的步骤会重复前面的模式。</p>
+<p><strong>完整循环模式：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">0.1 × 2 = 0.2  → a = 0, 剩余 0.2</span><br><span class="line">0.2 × 2 = 0.4  → b = 0, 剩余 0.4</span><br><span class="line">0.4 × 2 = 0.8  → c = 0, 剩余 0.8</span><br><span class="line">0.8 × 2 = 1.6  → d = 1, 剩余 0.6</span><br><span class="line">0.6 × 2 = 1.2  → e = 1, 剩余 0.2</span><br><span class="line">0.2 × 2 = 0.4  → f = 0, 剩余 0.4  ← 开始循环</span><br><span class="line">0.4 × 2 = 0.8  → g = 0, 剩余 0.8</span><br><span class="line">0.8 × 2 = 1.6  → h = 1, 剩余 0.6</span><br><span class="line">0.6 × 2 = 1.2  → i = 1, 剩余 0.2</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>所以 0.1 的二进制表示为：<code>0.00011001100110011...</code>（无限循环）</p>
+<p><strong>循环节：</strong> <code>0011</code> 重复出现</p>
+<h4 id="0-2-的二进制表示"><a href="#0-2-的二进制表示" class="headerlink" title="0.2 的二进制表示"></a>0.2 的二进制表示</h4><p>同理，0.2 的推导过程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0.2 × 2 = 0.4  → a = 0, 剩余 0.4</span><br><span class="line">0.4 × 2 = 0.8  → b = 0, 剩余 0.8</span><br><span class="line">0.8 × 2 = 1.6  → c = 1, 剩余 0.6</span><br><span class="line">0.6 × 2 = 1.2  → d = 1, 剩余 0.2</span><br><span class="line">0.2 × 2 = 0.4  → e = 0, 剩余 0.4  ← 开始循环</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>所以 0.2 的二进制表示为：<code>0.0011001100110011...</code>（无限循环）</p>
+<p><strong>循环节：</strong> <code>0011</code> 重复出现</p>
+<h4 id="数学原理：为什么会出现循环？"><a href="#数学原理：为什么会出现循环？" class="headerlink" title="数学原理：为什么会出现循环？"></a>数学原理：为什么会出现循环？</h4><p>这个问题可以从数学角度解释：</p>
+<p><strong>定理：</strong> 一个十进制小数能精确表示为有限位二进制小数，当且仅当该小数可以表示为 <code>p/2^n</code> 的形式（其中 p 是整数，n 是非负整数）。</p>
+<p><strong>证明：</strong></p>
+<ul>
+<li>如果小数可以表示为 <code>p/2^n</code>，那么它一定能精确转换为有限位二进制小数</li>
+<li>反之，如果小数不能表示为这种形式，那么它必然会产生无限循环</li>
+</ul>
+<p><strong>举例：</strong></p>
+<ul>
+<li>0.75 &#x3D; 3&#x2F;4 &#x3D; 3&#x2F;2² → 可以精确表示</li>
+<li>0.1 &#x3D; 1&#x2F;10 &#x3D; 1&#x2F;(2×5) → 分母包含质因子 5，不能表示为 <code>p/2^n</code> 的形式，所以会产生循环</li>
+</ul>
+<p><strong>常见循环模式：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一些常见小数的二进制表示</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="built_in">parseFloat</span>(<span class="number">0.1</span>).<span class="title function_">toString</span>(<span class="number">2</span>)); <span class="comment">// 0.0001100110011001100110011001100110011001100110011001101</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="built_in">parseFloat</span>(<span class="number">0.2</span>).<span class="title function_">toString</span>(<span class="number">2</span>)); <span class="comment">// 0.001100110011001100110011001100110011001100110011001101</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="built_in">parseFloat</span>(<span class="number">0.3</span>).<span class="title function_">toString</span>(<span class="number">2</span>)); <span class="comment">// 0.010011001100110011001100110011001100110011001100110011</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="built_in">parseFloat</span>(<span class="number">0.4</span>).<span class="title function_">toString</span>(<span class="number">2</span>)); <span class="comment">// 0.01100110011001100110011001100110011001100110011001101</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="built_in">parseFloat</span>(<span class="number">0.5</span>).<span class="title function_">toString</span>(<span class="number">2</span>)); <span class="comment">// 0.1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="built_in">parseFloat</span>(<span class="number">0.75</span>).<span class="title function_">toString</span>(<span class="number">2</span>)); <span class="comment">// 0.11</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="JavaScript-中的数值表示"><a href="#JavaScript-中的数值表示" class="headerlink" title="JavaScript 中的数值表示"></a>JavaScript 中的数值表示</h3><p>JavaScript 只有一种数值类型：<code>Number</code>，即刚刚说到的 IEEE 754 双精度浮点数。其使用 64 位来储存一个浮点数，结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">符号位(1位) | 指数位(11位) | 尾数位(52位)</span><br></pre></td></tr></table></figure>
+
+<p><strong>详细结构解析：</strong></p>
+<ul>
+<li><strong>符号位 (Sign)</strong>：0 表示正数，1 表示负数</li>
+<li><strong>指数位 (Exponent)</strong>：11 位，使用偏移量编码，偏移值为 1023</li>
+<li><strong>尾数位 (Fraction)</strong>：52 位，存储规格化后的尾数部分</li>
+</ul>
+<p><strong>数值计算公式：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">V = (-1)^S × (1 + F) × 2^(E - 1023)</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li>S：符号位</li>
+<li>E：指数位（存储值）</li>
+<li>F：尾数位（二进制小数）</li>
+</ul>
+<p>简单来理解，这就是二进制的科学计数法，只不过做了一些特定调整，只存储了式子中变化的一些值。</p>
+<p>比如 -1020，用科学计数法表示就是 $$-1 * 10^3 * 1.02$$，对于二进制也是一样，以 0.1 的二进制 0.00011001100110011…… 这个数可以表示为 $$1 * 2^{-4} * 1.1001100110011……$$。</p>
+<p>不看前面的符号位，只看后面的部分，所有的浮点数都可以表示为 <code>1.xxxx * 2^xxx</code> 的形式，前面的一定是 <code>1.xxx</code>，所以干脆就不存储这个 1 了，直接存后面的 <code>xxxxx</code>，这也就是尾数位 (Fraction) 。</p>
+<p>而 <code>2^xxx</code> ，例如 1020.75，对应二进制数就是 1111111100.11，对应二进制科学计数法就是 $$1 * 1.11111110011 * 2^9$$，指数值就是 9，而如果是 0.1 ，对应二进制是 1 _ $$1.1001100110011…… _ 2^{-4}$$， 指数值就是 -4，也就是说，指数值既可能是负数，又可能是正数。</p>
+<p>假如用 8 位来存储指数值，如果只有正数的话，储存的值的范围是 0 ~ 254，而如果要储存正负数的话，值的范围就是 -127~127，在存储的时候，把<strong>要存储的数字加上 127</strong>，这样当我们存 -127 的时候，我们存 0，当存 127 的时候，存 254，这样就解决了存负数的问题。对应的，当取值的时候，我们再减去 127。</p>
+<p>所以，实际存储的值与真正参与计算的值是有一个偏移值的，8 位存储时则为 127，而 IEEE 754 使用 11 位存储指数值，对于 11 位来说，偏移值是 $$2^{(11-1)} - 1 &#x3D; 1023$$。</p>
+<h3 id="精度误差的实际计算"><a href="#精度误差的实际计算" class="headerlink" title="精度误差的实际计算"></a>精度误差的实际计算</h3><p>让我们看看 0.1 和 0.2 在内存中的实际表示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 0.1的64位表示</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="built_in">parseFloat</span>(<span class="number">0.1</span>).<span class="title function_">toString</span>(<span class="number">2</span>));</span><br><span class="line"><span class="comment">// 0.0001100110011001100110011001100110011001100110011001101</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 0.2的64位表示</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="built_in">parseFloat</span>(<span class="number">0.2</span>).<span class="title function_">toString</span>(<span class="number">2</span>));</span><br><span class="line"><span class="comment">// 0.001100110011001100110011001100110011001100110011001101</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">0.1</span> + <span class="number">0.2</span>);</span><br><span class="line"><span class="comment">// 0.30000000000000004</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">0.1</span> + <span class="number">0.2</span> - <span class="number">0.3</span>);</span><br><span class="line"><span class="comment">// 5.551115123125783e-17</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 toPrecision 查看完整精度</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>((<span class="number">0.1</span> + <span class="number">0.2</span>).<span class="title function_">toPrecision</span>(<span class="number">21</span>));</span><br><span class="line"><span class="comment">// 0.300000000000000044409</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>((<span class="number">0.3</span>).<span class="title function_">toPrecision</span>(<span class="number">21</span>));</span><br><span class="line"><span class="comment">// 0.299999999999999988898</span></span><br></pre></td></tr></table></figure>
+
+<p>这个微小的误差（约 5.55e-17 ）导致直接比较失败。</p>
+<h2 id="初级解决方案：容差阈值比较"><a href="#初级解决方案：容差阈值比较" class="headerlink" title="初级解决方案：容差阈值比较"></a>初级解决方案：容差阈值比较</h2><h3 id="Number-EPSILON-简介"><a href="#Number-EPSILON-简介" class="headerlink" title="Number.EPSILON 简介"></a>Number.EPSILON 简介</h3><p>ES6 引入了<code>Number.EPSILON</code>，表示 1 与大于 1 的最小浮点数之间的差值（约 2.22e-16）。这是基于 1 的最小精度单位。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Number.EPSILON的数学定义</span></span><br><span class="line"><span class="title class_">Number</span>.<span class="property">EPSILON</span> === <span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>, -<span class="number">52</span>); <span class="comment">// true</span></span><br><span class="line"><span class="title class_">Number</span>.<span class="property">EPSILON</span> === <span class="number">2.220446049250313e-16</span>; <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 它是1与大于1的最小浮点数之间的差值</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span> + <span class="title class_">Number</span>.<span class="property">EPSILON</span> &gt; <span class="number">1</span>); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span> + <span class="title class_">Number</span>.<span class="property">EPSILON</span> / <span class="number">2</span> &gt; <span class="number">1</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>当表示 <strong>1.0</strong> 这个数值时：</p>
+<ul>
+<li>符号位 &#x3D; 0（正数）</li>
+<li>指数位 &#x3D; <code>1023</code>（偏移量编码）</li>
+<li>尾数位 &#x3D; 全 <code>0</code>（52 个 0）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 01111111111 0000000000000000000000000000000000000000000000000000</span><br></pre></td></tr></table></figure>
+
+<p>在 1 的基础上，通过将尾数最低位设为 <code>1</code>，得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 01111111111 0000000000000000000000000000000000000000000000000001</span><br></pre></td></tr></table></figure>
+
+<p>这个值 &#x3D; $$1+2^{52}$$ ≈ <code>1.0000000000000002</code>，也就是说其本质上是 <strong>浮点数在量级 1 时的最小可表示步长</strong>。</p>
+<p>如果算术运算的数量级在 <code>1</code> 附近，那么 <code>Number.EPSILON</code> 常数通常是一个合理的误差阈值。</p>
+<h3 id="基础比较函数"><a href="#基础比较函数" class="headerlink" title="基础比较函数"></a>基础比较函数</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">simpleFloatEqual</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">abs</span>(a - b) &lt; <span class="title class_">Number</span>.<span class="property">EPSILON</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">simpleFloatEqual</span>(<span class="number">0.1</span> + <span class="number">0.2</span>, <span class="number">0.3</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">simpleFloatEqual</span>(<span class="number">1.0</span>, <span class="number">1.0</span> + <span class="title class_">Number</span>.<span class="property">EPSILON</span> / <span class="number">2</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">simpleFloatEqual</span>(<span class="number">1.0</span>, <span class="number">1.0</span> + <span class="title class_">Number</span>.<span class="property">EPSILON</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="局限性：量级问题"><a href="#局限性：量级问题" class="headerlink" title="局限性：量级问题"></a>局限性：量级问题</h3><p>固定使用<code>Number.EPSILON</code>只适用于接近 1 的数值。对于其他量级的数值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 大数值测试 - 错误结果</span></span><br><span class="line"><span class="keyword">const</span> bigNum = <span class="number">1e16</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">simpleFloatEqual</span>(bigNum, bigNum + <span class="number">1</span>)); <span class="comment">// true，错误！</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 小数值测试 - 过于严格</span></span><br><span class="line"><span class="keyword">const</span> smallNum = <span class="number">1e-20</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">simpleFloatEqual</span>(smallNum, smallNum * <span class="number">1.1</span>)); <span class="comment">// false，过于严格</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不同量级对比</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">simpleFloatEqual</span>(<span class="number">2.0</span>, <span class="number">2.0</span> + <span class="title class_">Number</span>.<span class="property">EPSILON</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">simpleFloatEqual</span>(<span class="number">0.5</span>, <span class="number">0.5</span> + <span class="title class_">Number</span>.<span class="property">EPSILON</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="高级解决方案：动态容差与-ULP-概念"><a href="#高级解决方案：动态容差与-ULP-概念" class="headerlink" title="高级解决方案：动态容差与 ULP 概念"></a>高级解决方案：动态容差与 ULP 概念</h2><h3 id="理解-ULP（Unit-in-the-Last-Place）"><a href="#理解-ULP（Unit-in-the-Last-Place）" class="headerlink" title="理解 ULP（Unit in the Last Place）"></a>理解 ULP（Unit in the Last Place）</h3><p>ULP 是当前区间的最小可表示单位，随数值大小动态变化。这是 IEEE 754 标准的核心概念。</p>
+<p><strong>ULP 计算原理：</strong></p>
+<ul>
+<li>对于数值 x，其 <code>ULP = 2^(exponent(x) - 52)</code></li>
+<li>其中<code>exponent(x)</code>是 x 的指数部分</li>
+</ul>
+<h3 id="基于-ULP-的动态比较函数"><a href="#基于-ULP-的动态比较函数" class="headerlink" title="基于 ULP 的动态比较函数"></a>基于 ULP 的动态比较函数</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">floatEqual</span>(<span class="params">a, b, toleranceFactor = <span class="number">1</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 处理特殊值</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="title class_">Number</span>.<span class="built_in">isFinite</span>(a) || !<span class="title class_">Number</span>.<span class="built_in">isFinite</span>(b)) <span class="keyword">return</span> a === b;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 完全相等（包括+0/-0）</span></span><br><span class="line">  <span class="keyword">if</span> (a === b) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算差值</span></span><br><span class="line">  <span class="keyword">const</span> diff = <span class="title class_">Math</span>.<span class="title function_">abs</span>(a - b);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 处理接近零的情况</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="title class_">Math</span>.<span class="title function_">abs</span>(a) &lt; <span class="title class_">Number</span>.<span class="property">MIN_VALUE</span> || <span class="title class_">Math</span>.<span class="title function_">abs</span>(b) &lt; <span class="title class_">Number</span>.<span class="property">MIN_VALUE</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> diff &lt; <span class="title class_">Number</span>.<span class="property">EPSILON</span> * toleranceFactor;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取两数中较大的指数</span></span><br><span class="line">  <span class="keyword">const</span> exp = <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="title function_">getExponent</span>(a), <span class="title function_">getExponent</span>(b));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算该指数区间的理论最小精度单位</span></span><br><span class="line">  <span class="keyword">const</span> ulp = <span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>, exp) * <span class="title class_">Number</span>.<span class="property">EPSILON</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 比较</span></span><br><span class="line">  <span class="keyword">return</span> diff &lt;= ulp * toleranceFactor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取浮点数指数部分</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getExponent</span>(<span class="params">x</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (x === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">const</span> float64 = <span class="keyword">new</span> <span class="title class_">Float64Array</span>(<span class="number">1</span>);</span><br><span class="line">  float64[<span class="number">0</span>] = x;</span><br><span class="line">  <span class="keyword">const</span> view = <span class="keyword">new</span> <span class="title class_">DataView</span>(float64.<span class="property">buffer</span>);</span><br><span class="line">  <span class="keyword">const</span> bits = view.<span class="title function_">getBigUint64</span>(<span class="number">0</span>, <span class="literal">true</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Number</span>((bits &gt;&gt; <span class="number">52n</span>) &amp; <span class="number">0x7ffn</span>) - <span class="number">1023</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取数值的ULP</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getULP</span>(<span class="params">x</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (x === <span class="number">0</span>) <span class="keyword">return</span> <span class="title class_">Number</span>.<span class="property">MIN_VALUE</span>;</span><br><span class="line">  <span class="keyword">const</span> exp = <span class="title function_">getExponent</span>(x);</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>, exp) * <span class="title class_">Number</span>.<span class="property">EPSILON</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现解析"><a href="#实现解析" class="headerlink" title="实现解析"></a>实现解析</h3><ol>
+<li><strong>特殊值处理</strong>：正确处理<code>NaN</code>、<code>Infinity</code>等边界情况</li>
+<li><strong>零值安全</strong>：接近零时使用固定容差，避免计算溢出</li>
+<li><strong>指数计算</strong>：通过 Float64Array 直接访问内存中的指数位</li>
+<li><strong>动态 ULP</strong>：根据数值量级计算最小精度单位</li>
+<li><strong>容差系数</strong>：允许调整精度要求（默认 1 个 ULP）</li>
+</ol>
+<h3 id="性能优化简化版"><a href="#性能优化简化版" class="headerlink" title="性能优化简化版"></a>性能优化简化版</h3><p>对于性能敏感场景，可使用近似算法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fastFloatEqual</span>(<span class="params">a, b, factor = <span class="number">2</span></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="title class_">Number</span>.<span class="built_in">isFinite</span>(a) || !<span class="title class_">Number</span>.<span class="built_in">isFinite</span>(b)) <span class="keyword">return</span> a === b;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> diff = <span class="title class_">Math</span>.<span class="title function_">abs</span>(a - b);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 接近零时的特殊处理</span></span><br><span class="line">  <span class="keyword">if</span> (diff &lt; <span class="title class_">Number</span>.<span class="property">EPSILON</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 基于较大值计算容差</span></span><br><span class="line">  <span class="keyword">const</span> max = <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="title class_">Math</span>.<span class="title function_">abs</span>(a), <span class="title class_">Math</span>.<span class="title function_">abs</span>(b));</span><br><span class="line">  <span class="keyword">return</span> diff &lt;= max * <span class="title class_">Number</span>.<span class="property">EPSILON</span> * factor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更简单的版本，适用于大多数场景</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">simpleFloatEqual</span>(<span class="params">a, b, factor = <span class="number">2</span></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="title class_">Math</span>.<span class="title function_">abs</span>(a - b) &lt;=</span><br><span class="line">    <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="title class_">Math</span>.<span class="title function_">abs</span>(a), <span class="title class_">Math</span>.<span class="title function_">abs</span>(b)) * <span class="title class_">Number</span>.<span class="property">EPSILON</span> * factor</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基础测试</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(<span class="number">0.1</span> + <span class="number">0.2</span>, <span class="number">0.3</span>)); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不同量级测试</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(<span class="number">1e16</span>, <span class="number">1e16</span> + <span class="number">1</span>)); <span class="comment">// false (正确)</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(<span class="number">3.0</span>, <span class="number">3.0</span> + <span class="number">4e-16</span>)); <span class="comment">// true (ULP=4.44e-16)</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(<span class="number">0.75</span>, <span class="number">0.75</span> + <span class="number">1e-16</span>)); <span class="comment">// true (ULP=1.11e-16)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 边界测试</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(<span class="title class_">Number</span>.<span class="property">MIN_VALUE</span>, <span class="title class_">Number</span>.<span class="property">MIN_VALUE</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(<span class="title class_">Infinity</span>, <span class="title class_">Infinity</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(<span class="title class_">NaN</span>, <span class="title class_">NaN</span>)); <span class="comment">// false (符合标准)</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(+<span class="number">0</span>, -<span class="number">0</span>)); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 实际应用测试</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(<span class="title class_">Math</span>.<span class="property">PI</span>, <span class="number">3.141592653589793</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">floatEqual</span>(<span class="title class_">Math</span>.<span class="title function_">sqrt</span>(<span class="number">2</span>), <span class="number">1.4142135623730951</span>)); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="其他语言的处理方式"><a href="#其他语言的处理方式" class="headerlink" title="其他语言的处理方式"></a>其他语言的处理方式</h2><p>不同语言提供了类似机制处理浮点数比较：</p>
+<p><strong>Java:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用Math.ulp()方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">floatEquals</span><span class="params">(<span class="type">double</span> a, <span class="type">double</span> b, <span class="type">int</span> tolerance)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Math.abs(a - b) &lt;= Math.ulp(a) * tolerance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用BigDecimal进行精确计算</span></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">bd1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.1&quot;</span>);</span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">bd2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.2&quot;</span>);</span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">result</span> <span class="operator">=</span> bd1.add(bd2);</span><br><span class="line">System.out.println(result.equals(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.3&quot;</span>))); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>C++:</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;limits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">floatEquals</span><span class="params">(<span class="type">double</span> a, <span class="type">double</span> b, <span class="type">int</span> tolerance = <span class="number">1</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (std::<span class="built_in">isnan</span>(a) || std::<span class="built_in">isnan</span>(b)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (std::<span class="built_in">isinf</span>(a) || std::<span class="built_in">isinf</span>(b)) <span class="keyword">return</span> a == b;</span><br><span class="line"></span><br><span class="line">    <span class="type">double</span> diff = std::<span class="built_in">fabs</span>(a - b);</span><br><span class="line">    <span class="type">double</span> ulp = std::<span class="built_in">nextafter</span>(a, b) - a;</span><br><span class="line">    <span class="keyword">return</span> diff &lt;= ulp * tolerance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">float_equal</span>(<span class="params">a, b, tolerance_factor=<span class="number">1</span></span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> (math.isfinite(a) <span class="keyword">and</span> math.isfinite(b)):</span><br><span class="line">        <span class="keyword">return</span> a == b</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> a == b:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    diff = <span class="built_in">abs</span>(a - b)</span><br><span class="line">    ulp = math.ulp(a)</span><br><span class="line">    <span class="keyword">return</span> diff &lt;= ulp * tolerance_factor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用decimal模块进行精确计算</span></span><br><span class="line"><span class="keyword">from</span> decimal <span class="keyword">import</span> Decimal, getcontext</span><br><span class="line">getcontext().prec = <span class="number">28</span>  <span class="comment"># 设置精度</span></span><br><span class="line"></span><br><span class="line">a = Decimal(<span class="string">&#x27;0.1&#x27;</span>)</span><br><span class="line">b = Decimal(<span class="string">&#x27;0.2&#x27;</span>)</span><br><span class="line">result = a + b</span><br><span class="line"><span class="built_in">print</span>(result == Decimal(<span class="string">&#x27;0.3&#x27;</span>))  <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="JavaScript-开源库的浮点数处理"><a href="#JavaScript-开源库的浮点数处理" class="headerlink" title="JavaScript 开源库的浮点数处理"></a>JavaScript 开源库的浮点数处理</h2><p>在实际项目中，我们通常会使用成熟的数学库来处理浮点数精度问题。让我们分析几个主流库的实现原理，并基于它们的核心思想实现一个简单可用的 demo。</p>
+<h3 id="主流库分析"><a href="#主流库分析" class="headerlink" title="主流库分析"></a>主流库分析</h3><h4 id="1-decimal-js-基于字符串的精确计算"><a href="#1-decimal-js-基于字符串的精确计算" class="headerlink" title="1. decimal.js - 基于字符串的精确计算"></a>1. <strong>decimal.js</strong> - 基于字符串的精确计算</h4><p>decimal.js 是 JavaScript 中最流行的精确数学库之一，其核心思想是：</p>
+<ul>
+<li>将数字转换为字符串处理，避免浮点数精度损失</li>
+<li>实现完整的十进制运算，包括加减乘除、幂运算等</li>
+<li>支持任意精度设置</li>
+</ul>
+<h4 id="2-big-js-轻量级精确计算"><a href="#2-big-js-轻量级精确计算" class="headerlink" title="2. big.js - 轻量级精确计算"></a>2. <strong>big.js</strong> - 轻量级精确计算</h4><p>big.js 是 decimal.js 的轻量级版本，专注于：</p>
+<ul>
+<li>更小的包体积（约 6KB）</li>
+<li>简化的 API 设计</li>
+<li>保持核心精度功能</li>
+</ul>
+<h4 id="3-mathjs-综合数学库"><a href="#3-mathjs-综合数学库" class="headerlink" title="3. mathjs - 综合数学库"></a>3. <strong>mathjs</strong> - 综合数学库</h4><p>mathjs 提供了更全面的数学功能：</p>
+<ul>
+<li>支持多种数据类型（Number、BigNumber、Fraction）</li>
+<li>可配置的精度和数字类型</li>
+<li>丰富的数学函数库</li>
+</ul>
+<h3 id="核心实现原理"><a href="#核心实现原理" class="headerlink" title="核心实现原理"></a>核心实现原理</h3><p>这些库的共同核心原理是：</p>
+<ol>
+<li><strong>字符串表示</strong>：将数字转换为字符串，避免 IEEE 754 精度问题</li>
+<li><strong>整数运算</strong>：将小数转换为整数进行运算，最后再转换回小数</li>
+<li><strong>精度控制</strong>：通过配置控制计算精度和舍入模式</li>
+<li><strong>溢出处理</strong>：处理大数运算时的溢出问题</li>
+</ol>
+<h3 id="Demo-实现"><a href="#Demo-实现" class="headerlink" title="Demo 实现"></a>Demo 实现</h3><p>基于上述原理，我们实现一个简化版的精确计算库：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 最小可用精确计算库</span></span><br><span class="line"><span class="comment"> * 基于字符串处理和整数运算原理</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PreciseMath</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">precision = <span class="number">20</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">precision</span> = precision;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">roundingMode</span> = <span class="string">&quot;round&quot;</span>; <span class="comment">// round, floor, ceil</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 将数字转换为字符串，处理科学计数法</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">_normalize</span>(<span class="params">num</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> num === <span class="string">&quot;string&quot;</span>) <span class="keyword">return</span> num;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理科学计数法</span></span><br><span class="line">    <span class="keyword">const</span> str = num.<span class="title function_">toString</span>();</span><br><span class="line">    <span class="keyword">if</span> (str.<span class="title function_">includes</span>(<span class="string">&quot;e&quot;</span>) || str.<span class="title function_">includes</span>(<span class="string">&quot;E&quot;</span>)) &#123;</span><br><span class="line">      <span class="keyword">const</span> [mantissa, exponent] = str.<span class="title function_">split</span>(<span class="regexp">/[eE]/</span>);</span><br><span class="line">      <span class="keyword">const</span> exp = <span class="built_in">parseInt</span>(exponent);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (exp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">          mantissa.<span class="title function_">replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;&quot;</span>) +</span><br><span class="line">          <span class="string">&quot;0&quot;</span>.<span class="title function_">repeat</span>(exp - (mantissa.<span class="property">length</span> - mantissa.<span class="title function_">indexOf</span>(<span class="string">&quot;.&quot;</span>) - <span class="number">1</span>))</span><br><span class="line">        );</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;0.&quot;</span> + <span class="string">&quot;0&quot;</span>.<span class="title function_">repeat</span>(-exp - <span class="number">1</span>) + mantissa.<span class="title function_">replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 将小数转换为整数进行运算</span></span><br><span class="line"><span class="comment">   * 例如：0.1 + 0.2 =&gt; (1 * 10^1 + 2 * 10^1) / 10^1</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">_toInteger</span>(<span class="params">num</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> str = <span class="variable language_">this</span>.<span class="title function_">_normalize</span>(num);</span><br><span class="line">    <span class="keyword">const</span> parts = str.<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (parts.<span class="property">length</span> === <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">value</span>: parts[<span class="number">0</span>],</span><br><span class="line">        <span class="attr">scale</span>: <span class="number">0</span>,</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">value</span>: parts[<span class="number">0</span>] + parts[<span class="number">1</span>],</span><br><span class="line">      <span class="attr">scale</span>: parts[<span class="number">1</span>].<span class="property">length</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 对齐两个数的精度</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">_align</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> maxScale = <span class="title class_">Math</span>.<span class="title function_">max</span>(a.<span class="property">scale</span>, b.<span class="property">scale</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">a</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: a.<span class="property">value</span> + <span class="string">&quot;0&quot;</span>.<span class="title function_">repeat</span>(maxScale - a.<span class="property">scale</span>),</span><br><span class="line">        <span class="attr">scale</span>: maxScale,</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">b</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: b.<span class="property">value</span> + <span class="string">&quot;0&quot;</span>.<span class="title function_">repeat</span>(maxScale - b.<span class="property">scale</span>),</span><br><span class="line">        <span class="attr">scale</span>: maxScale,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 字符串加法</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">_addStrings</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> maxLen = <span class="title class_">Math</span>.<span class="title function_">max</span>(a.<span class="property">length</span>, b.<span class="property">length</span>);</span><br><span class="line">    a = a.<span class="title function_">padStart</span>(maxLen, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">    b = b.<span class="title function_">padStart</span>(maxLen, <span class="string">&quot;0&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> carry = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = maxLen - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">      <span class="keyword">const</span> sum = <span class="built_in">parseInt</span>(a[i]) + <span class="built_in">parseInt</span>(b[i]) + carry;</span><br><span class="line">      result = (sum % <span class="number">10</span>) + result;</span><br><span class="line">      carry = <span class="title class_">Math</span>.<span class="title function_">floor</span>(sum / <span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (carry &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      result = carry + result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 字符串减法</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">_subtractStrings</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> maxLen = <span class="title class_">Math</span>.<span class="title function_">max</span>(a.<span class="property">length</span>, b.<span class="property">length</span>);</span><br><span class="line">    a = a.<span class="title function_">padStart</span>(maxLen, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">    b = b.<span class="title function_">padStart</span>(maxLen, <span class="string">&quot;0&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> borrow = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = maxLen - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">      <span class="keyword">let</span> diff = <span class="built_in">parseInt</span>(a[i]) - <span class="built_in">parseInt</span>(b[i]) - borrow;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (diff &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        diff += <span class="number">10</span>;</span><br><span class="line">        borrow = <span class="number">1</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        borrow = <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      result = diff + result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 移除前导零</span></span><br><span class="line">    result = result.<span class="title function_">replace</span>(<span class="regexp">/^0+/</span>, <span class="string">&quot;&quot;</span>) || <span class="string">&quot;0&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 格式化结果</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">_formatResult</span>(<span class="params">value, scale</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (scale === <span class="number">0</span>) <span class="keyword">return</span> value;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 确保有足够的小数位</span></span><br><span class="line">    <span class="keyword">while</span> (value.<span class="property">length</span> &lt;= scale) &#123;</span><br><span class="line">      value = <span class="string">&quot;0&quot;</span> + value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> integerPart = value.<span class="title function_">slice</span>(<span class="number">0</span>, -scale);</span><br><span class="line">    <span class="keyword">const</span> decimalPart = value.<span class="title function_">slice</span>(-scale);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (integerPart || <span class="string">&quot;0&quot;</span>) + <span class="string">&quot;.&quot;</span> + decimalPart;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 精确加法</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">add</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> aInt = <span class="variable language_">this</span>.<span class="title function_">_toInteger</span>(a);</span><br><span class="line">    <span class="keyword">const</span> bInt = <span class="variable language_">this</span>.<span class="title function_">_toInteger</span>(b);</span><br><span class="line">    <span class="keyword">const</span> aligned = <span class="variable language_">this</span>.<span class="title function_">_align</span>(aInt, bInt);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> result = <span class="variable language_">this</span>.<span class="title function_">_addStrings</span>(aligned.<span class="property">a</span>.<span class="property">value</span>, aligned.<span class="property">b</span>.<span class="property">value</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">_formatResult</span>(result, aligned.<span class="property">a</span>.<span class="property">scale</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 精确减法</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">subtract</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> aInt = <span class="variable language_">this</span>.<span class="title function_">_toInteger</span>(a);</span><br><span class="line">    <span class="keyword">const</span> bInt = <span class="variable language_">this</span>.<span class="title function_">_toInteger</span>(b);</span><br><span class="line">    <span class="keyword">const</span> aligned = <span class="variable language_">this</span>.<span class="title function_">_align</span>(aInt, bInt);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> result = <span class="variable language_">this</span>.<span class="title function_">_subtractStrings</span>(aligned.<span class="property">a</span>.<span class="property">value</span>, aligned.<span class="property">b</span>.<span class="property">value</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">_formatResult</span>(result, aligned.<span class="property">a</span>.<span class="property">scale</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 精确比较</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">equals</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">add</span>(a, <span class="string">&quot;0&quot;</span>) === <span class="variable language_">this</span>.<span class="title function_">add</span>(b, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 精确乘法（简化版）</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">multiply</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> aInt = <span class="variable language_">this</span>.<span class="title function_">_toInteger</span>(a);</span><br><span class="line">    <span class="keyword">const</span> bInt = <span class="variable language_">this</span>.<span class="title function_">_toInteger</span>(b);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 简化的乘法实现</span></span><br><span class="line">    <span class="keyword">const</span> result = (<span class="built_in">parseInt</span>(aInt.<span class="property">value</span>) * <span class="built_in">parseInt</span>(bInt.<span class="property">value</span>)).<span class="title function_">toString</span>();</span><br><span class="line">    <span class="keyword">const</span> scale = aInt.<span class="property">scale</span> + bInt.<span class="property">scale</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">_formatResult</span>(result, scale);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用示例</span></span><br><span class="line"><span class="keyword">const</span> math = <span class="keyword">new</span> <span class="title class_">PreciseMath</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;=== 精确计算测试 ===&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;0.1 + 0.2 =&quot;</span>, math.<span class="title function_">add</span>(<span class="string">&quot;0.1&quot;</span>, <span class="string">&quot;0.2&quot;</span>)); <span class="comment">// 0.3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">  <span class="string">&quot;0.1 + 0.2 === 0.3:&quot;</span>,</span><br><span class="line">  math.<span class="title function_">equals</span>(<span class="string">&quot;0.1&quot;</span>, math.<span class="title function_">subtract</span>(<span class="string">&quot;0.3&quot;</span>, <span class="string">&quot;0.2&quot;</span>))</span><br><span class="line">); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n=== 大数测试 ===&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;1e16 + 1 =&quot;</span>, math.<span class="title function_">add</span>(<span class="string">&quot;10000000000000000&quot;</span>, <span class="string">&quot;1&quot;</span>)); <span class="comment">// 10000000000000001</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">  <span class="string">&quot;1e16 + 1 === 1e16:&quot;</span>,</span><br><span class="line">  math.<span class="title function_">equals</span>(<span class="string">&quot;10000000000000000&quot;</span>, <span class="string">&quot;10000000000000001&quot;</span>)</span><br><span class="line">); <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n=== 科学计数法测试 ===&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;1e-10 + 1e-10 =&quot;</span>, math.<span class="title function_">add</span>(<span class="string">&quot;0.0000000001&quot;</span>, <span class="string">&quot;0.0000000001&quot;</span>)); <span class="comment">// 0.0000000002</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n=== 与原生比较 ===&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;原生: 0.1 + 0.2 =&quot;</span>, <span class="number">0.1</span> + <span class="number">0.2</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;精确: 0.1 + 0.2 =&quot;</span>, math.<span class="title function_">add</span>(<span class="string">&quot;0.1&quot;</span>, <span class="string">&quot;0.2&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="高级功能扩展"><a href="#高级功能扩展" class="headerlink" title="高级功能扩展"></a>高级功能扩展</h3><p>基于上述基础实现，我们可以进一步扩展：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 扩展功能：支持更多运算和配置</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AdvancedPreciseMath</span> <span class="keyword">extends</span> <span class="title class_ inherited__">PreciseMath</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">precision = <span class="number">20</span>, roundingMode = <span class="string">&quot;round&quot;</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(precision);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">roundingMode</span> = roundingMode;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 设置舍入模式</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">setRoundingMode</span>(<span class="params">mode</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">roundingMode</span> = mode;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 舍入到指定精度</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">round</span>(<span class="params">value, precision</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> parts = value.<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (parts.<span class="property">length</span> === <span class="number">1</span> || parts[<span class="number">1</span>].<span class="property">length</span> &lt;= precision) &#123;</span><br><span class="line">      <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> integerPart = parts[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> decimalPart = parts[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">const</span> significant = decimalPart.<span class="title function_">slice</span>(<span class="number">0</span>, precision);</span><br><span class="line">    <span class="keyword">const</span> nextDigit = <span class="built_in">parseInt</span>(decimalPart[precision] || <span class="string">&quot;0&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> rounded;</span><br><span class="line">    <span class="keyword">switch</span> (<span class="variable language_">this</span>.<span class="property">roundingMode</span>) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&quot;floor&quot;</span>:</span><br><span class="line">        rounded = significant;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&quot;ceil&quot;</span>:</span><br><span class="line">        rounded =</span><br><span class="line">          nextDigit &gt; <span class="number">0</span> ? <span class="variable language_">this</span>.<span class="title function_">_addStrings</span>(significant, <span class="string">&quot;1&quot;</span>) : significant;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&quot;round&quot;</span>:</span><br><span class="line">      <span class="attr">default</span>:</span><br><span class="line">        rounded =</span><br><span class="line">          nextDigit &gt;= <span class="number">5</span> ? <span class="variable language_">this</span>.<span class="title function_">_addStrings</span>(significant, <span class="string">&quot;1&quot;</span>) : significant;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">_formatResult</span>(integerPart + rounded, precision);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 格式化输出</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">format</span>(<span class="params">value, options = &#123;&#125;</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">      precision = <span class="variable language_">this</span>.<span class="property">precision</span>,</span><br><span class="line">      notation = <span class="string">&quot;standard&quot;</span>, <span class="comment">// standard, scientific, engineering</span></span><br><span class="line">      minFractionDigits = <span class="number">0</span>,</span><br><span class="line">      maxFractionDigits = precision,</span><br><span class="line">    &#125; = options;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> result = <span class="variable language_">this</span>.<span class="title function_">round</span>(value, precision);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理科学计数法</span></span><br><span class="line">    <span class="keyword">if</span> (notation === <span class="string">&quot;scientific&quot;</span> &amp;&amp; <span class="title class_">Math</span>.<span class="title function_">abs</span>(<span class="built_in">parseFloat</span>(result)) &gt;= <span class="number">1e6</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> num = <span class="built_in">parseFloat</span>(result);</span><br><span class="line">      <span class="keyword">const</span> exp = <span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="title class_">Math</span>.<span class="title function_">log10</span>(<span class="title class_">Math</span>.<span class="title function_">abs</span>(num)));</span><br><span class="line">      <span class="keyword">const</span> mantissa = num / <span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">10</span>, exp);</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;mantissa.toFixed(<span class="number">6</span>)&#125;</span>e<span class="subst">$&#123;exp&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 高级功能测试</span></span><br><span class="line"><span class="keyword">const</span> advancedMath = <span class="keyword">new</span> <span class="title class_">AdvancedPreciseMath</span>(<span class="number">10</span>, <span class="string">&quot;round&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n=== 高级功能测试 ===&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;舍入测试 (round):&quot;</span>, advancedMath.<span class="title function_">round</span>(<span class="string">&quot;3.14159265359&quot;</span>, <span class="number">3</span>)); <span class="comment">// 3.142</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">  <span class="string">&quot;舍入测试 (floor):&quot;</span>,</span><br><span class="line">  advancedMath.<span class="title function_">setRoundingMode</span>(<span class="string">&quot;floor&quot;</span>).<span class="title function_">round</span>(<span class="string">&quot;3.14159265359&quot;</span>, <span class="number">3</span>)</span><br><span class="line">); <span class="comment">// 3.141</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">  <span class="string">&quot;舍入测试 (ceil):&quot;</span>,</span><br><span class="line">  advancedMath.<span class="title function_">setRoundingMode</span>(<span class="string">&quot;ceil&quot;</span>).<span class="title function_">round</span>(<span class="string">&quot;3.14159265359&quot;</span>, <span class="number">3</span>)</span><br><span class="line">); <span class="comment">// 3.142</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">  <span class="string">&quot;格式化测试:&quot;</span>,</span><br><span class="line">  advancedMath.<span class="title function_">format</span>(<span class="string">&quot;3.14159265359&quot;</span>, &#123; <span class="attr">precision</span>: <span class="number">4</span> &#125;)</span><br><span class="line">); <span class="comment">// 3.1416</span></span><br></pre></td></tr></table></figure>
+
+<p>这个 demo 基本展示了主流数学库的核心原理，虽然功能简化，但足以处理大多数常见的浮点数精度问题。在实际项目中，建议根据具体需求选择合适的成熟库。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过本文的深入探讨，我们全面解析了 JavaScript 中 <code>0.1 + 0.2 !== 0.3</code> 这个经典问题的本质和解决方案。</p>
+<p>浮点数精度问题虽然看似简单，但涉及计算机科学、数学和工程实践的多个层面。通过深入理解其原理并掌握相应的解决方案，我们可以在实际开发中避免这类问题，写出更加健壮和可靠的代码。</p>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://blog.mahoo12138.cn/post/front-end-interview-0-1-plus-0-2-equals-0-3/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=http://blog.mahoo12138.cn/post/front-end-interview-0-1-plus-0-2-equals-0-3/&title=一道前端面试题：如何判断 0.1 + 0.2 与 0.3 相等？ - Mahoo12138&summary=前言在 JavaScript 中，有一个经典的前端面试题：为什么 0.1 + 0.2 不等于 0.3？ 如果你尝试在控制台中输入以下代码：
+12console.log(0.1 + 0.2 === 0.3); // falseconso..."><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg" /></a><a class="social share-item email" href="mailto:?subject=一道前端面试题：如何判断 0.1 + 0.2 与 0.3 相等？ - Mahoo12138&amp;body=http://blog.mahoo12138.cn/post/front-end-interview-0-1-plus-0-2-equals-0-3/"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://blog.mahoo12138.cn/post/front-end-interview-0-1-plus-0-2-equals-0-3/"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/layered-partner-system/">层级伴侣制度：一个替代婚姻制度的设想</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/js-2d-array-initialization-tricks/">JavaScript 初始化二维数组的陷阱</a></div></section></div>
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">Mahoo12138</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%A0%B9%E6%BA%90%EF%BC%9AIEEE-754-%E6%B5%AE%E7%82%B9%E6%95%B0%E6%A0%87%E5%87%86"><span class="toc-text">问题根源：IEEE 754 浮点数标准</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E5%9F%BA%E7%A1%80"><span class="toc-text">二进制表示基础</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E8%BD%AC%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="toc-text">整数转二进制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%8F%E6%95%B0%E8%BD%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%EF%BC%9A0-75-%E7%9A%84%E7%B2%BE%E7%A1%AE%E8%A1%A8%E7%A4%BA"><span class="toc-text">小数转二进制：0.75 的精确表示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%8F%E6%95%B0%E8%BD%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%EF%BC%9A0-1-%E7%9A%84%E6%97%A0%E9%99%90%E5%BE%AA%E7%8E%AF"><span class="toc-text">小数转二进制：0.1 的无限循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0-2-%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA"><span class="toc-text">0.2 的二进制表示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%87%BA%E7%8E%B0%E5%BE%AA%E7%8E%AF%EF%BC%9F"><span class="toc-text">数学原理：为什么会出现循环？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E4%B8%AD%E7%9A%84%E6%95%B0%E5%80%BC%E8%A1%A8%E7%A4%BA"><span class="toc-text">JavaScript 中的数值表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E5%BA%A6%E8%AF%AF%E5%B7%AE%E7%9A%84%E5%AE%9E%E9%99%85%E8%AE%A1%E7%AE%97"><span class="toc-text">精度误差的实际计算</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E7%BA%A7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A%E5%AE%B9%E5%B7%AE%E9%98%88%E5%80%BC%E6%AF%94%E8%BE%83"><span class="toc-text">初级解决方案：容差阈值比较</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Number-EPSILON-%E7%AE%80%E4%BB%8B"><span class="toc-text">Number.EPSILON 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%AF%94%E8%BE%83%E5%87%BD%E6%95%B0"><span class="toc-text">基础比较函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%99%90%E6%80%A7%EF%BC%9A%E9%87%8F%E7%BA%A7%E9%97%AE%E9%A2%98"><span class="toc-text">局限性：量级问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A%E5%8A%A8%E6%80%81%E5%AE%B9%E5%B7%AE%E4%B8%8E-ULP-%E6%A6%82%E5%BF%B5"><span class="toc-text">高级解决方案：动态容差与 ULP 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%A7%A3-ULP%EF%BC%88Unit-in-the-Last-Place%EF%BC%89"><span class="toc-text">理解 ULP（Unit in the Last Place）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-ULP-%E7%9A%84%E5%8A%A8%E6%80%81%E6%AF%94%E8%BE%83%E5%87%BD%E6%95%B0"><span class="toc-text">基于 ULP 的动态比较函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E8%A7%A3%E6%9E%90"><span class="toc-text">实现解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%AE%80%E5%8C%96%E7%89%88"><span class="toc-text">性能优化简化版</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="toc-text">测试验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F"><span class="toc-text">其他语言的处理方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaScript-%E5%BC%80%E6%BA%90%E5%BA%93%E7%9A%84%E6%B5%AE%E7%82%B9%E6%95%B0%E5%A4%84%E7%90%86"><span class="toc-text">JavaScript 开源库的浮点数处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%B5%81%E5%BA%93%E5%88%86%E6%9E%90"><span class="toc-text">主流库分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-decimal-js-%E5%9F%BA%E4%BA%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E7%B2%BE%E7%A1%AE%E8%AE%A1%E7%AE%97"><span class="toc-text">1. decimal.js - 基于字符串的精确计算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-big-js-%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%B2%BE%E7%A1%AE%E8%AE%A1%E7%AE%97"><span class="toc-text">2. big.js - 轻量级精确计算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-mathjs-%E7%BB%BC%E5%90%88%E6%95%B0%E5%AD%A6%E5%BA%93"><span class="toc-text">3. mathjs - 综合数学库</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">核心实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo-%E5%AE%9E%E7%8E%B0"><span class="toc-text">Demo 实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95"><span class="toc-text">高级功能扩展</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"closeEnable":true,"closeText":"关闭提示","originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  window.canonical["param"] = {"permalink":"http://blog.mahoo12138.cn/post/front-end-interview-0-1-plus-0-2-equals-0-3/","checklink":"/js/plugins/video.js"};
+  // Fix: Ensure page is at the correct top position on data load
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'auto';
+  }
+  (function() {
+    const scrollHandler = () => {
+      const wikiCover = document.querySelector('#l_cover .l_cover.wiki');
+      const startEl = document.getElementById('start');
+      if (wikiCover && startEl) {
+        window.scrollTo(0, startEl.offsetTop);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+    if (document.readyState !== 'loading') scrollHandler();
+    else document.addEventListener('DOMContentLoaded', scrollHandler);
+  })();
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      // 倒序遍历避免 splice 后的索引问题
+      for (let index = this.list.length - 1; index >= 0; index--) {
+        const e = this.list[index];
+        if (e.name === name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 已加载脚本缓存
+    _loadedScripts: new Set(),
+
+    // 已加载元素缓存 (使用 WeakSet 追踪元素实例,避免 PJAX 导航时的状态混淆)
+    _loadedElements: new WeakSet(),
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      // 如果脚本已加载，直接返回
+      if (utils._loadedScripts.has(src)) {
+        resolve();
+        return;
+      }
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        utils._loadedScripts.add(src);
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // PJAX 事件监听器管理
+    _pjaxListeners: new Set(),
+    
+    jq: (fn, pjax = true) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+      if (pjax && !fn._pjax_registered) {
+        document.addEventListener('pjax:complete', fn);
+        fn._pjax_registered = true;
+        utils._pjaxListeners.add(fn); // 追踪监听器以便清理
+      }
+    },
+    
+    // 清理所有 PJAX 事件监听器
+    cleanupPjaxListeners: () => {
+      utils._pjaxListeners.forEach(fn => {
+        document.removeEventListener('pjax:complete', fn);
+        fn._pjax_registered = false;
+      });
+      utils._pjaxListeners.clear();
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        if ($(el).find('.loading-wrap').length === 0){
+          $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+        }
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      // 检查元素实例是否已加载 (而不是检查属性)
+      if (el && utils._loadedElements.has(el)) {
+        return;
+      }
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            // 标记元素实例为已加载
+            if (el) utils._loadedElements.add(el);
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+
+    // 插件初始化管理器 - 统一处理 DOMContentLoaded 和 pjax:complete 事件
+    _pluginInitializers: [],
+    _pluginCleanups: new Map(), // 存储每个插件的清理函数
+    
+    initPlugin: (initFn, name, options = {}) => {
+      if (!initFn || typeof initFn !== 'function') return;
+      
+      // 避免重复注册
+      const pluginName = name || initFn.name;
+      if (utils._pluginInitializers.some(p => p.name === pluginName)) return;
+      
+      // 包装初始化函数，添加防重复执行的保护
+      const wrappedInit = () => {
+        try {
+          // 在执行前先清理旧的资源
+          if (utils._pluginCleanups.has(pluginName)) {
+            const cleanup = utils._pluginCleanups.get(pluginName);
+            if (typeof cleanup === 'function') {
+              cleanup();
+            }
+          }
+          
+          // 执行初始化，可能返回清理函数
+          const cleanup = initFn();
+          
+          // 如果初始化函数返回了清理函数，保存它
+          if (typeof cleanup === 'function') {
+            utils._pluginCleanups.set(pluginName, cleanup);
+          }
+        } catch (error) {
+          console.error(`[Plugin ${pluginName}] 初始化失败:`, error);
+        }
+      };
+      
+      utils._pluginInitializers.push({ 
+        fn: wrappedInit, 
+        name: pluginName,
+        options: options 
+      });
+      
+      // 如果 DOM 已经加载完成，立即执行
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        wrappedInit();
+      } else {
+        // 否则等待 DOMContentLoaded
+        window.addEventListener('DOMContentLoaded', wrappedInit, { once: true });
+      }
+    },
+
+    // 重新初始化所有插件（用于 PJAX 等场景）
+    reinitPlugins: () => {
+      utils._pluginInitializers.forEach(plugin => {
+        // 跳过标记为不需要重新初始化的插件
+        if (plugin.options.skipReinit) return;
+        
+        try {
+          plugin.fn();
+        } catch (error) {
+          console.error(`[Plugin ${plugin.name}] 重新初始化失败:`, error);
+        }
+      });
+    },
+    
+    // 清理所有插件资源
+    cleanupPlugins: () => {
+      utils._pluginCleanups.forEach((cleanup, name) => {
+        try {
+          cleanup();
+        } catch (error) {
+          console.error(`[Plugin ${name}] 清理失败:`, error);
+        }
+      });
+      utils._pluginCleanups.clear();
+    },
+    
+    // 清理所有资源（用于页面卸载或重置）
+    cleanupAll: () => {
+      utils.cleanupPlugins();
+      utils.cleanupPjaxListeners();
+    },
+  };
+
+  // 自动处理 PJAX 事件
+  document.addEventListener('pjax:before', () => {
+    // 在导航前清理旧的 PJAX 监听器（如果需要重新注册）
+    // 注意：这里不清理，因为监听器应该是持久的
+    // utils.cleanupPjaxListeners();
+  });
+  
+  document.addEventListener('pjax:complete', () => {
+    utils.reinitPlugins();
+  });
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  const initServices = () => {
+    // 用于存储需要清理的资源
+    let timers = [];
+    
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"},"rss":{"js":"/js/services/rss.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        const cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(cardlinks);
+          });
+        }
+      } else if (id == 'ghinfo') {
+        const els = document.querySelectorAll('.ds-ghinfo');
+        if (els.length > 0) {
+          utils.js(js, { defer: true });
+        }
+      } else if (id == 'voice') {
+        const voiceAudios = document.querySelectorAll('.voice>audio');
+        if (voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        const videos = document.querySelectorAll('.video>video');
+        if (videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        const files = document.querySelectorAll('.chat-file');
+        if (files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || id == 'memos' || id == 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          }, false);
+        }
+      }
+    }
+
+    // search
+    if (ctx.search && typeof searchFunc === 'function') {
+      const $inputArea = $("input#search-input");
+      if ($inputArea.length > 0 && !$inputArea[0]._searchInitialized) {
+        const path = ctx.search.path.startsWith('/') ? ctx.root + ctx.search.path.substring(1) : ctx.root + ctx.search.path;
+        const filter = $inputArea.attr('data-filter') || '';
+        searchFunc(path, filter, 'search-wrapper', 'search-input', 'search-result');
+        // 标记为已初始化，防止重复绑定
+        $inputArea[0]._searchInitialized = true;
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+    let firstAdjustInterval = null;
+    let mainInterval = null;
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      const date = new Date();
+      const sec = date.getSeconds();
+      firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+      timers.push(firstAdjustInterval);
+
+      function firstAdjustTime() {
+        NowTime();
+        if (firstAdjustInterval) {
+          clearInterval(firstAdjustInterval);
+          firstAdjustInterval = null;
+        }
+        mainInterval = setInterval(NowTime, 1000 * 60);
+        timers.push(mainInterval);
+      }
+
+      function NowTime() {
+        for (let i = 0; i < phoneTimes.length; ++i) {
+          const timeSpan = phoneTimes[i];
+          const date = new Date();
+          const hour = date.getHours();
+          const min = date.getMinutes();
+          timeSpan.innerHTML = check(hour) + ":" + check(min);
+        }
+      };
+
+      function check(val) {
+        if (val < 10) {
+          return ("0" + val);
+        }
+        return (val);
+      }
+    }
+
+    // chat quote - 存储事件监听器以便清理
+    const quoteClickHandlers = new Map();
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      const handler = function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      };
+      quote.addEventListener('click', handler);
+      quoteClickHandlers.set(quote, handler); // 保存处理器引用
+    });
+
+    // 返回清理函数，用于清理定时器和观察器
+    return () => {
+      // 清理所有定时器（包括可能未完成的 firstAdjustInterval）
+      timers.forEach(timer => {
+        if (timer) clearInterval(timer);
+      });
+      timers = [];
+      if (firstAdjustInterval) {
+        clearInterval(firstAdjustInterval);
+        firstAdjustInterval = null;
+      }
+      if (mainInterval) {
+        clearInterval(mainInterval);
+        mainInterval = null;
+      }
+      
+      // 断开观察器
+      if (chat_quote_obverser) {
+        chat_quote_obverser.disconnect();
+      }
+      
+      // 移除所有 click 事件监听器
+      quoteClickHandlers.forEach((handler, quote) => {
+        quote.removeEventListener('click', handler);
+      });
+      quoteClickHandlers.clear();
+    };
+  };
+
+  utils.initPlugin(initServices, 'services');
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  utils.initPlugin(() => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  }, 'swiper');
+</script>
+<script>
+  utils.initPlugin(() => {
+    const codeElements = document.querySelectorAll('.code');
+    if (codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js', { defer: true }).then(() => {
+        if (typeof createCopyButtons === 'function') {
+          createCopyButtons(codeElements);
+        }
+      });
+    }
+  }, 'copycode');
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
+
